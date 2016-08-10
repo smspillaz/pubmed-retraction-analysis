@@ -1,0 +1,18 @@
+{
+  "name": "pubmed-retraction-analysis",
+  "description": "Retraction Analysis for PubMed",
+  "scripts": {
+  },
+  "env": {
+  },
+  "formation": {
+  },
+  "addons": [
+
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}
