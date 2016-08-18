@@ -1,6 +1,21 @@
 {
   "name": "pubmed-retraction-analysis",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "description": "Analysis of why papers were retracted from PubMed (CITS3200 project)",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/smspillaz/pubmed-retraction-analysis.git"
+  },
+  "author": "Jake Nelson, Sam Spilsbury, Daniel McFall, Gwyn Durbridge, Wen Tan, Liam Reeves",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/smspillaz/pubmed-retraction-analysis/issues"
+  },
+  "homepage": "https://github.com/smspillaz/pubmed-retraction-analysis#readme",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
