@@ -3,12 +3,11 @@ import contextlib
 import json
 
 searchurl = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=Retracted+Publication&retmax=10&retmode=json"
-
 fetchurl = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?&db=pubmed&id="
-
 request = urllib.request.Request(searchurl)
-byte_response = urllib.request.urlopen(request)
-str_response = byte_response.readall().decode('utf-8')
+
+with contextlib.closing(urllib.request.urlopen(request)) as byte_response:
+    str_response = byte_response.read().decode('utf-8')
 
 data = json.loads(str_response)
 idlist = data["esearchresult"]["idlist"]
