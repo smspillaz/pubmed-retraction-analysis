@@ -1,4 +1,5 @@
 import urllib.request
+import contextlib
 import json
 
 searchurl = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=Retracted+Publication&retmax=10&retmode=json"
