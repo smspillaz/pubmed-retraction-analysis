@@ -23,7 +23,7 @@ def main(argv=None):
     try:
         os.makedirs("Retractions")
     except OSError as error:
-        if error.errno != errno.ENOENT:
+        if error.errno != errno.EEXIST:
             raise error
 
     for id in idlist:
