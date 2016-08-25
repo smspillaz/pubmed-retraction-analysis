@@ -1,9 +1,9 @@
-import urllib.request
 import contextlib
 import json
 import os
 import errno
 import sys
+from six.moves import urllib
 
 searchurl = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=Retracted+Publication&retmax=10&retmode=json"
 fetchurl = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?&db=pubmed&id="
