@@ -30,7 +30,7 @@ def main(argv=None):
         downloadurl = "%s%s" % (fetchurl,id)
         out_name = "Retractions/%s.txt" % (id) #make directory 'Retractions' first
         print("Downloading article " + id)
-        with urllib.request.urlopen(downloadurl) as response, open(out_name, 'wb') as out_file:
+        with contextlib.closing(urllib.request.urlopen(downloadurl)) as response, open(out_name, 'wb') as out_file:
             data = response.read()
             out_file.write(data)
 
