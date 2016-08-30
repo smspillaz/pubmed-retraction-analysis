@@ -40,7 +40,8 @@ setup(name="pubmed-retraction-analysis",
       },
       entry_points={
           "console_scripts": [
-              "download-pubmed-articles=importer.downloader:main"
+              "download-pubmed-articles=importer.downloader:main",
+              "parse-pubmed-files=importer.parsexml:main"
           ]
       },
       test_suite="nose.collector",
