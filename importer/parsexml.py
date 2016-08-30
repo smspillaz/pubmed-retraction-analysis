@@ -2,15 +2,23 @@ import os
 import xml.etree.ElementTree as ET
 import json
 import sys
+import argparse
 
 
 def main(argv=None):
     """Parse PubMed XML files in a directory."""
-    dir = "./Retractions"
+    argv = argv or sys.argv[1:]
+    parser = argparse.ArgumentParser("Parse XML files.")
+    parser.add_argument("directory",
+                        help="Directory to scan",
+                        default="./Retractions",
+                        type=str,
+                        metavar="DIR")
+    parse_result = parser.parse_args(argv)
 
-    for file in os.listdir(dir):
+    for file in os.listdir(parse_result.directory):
         if file.endswith(".xml"):
-            tree = ET.parse(dir + "/" + file)
+            tree = ET.parse(parse_result.directory + "/" + file)
             root = tree.getroot()
             article_data = {}
             
