@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ET
 import json
 import sys
 import argparse
+from datetime import date
 
 
 def main(argv=None):
@@ -18,7 +19,7 @@ def main(argv=None):
 
     for file in os.listdir(parse_result.directory):
         if file.endswith(".xml"):
-            tree = ET.parse(parse_result.directory + "/" + file)
+            tree = ET.parse(os.path.join(parse_result.directory, file))
             root = tree.getroot()
             article_data = {}
             
@@ -35,14 +36,16 @@ def main(argv=None):
                 pubYear = pubDate.find('Year').text
                 pubMonth = pubDate.find('Month').text
                 pubDay = pubDate.find('Day').text
-                pubDate = pubDay + "/" + pubMonth + "/" + pubYear
+                pubDateObject = date(int(pubYear), int(pubMonth), int(pubDay))
+                pubDate = pubDateObject.isoformat()
                 article_data['pubDate'] = pubDate
 
             for reviseDate in root.iter('DateRevised'):
                 reviseYear = reviseDate.find('Year').text
                 reviseMonth = reviseDate.find('Month').text
                 reviseDay = reviseDate.find('Day').text
-                reviseDate = reviseDay + "/" + reviseMonth + "/" + reviseYear
+                reviseDateObject = date(int(reviseYear), int(reviseMonth), int(reviseDay))
+                reviseDate = reviseDateObject.isoformat()
                 article_data['reviseDate'] = reviseDate
 
             for journal in root.iter('Journal'):
