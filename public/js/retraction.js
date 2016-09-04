@@ -10,7 +10,6 @@ var values = {
 };
 
 
-// d3 update pattern -bind, add, update, remove-
 function updateGraph(newData) {
 
     var x = d3.scale.linear()
