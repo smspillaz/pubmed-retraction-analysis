@@ -46,11 +46,8 @@ function updateGraph(newData) {
 // updates graph 
 function updateSelection() {
     //make function to remove before every update
-    console.log('updating ....');
     var x = document.getElementById("graphs").value;
-    console.log(x);
     updateGraph(values[x]); //adding string rather than selection and doesnt remove old selections 
-    console.log("here");
 }
 
 document.addEventListener("DOMContentLoaded", function() {
