@@ -44,9 +44,6 @@ function updateGraph(newData) {
 
 }
 
-//Load initial option journal/year ATM
-updateGraph(journalYear);
-
 // updates graph 
 function updateSelection() {
     //make function to remove before every update
@@ -56,3 +53,7 @@ function updateSelection() {
     updateGraph(values[x]); //adding string rather than selection and doesnt remove old selections 
     console.log("here");
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+  updateSelection(values.journalYear);
+});
