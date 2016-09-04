@@ -4,10 +4,10 @@ var w = 100,
 
 //Dummy Values
 var values = {
-  continentYear: [5, 5, 10, 15, 20],
-  countryYear: [10, 5, 15, 30, 10],
-  journalYear: [5, 10, 3, 20, 15]
-}
+    continentYear: [5, 5, 10, 15, 20],
+    countryYear: [10, 5, 15, 30, 10],
+    journalYear: [5, 10, 3, 20, 15]
+};
 
 
 // d3 update pattern -bind, add, update, remove-
