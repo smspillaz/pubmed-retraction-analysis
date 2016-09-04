@@ -13,35 +13,34 @@ var values = {
 // d3 update pattern -bind, add, update, remove-
 function updateGraph(newData) {
 
-    // bind 
-    var appending = canvas.selectAll('rect')
-       .data(newData);
-    console.log(newData);
-
     var x = d3.scale.linear()
               .domain([0, d3.max(newData)])
               .range([0, 420]);
 
-    // update 
-    appending.transition()
-             .duration(0);
+    /* Drop any existing SVG elements */
+    Array.prototype.forEach.call(document.getElementsByClassName("chart"), function(element) {
+        /* Drop everything inside this chart */
+        element.innerHTML = "";
+    });
 
-    d3.select(".chart")
-      .selectAll("div")
-      .data(newData)
-      .enter().append("div")
-              .style("width", function(d) {
-                  return x(d) + "px";
-              })
-      .text(function(d) {
-                return d;
-            });
-        
-    // remove
-    //not working....
-    appending.exit().remove();
-    console.log("removed?");
+    var svg = d3.select("div.chart")
+                .append("svg")
+                .attr("class", "svgchart")
+                .attr("width", 960)
+                .attr("height", 500);
 
+    var rects = svg.selectAll("rect")
+       .data(newData)
+       .enter()
+       .append("rect");
+
+    rects.attr("width", function(d) {
+             return x(d);
+          })
+          .attr("height", 20)
+          .attr("y", function(d, i) {
+            return 30 * i;
+          });
 }
 
 // updates graph 
