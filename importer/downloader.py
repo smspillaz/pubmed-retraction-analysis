@@ -6,7 +6,7 @@ import sys
 from six.moves import urllib
 
 searchurl = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=Retracted+Publication&retmax=10&retmode=json"
-fetchurl = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?&db=pubmed&id="
+fetchurl = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?&db=pubmed&rettype=xml&id="
 request = urllib.request.Request(searchurl)
 
 
@@ -28,7 +28,7 @@ def main(argv=None):
 
     for id in idlist:
         downloadurl = "%s%s" % (fetchurl,id)
-        out_name = "Retractions/%s.txt" % (id) #make directory 'Retractions' first
+        out_name = "Retractions/%s.xml" % (id) #make directory 'Retractions' first
         print("Downloading article " + id)
         with contextlib.closing(urllib.request.urlopen(downloadurl)) as response, open(out_name, 'wb') as out_file:
             data = response.read()
