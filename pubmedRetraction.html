@@ -4,15 +4,11 @@ html
     link(rel='stylesheet', href='PMR.css')
   body
     script(src='//d3js.org/d3.v3.min.js')
-    |  
+      //bower to be implemented
     form
-      select(name='graphs')
+      select(id='graphs', onchange='updateSelection()')
         // placeholder text elements
-        option(value='contiYear') Continent / Year
-        |   
-        option(value='contYear') Country / Year
-        |   
-        option(value='jornYear') Journal / Year
-    |   
-    |   
+        option(value='continentYear') Continent / Year
+        option(value='countryYear') Country / Year
+        option(value='journalYear', selected='selected') Journal / Year
     .chart
