@@ -1,14 +1,14 @@
-meta(charset='utf-8')
-html
-  head
-    link(rel='stylesheet', href='PMR.css')
-  body
-    script(src='//d3js.org/d3.v3.min.js')
-      //bower to be implemented
-    form
-      select(id='graphs', onchange='updateSelection()')
-        // placeholder text elements
-        option(value='continentYear') Continent / Year
-        option(value='countryYear') Country / Year
-        option(value='journalYear', selected='selected') Journal / Year
-    .chart
+extends layout
+
+block content
+  link(rel='stylesheet', href='/css/PMR.css')
+  script(src='//d3js.org/d3.v3.min.js')
+  script(src='/js/retraction.js')
+    //bower to be implemented
+  form
+    select(id='graphs', onchange='updateSelection()')
+      // placeholder text elements
+      option(value='continentYear') Continent / Year
+      option(value='countryYear') Country / Year
+      option(value='journalYear', selected='selected') Journal / Year
+  .chart
