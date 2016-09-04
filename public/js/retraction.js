@@ -12,7 +12,7 @@ var journalYear = [5, 10, 3, 20, 15];
 var canvas = d3.select('body')
     .append('svg')
     .attr('width',500)
-    .attr('height',100) 
+    .attr('height',100)
     .append('g');
 
 
@@ -25,21 +25,22 @@ function updateGraph(newData) {
     console.log(newData);
 
     var x = d3.scale.linear()
-    .domain([0, d3.max(newData)])
-    .range([0, 420]);  
-   
+              .domain([0, d3.max(newData)])
+              .range([0, 420]);
+
     // update 
     appending.transition()
-        .duration(0)
+             .duration(0);
+
     d3.select(".chart")
       .selectAll("div")
-        .data(newData)
-    .enter().append("div")
-      .style("width", function(d) { 
-        return x(d) + "px"; 
-      })
-      .text(function(d) 
-            { return d; 
+      .data(newData)
+      .enter().append("div")
+              .style("width", function(d) {
+                  return x(d) + "px";
+              })
+      .text(function(d) {
+                return d;
             });
         
     // remove
@@ -59,5 +60,5 @@ function updateSelection() {
     var x = document.getElementById("graphs").value;
     console.log(x);
     updateGraph(x); //adding string rather than selection and doesnt remove old selections 
-  console.log("here");
-};
+    console.log("here");
+}
