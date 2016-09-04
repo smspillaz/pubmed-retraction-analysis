@@ -3,17 +3,11 @@ var w = 100,
 ;
 
 //Dummy Values
-var continentYear = [5, 5, 10, 15, 20];
-var countryYear = [10, 5, 15, 30, 10];
-var journalYear = [5, 10, 3, 20, 15];
-
-
-// config, add svg
-var canvas = d3.select('body')
-    .append('svg')
-    .attr('width',500)
-    .attr('height',100)
-    .append('g');
+var values = {
+  continentYear: [5, 5, 10, 15, 20],
+  countryYear: [10, 5, 15, 30, 10],
+  journalYear: [5, 10, 3, 20, 15]
+}
 
 
 // d3 update pattern -bind, add, update, remove-
@@ -59,6 +53,6 @@ function updateSelection() {
     console.log('updating ....');
     var x = document.getElementById("graphs").value;
     console.log(x);
-    updateGraph(x); //adding string rather than selection and doesnt remove old selections 
+    updateGraph(values[x]); //adding string rather than selection and doesnt remove old selections 
     console.log("here");
 }
