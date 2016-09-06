@@ -4,7 +4,8 @@
   "description": "Analysis of why papers were retracted from PubMed (CITS3200 project)",
   "main": "index.js",
   "scripts": {
-    "test": "npm run test"
+    "test": "npm run test",
+    "postinstall": "bower install"
   },
   "repository": {
     "type": "git",
