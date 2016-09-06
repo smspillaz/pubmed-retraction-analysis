@@ -8,6 +8,7 @@
     "test": "mocha test",
     "lint": "eslint .",
     "test": "npm run test",
+    "prepublish": "rollup -c && uglifyjs public/js/bundle.js -c -m -o public/js/bundle.min.js",
     "postinstall": "bower install"
   },
   "repository": {
@@ -30,7 +31,10 @@
     "morgan": "^1.6.1",
     "neo4j-driver": "^1.1.0-M01",
     "node-neo4j": "^2.0.3",
-    "serve-favicon": "^2.3.0"
+    "rollup": "^0.34.13",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "serve-favicon": "^2.3.0",
+    "uglify-js": "^2.7.3"
   },
   "devDependencies": {
     "chai": "^3.5.0",
