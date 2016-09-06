@@ -25,9 +25,9 @@
     "express": "^4.13.3",
     "jade": "^1.11.0",
     "morgan": "^1.6.1",
-    "serve-favicon": "^2.3.0",
     "neo4j-driver": "^1.1.0-M01",
-    "node-neo4j": "^2.0.3"
+    "node-neo4j": "^2.0.3",
+    "serve-favicon": "^2.3.0"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
