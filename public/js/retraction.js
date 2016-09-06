@@ -1,4 +1,4 @@
-/* global d3, $ */
+/* global bundle, $ */
 
 /**
  * updateGraph
@@ -10,8 +10,8 @@
 function updateGraph(newData) {
   var svg;
   var rects;
-  var x = d3.scale.linear()
-              .domain([0, d3.max(newData)])
+  var x = bundle.scale.linear()
+              .domain([0, bundle.max(newData)])
               .range([0, 420]);
 
   /* Drop any existing SVG elements */
@@ -21,7 +21,7 @@ function updateGraph(newData) {
                                  element.innerHTML = "";  // eslint-disable-line no-param-reassign
                                });
 
-  svg = d3.select("div.chart")
+  svg = bundle.select("div.chart")
           .append("svg")
           .attr("class", "svgchart")
           .attr("width", 960)
