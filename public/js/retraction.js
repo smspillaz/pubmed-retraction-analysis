@@ -2,19 +2,7 @@ var w = 100,
     h = 100
 ;
 
-$.ajax({
-  url: '/get_bar_chart',
-  json: {
-    name: 'name'
-  },
-  success: function(data, status, xhr) {
-    updateGraph(data.map(function(w) {
-      return w.value;
-    }));
-  }
-});
-
-
+// updates graph
 function updateGraph(newData) {
 
     var x = d3.scale.linear()
@@ -47,13 +35,25 @@ function updateGraph(newData) {
           });
 }
 
-// updates graph 
-function updateSelection() {
-    //make function to remove before every update
-    var x = document.getElementById("graphs").value;
-    updateGraph(values[x]); //adding string rather than selection and doesnt remove old selections 
+function postGraphUpdateRequest(name) {
+    $.ajax({
+        url: '/get_bar_chart',
+        data: {
+            name: name
+        },
+        success: function(data, status, xhr) {
+            updateGraph(data.data.map(function(w) {
+                return w.value;
+            }));
+        }
+    });
+}
+
+
+function updateSelection(name) {
+    postGraphUpdateRequest(document.getElementById("graphs").value);
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-  updateSelection(values.journalYear);
+    updateSelection("journalYear");
 });
