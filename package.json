@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node ./bin/www",
     "test": "mocha test",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "npm run test",
+    "postinstall": "bower install"
   },
   "repository": {
     "type": "git",
