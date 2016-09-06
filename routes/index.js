@@ -19,22 +19,22 @@ router.get('/get_bar_chart', function(req, res) {
         continentYear: [
             ["Australia", 5],
             ["Asia", 5],
-            ["Europe", 10]
-            ["South America", 15]
+            ["Europe", 10],
+            ["South America", 15],
             ["North America", 20]
         ],
         countryYear: [
-            ["Australia" 10],
+            ["Australia", 10],
             ["United States", 5],
-            ["France", 15]
-            ["Canada", 30]
+            ["France", 15],
+            ["Canada", 30],
             ["Russian Federation", 10]
         ],
         journalYear: [
-            ["Science", 5]
+            ["Science", 5],
             ["Nature", 10],
-            ["Pharmacology", 3]
-            ["Radiology", 20]
+            ["Pharmacology", 3],
+            ["Radiology", 20],
             ["Harvard Law Review", 15]
         ]
     };
