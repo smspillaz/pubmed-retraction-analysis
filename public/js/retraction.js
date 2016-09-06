@@ -1,12 +1,5 @@
 /* global d3, $ */
 
-// Dummy Values
-var values = {
-  continentYear: [5, 5, 10, 15, 20],
-  countryYear: [10, 5, 15, 30, 10],
-  journalYear: [5, 10, 3, 20, 15]
-};
-
 /**
  * updateGraph
  *
@@ -47,6 +40,18 @@ function updateGraph(newData) {
     return 30 * i;
   });
 }
+
+$.ajax({
+  url: "/get_bar_chart",
+  json: {
+    name: "name"
+  },
+  success: function onAjaxSuccess(data) {
+    updateGraph(data.map(function onEachDataElement(w) {
+      return w.value;
+    }));
+  }
+});
 
 /**
  * updateSelection
