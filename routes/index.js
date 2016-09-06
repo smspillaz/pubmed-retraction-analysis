@@ -39,13 +39,22 @@ router.get('/get_bar_chart', function(req, res) {
         ]
     };
 
-    /* XXX: Currently reading continentYear, but should
-     * be able to read an arbitrary chart name. */
-    res.json(values.continentYear.map(function(v) {
-        return {
-            name: v[0],
-            value: v[1]
-        };
-    }));
+    if (Object.keys(values).indexOf(req.query.name) === -1) {
+        res.json({
+            "result": "failure",
+            "reason": "Don't know how to get chart " + req.query.name
+        });
+    } else {
+        res.json({
+            "result": "success",
+            "data": values[req.query.name].map(function(v) {
+                return {
+                    name: v[0],
+                    value: v[1]
+                };
+            })
+        });
+    }
 });
+
 module.exports = router;
