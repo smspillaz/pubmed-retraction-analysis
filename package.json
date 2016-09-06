@@ -25,14 +25,14 @@
     "express": "^4.13.3",
     "jade": "^1.11.0",
     "morgan": "^1.6.1",
-    "serve-favicon": "^2.3.0"
+    "serve-favicon": "^2.3.0",
+    "neo4j-driver": "^1.1.0-M01",
+    "node-neo4j": "^2.0.3"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
     "gulp-nodemon": "^2.0.2",
     "gulp-livereload": "^3.8.0",
-    "gulp-plumber": "^1.0.0",
-    "neo4j-driver": "^1.1.0-M01",
-    "node-neo4j": "^2.0.3"
+    "gulp-plumber": "^1.0.0"
   }
 }
