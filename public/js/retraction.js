@@ -41,17 +41,20 @@ function updateGraph(newData) {
   });
 }
 
-$.ajax({
-  url: "/get_bar_chart",
-  json: {
-    name: "name"
-  },
-  success: function onAjaxSuccess(data) {
-    updateGraph(data.map(function onEachDataElement(w) {
-      return w.value;
-    }));
-  }
-});
+function postGraphUpdateRequest(name) {
+  $.ajax({
+    url: "/get_bar_chart",
+    data: {
+      name: name
+    },
+    success: function onXHRSuccess(data) {
+      updateGraph(data.data.map(function onEachPoint(w) {
+        return w.value;
+      }));
+    }
+  });
+}
+
 
 /**
  * updateSelection
@@ -59,10 +62,9 @@ $.ajax({
  * Get the new value from the graph selection and update the graph with it.
  */
 function updateSelection() {
-  var x = document.getElementById("graphs").value;
-  updateGraph(values[x]); // adding string rather than selection and doesnt remove old selections
+  postGraphUpdateRequest(document.getElementById("graphs").value);
 }
 
-document.addEventListener("DOMContentLoaded", function onDOMContentLoad() {
-  updateSelection(values.journalYear);
+document.addEventListener("DOMContentLoaded", function domContentLoaded() {
+  updateSelection("journalYear");
 });
