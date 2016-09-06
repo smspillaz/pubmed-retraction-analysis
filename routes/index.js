@@ -16,17 +16,35 @@ router.get('/', function(req, res) {
 router.get('/get_bar_chart', function(req, res) {
     // Dummy Values
     var values = {
-        continentYear: [5, 5, 10, 15, 20],
-        countryYear: [10, 5, 15, 30, 10],
-        journalYear: [5, 10, 3, 20, 15]
+        continentYear: [
+            ["Australia", 5],
+            ["Asia", 5],
+            ["Europe", 10]
+            ["South America", 15]
+            ["North America", 20]
+        ],
+        countryYear: [
+            ["Australia" 10],
+            ["United States", 5],
+            ["France", 15]
+            ["Canada", 30]
+            ["Russian Federation", 10]
+        ],
+        journalYear: [
+            ["Science", 5]
+            ["Nature", 10],
+            ["Pharmacology", 3]
+            ["Radiology", 20]
+            ["Harvard Law Review", 15]
+        ]
     };
 
     /* XXX: Currently reading continentYear, but should
      * be able to read an arbitrary chart name. */
     res.json(values.continentYear.map(function(v) {
         return {
-            name: "Foo",
-            value: v
+            name: v[0],
+            value: v[1]
         };
     }));
 });
