@@ -10,9 +10,9 @@
 function updateGraph(newData) {
   var svg;
   var rects;
-  var x = bundle.scale.linear()
-              .domain([0, bundle.max(newData)])
-              .range([0, 420]);
+  var x = bundle.scaleLinear()
+                .domain([0, bundle.max(newData)])
+                .range([0, svg.clientWidth]);
 
   /* Drop any existing SVG elements */
   Array.prototype.forEach.call(document.getElementsByClassName("chart"),
@@ -24,20 +24,41 @@ function updateGraph(newData) {
   svg = bundle.select("div.chart")
           .append("svg")
           .attr("class", "svgchart")
-          .attr("width", 960)
-          .attr("height", 500);
+          .attr("width", function computeWidth() {
+              return this.parentNode.clientWidth * 0.80;
+          })
+          .attr("height", function computeHeight() {
+              return this.parentNode.clientHeight * 0.80;
+          })
+          .attr("style", function computeTransform() {
+              var x = this.parentNode.clientWidth * 0.10;
+              var y = this.parentNode.clientHeight * 0.10;
+              return ["transform: translate(", x, "px,", y, "px", ")"].join("");
+          });
 
   rects = svg.selectAll("rect")
              .data(newData)
              .enter()
              .append("rect");
 
-  rects.attr("width", function setWidthFromScale(d) {
-    return x(d);
+  rects.attr("width", function computeBarWidth(d) {
+     var x = bundle.scaleLinear()
+                   .domain([0, bundle.max(newData)])
+                   .range([0, this.parentNode.clientWidth]);
+     return x(d);
   })
-  .attr("height", 20)
-  .attr("y", function setYFromIndex(d, i) {
-    return 30 * i;
+  .attr("height", function computeBarHeight() {
+      var chartHeight = this.parentNode.clientHeight;
+      var barSpacing = 10;
+      return (chartHeight - barSpacing * newData.length) / newData.length;
+  })
+  .attr("y", function computeBarY(d, i) {
+      var chartHeight = this.parentNode.clientHeight;
+      var barSpacing = 10;
+      var barHeight = ((chartHeight - barSpacing * newData.length) /
+                       newData.length);
+
+      return i * barSpacing + i * barHeight;
   });
 }
 
