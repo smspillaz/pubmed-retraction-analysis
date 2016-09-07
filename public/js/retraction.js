@@ -86,6 +86,14 @@ function updateSelection() {
   postGraphUpdateRequest(document.getElementById("graphs").value);
 }
 
-document.addEventListener("DOMContentLoaded", function domContentLoaded() {
-  updateSelection("journalYear");
+document.addEventListener("DOMContentLoaded", function() {
+    $('#chartSelectionDropdown ul li a').click(function(event) {
+        var div = $(this).parent().parent().parent();
+        var button = div.find('button');
+        button.html(this.text + ' <span class="caret"></span>');
+        div.removeClass('open');
+        event.preventDefault();
+        postGraphUpdateRequest($(this).attr("data-selection-id"));
+        return false;
+    });
 });
