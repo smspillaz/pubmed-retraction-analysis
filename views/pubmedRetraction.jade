@@ -1,10 +1,15 @@
 extends layout
 
 block content
-  form
-    select(id='graphs', onchange='updateSelection()')
-      // placeholder text elements
-      option(value='continentYear') Continent / Year
-      option(value='countryYear') Country / Year
-      option(value='journalYear', selected='selected') Journal / Year
-  .chart
+  include header
+  .container
+    .dropdown(id="chartSelectionDropdown")
+      button.btn.btn-default.dropdown-toggle(data-toggle="dropdown" type="button" aria-haspopup="true" aria-expanded="false") Chart to Display 
+        span.caret
+      ul.dropdown-menu
+        li
+          a(href="#" data-selection-id="continentYear") Continent / Year
+          a(href="#" data-selection-id="countryYear") Country / Year
+          a(href="#" data-selection-id="journalYear") Journal / Year
+    .chart-container
+      .chart
