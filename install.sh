@@ -7,4 +7,4 @@ if [[ -z $(which python) ]] ; then
     echo "Cannot continue, python not installed"
 fi
 
-python setup.py
+python install.py
