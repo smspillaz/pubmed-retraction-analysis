@@ -11,6 +11,20 @@ def file_to_element_tree(path):
     return ET.parse(path)
 
 
+def parse_selected_sections(object, *args):
+    """Given a particular ElementTree element, get specified children."""
+    def _text_or_none(element):
+        """Given a particular element, return its text or None."""
+        if element is not None:
+            return element.text
+        else:
+            return None
+
+    return [
+        _text_or_none(object.find(a)) for a in args
+    ]
+
+
 def parse_element_tree(tree):
     """For a given ElementTree :tree:, parse it into JSON."""
     root = tree.getroot()
@@ -26,26 +40,28 @@ def parse_element_tree(tree):
         article_data['Author'] = authorname
 
     for pubDate in root.iter('DateCompleted'):
-        pubYear = pubDate.find('Year').text
-        pubMonth = pubDate.find('Month').text
-        pubDay = pubDate.find('Day').text
-        pubDateObject = date(int(pubYear), int(pubMonth), int(pubDay))
-        pubDate = pubDateObject.isoformat()
-        article_data['pubDate'] = pubDate
+        sections = parse_selected_sections(pubDate, 'Year', 'Month', 'Day')
+        if all(sections):
+            article_data['pubDate'] = date(*[
+                int(a) for a in sections
+            ]).isoformat()
 
     for reviseDate in root.iter('DateRevised'):
-        reviseYear = reviseDate.find('Year').text
-        reviseMonth = reviseDate.find('Month').text
-        reviseDay = reviseDate.find('Day').text
-        reviseDateObject = date(int(reviseYear), int(reviseMonth), int(reviseDay))
-        reviseDate = reviseDateObject.isoformat()
-        article_data['reviseDate'] = reviseDate
+        sections = parse_selected_sections(reviseDate, 'Year', 'Month', 'Day')
+        if all(sections):
+            article_data['reviseDate'] = date(*[
+                int(a) for a in sections
+            ]).isoformat()
 
     for journal in root.iter('Journal'):
-        article_data['ISSN'] = journal.find('ISSN').text
+        sections = parse_selected_sections(journal, 'ISSN')
+        if all(sections):
+            article_data['ISSN'] = sections[0]
 
     for journalinfo in root.iter('MedlineJournalInfo'):
-        article_data['country'] = journalinfo.find('Country').text
+        sections = parse_selected_sections(journalinfo, 'Country')
+        if all(sections):
+            article_data['country'] = sections[0]
 
     return article_data
 
