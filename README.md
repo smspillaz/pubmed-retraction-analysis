@@ -18,8 +18,6 @@ from `pip` systemwide:
    $ sudo easy_install pip
    $ sudo pip install virtualenv
 
-Runni
-
 Once you're done with that `npm install` will install all the dependencies.
 
 ## Database
