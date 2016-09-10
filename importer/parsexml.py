@@ -9,12 +9,12 @@
 This file will contain all the relevant fields for each retraction.
 """
 
-import os
-import xml.etree.ElementTree as ET
-import json
-import sys
 import argparse
 from datetime import date
+import os
+import sys
+import json
+import xml.etree.ElementTree as ET
 
 
 def file_to_element_tree(path):
