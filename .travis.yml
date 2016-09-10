@@ -7,5 +7,5 @@ install:
  - python install.py
  - source python-virtualenv/bin/activate
 script:
- - python setup.py polysquarelint --exclusions=*/venv/*,*/node_modules/*,*/dist/*,*/public/components/*
+ - python setup.py polysquarelint --exclusions=*/venv/*,*/node_modules/*,*/dist/*,*/public/components/* --suppress=codes=I100,LongDescription
  - python setup.py green
