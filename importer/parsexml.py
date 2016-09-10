@@ -1,3 +1,14 @@
+# /importer/parsexml.py
+#
+# Given a series of XML files in a directory, produce a single JSON file
+# indicating all of the relevant fields for each retraction.
+#
+# See /LICENCE.md for Copyright information
+"""Given a series of XML files in a directory, produce a JSON file.
+
+This file will contain all the relevant fields for each retraction.
+"""
+
 import os
 import xml.etree.ElementTree as ET
 import json
