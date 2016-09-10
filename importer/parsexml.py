@@ -30,38 +30,38 @@ def parse_element_tree(tree):
     root = tree.getroot()
     article_data = {}
 
-    for medinfo in root.iter('MedlineCitation'):
-        article_data['pmid'] = medinfo.find('PMID').text
+    for medinfo in root.iter("MedlineCitation"):
+        article_data["pmid"] = medinfo.find("PMID").text
 
-    for author in root.iter('Author'):
-        lastname = author.find('LastName').text
-        firstname = author.find('ForeName').text
+    for author in root.iter("Author"):
+        lastname = author.find("LastName").text
+        firstname = author.find("ForeName").text
         authorname = firstname + " " + lastname
-        article_data['Author'] = authorname
+        article_data["Author"] = authorname
 
-    for pubDate in root.iter('DateCompleted'):
-        sections = parse_selected_sections(pubDate, 'Year', 'Month', 'Day')
+    for pubDate in root.iter("DateCompleted"):
+        sections = parse_selected_sections(pubDate, "Year", "Month", "Day")
         if all(sections):
-            article_data['pubDate'] = date(*[
+            article_data["pubDate"] = date(*[
                 int(a) for a in sections
             ]).isoformat()
 
-    for reviseDate in root.iter('DateRevised'):
-        sections = parse_selected_sections(reviseDate, 'Year', 'Month', 'Day')
+    for reviseDate in root.iter("DateRevised"):
+        sections = parse_selected_sections(reviseDate, "Year", "Month", "Day")
         if all(sections):
-            article_data['reviseDate'] = date(*[
+            article_data["reviseDate"] = date(*[
                 int(a) for a in sections
             ]).isoformat()
 
-    for journal in root.iter('Journal'):
-        sections = parse_selected_sections(journal, 'ISSN')
+    for journal in root.iter("Journal"):
+        sections = parse_selected_sections(journal, "ISSN")
         if all(sections):
-            article_data['ISSN'] = sections[0]
+            article_data["ISSN"] = sections[0]
 
-    for journalinfo in root.iter('MedlineJournalInfo'):
-        sections = parse_selected_sections(journalinfo, 'Country')
+    for journalinfo in root.iter("MedlineJournalInfo"):
+        sections = parse_selected_sections(journalinfo, "Country")
         if all(sections):
-            article_data['country'] = sections[0]
+            article_data["country"] = sections[0]
 
     return article_data
 
