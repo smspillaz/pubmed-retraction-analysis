@@ -25,7 +25,7 @@ describe("Booting the server", function bootingServer() {
   it("should fail if two servers are on the same port", function failTwoServers(done) {
     testUtils.startServerWithAutomaticPort(function onStarted(server, url) {
       var port = URL.parse(url).port;
-      which("node", function(err, resolved) {
+      which("node", function onFoundNode(err, resolved) {
         if (err) {
           throw new Error("Can't find node in path");
         } else {
