@@ -10,13 +10,13 @@ var routes = require("./routes/index");
 var users = require("./routes/user");
 var dbUtils = require("./db/utils");
 
-dbUtils.validateEnvironment("node bin/wwww");
-
 var app = express();
 
 var env = process.env.NODE_ENV || "development";
 app.locals.ENV = env;
 app.locals.ENV_DEVELOPMENT = env == "development";
+
+dbUtils.validateEnvironment("node bin/wwww");
 
 // view engine setup
 
