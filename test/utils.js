@@ -8,9 +8,9 @@ function startServer(port, done) {
 }
 
 function startServerWithAutomaticPort(done) {
-  portfinder.getPort(function (err, port) {
+  portfinder.getPort(function onPortReady(err, port) {
     try {
-      var server = startServer(port, function () {
+      var server = startServer(port, function onServerReady() {
         url = "http://localhost:" + port;
         done(server, url);
       });
@@ -22,14 +22,14 @@ function startServerWithAutomaticPort(done) {
 
 function withOverriddenEnvironment(environment, callback, done) {
   var backup = JSON.parse(JSON.stringify(process.env));
-  Object.keys(environment).forEach(function (key) {
+  Object.keys(environment).forEach(function assignKey(key) {
     process.env[key] = environment[key];
   });
 
     /* If done is passed, do this asynchronously. That means restoring
      * the environment once the callback has indicated that it is done */
   if (done) {
-    callback(function () {
+    callback(function onCallbackDone() {
       process.env = backup;
       done.apply(this, Array.prototype.slice.call(arguments));
     });
@@ -43,7 +43,7 @@ function withOverriddenEnvironment(environment, callback, done) {
 }
 
 function invokeProcessForReturnCode(command, options, done) {
-  exec(command, options, function (error) {
+  exec(command, options, function onProcessDone(error) {
     done(error.code);
   });
 }
