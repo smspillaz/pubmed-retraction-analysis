@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var neo4j = require("node-neo4j");
+var Neo4j = require("node-neo4j");
 var utils = require("./utils");
 
 var stdin = process.openStdin();
@@ -10,7 +10,7 @@ console.log("=> Connecting to " + process.env.DATABASE_URL);
 
 (function runAdminInterface() {
   var connectionString = utils.createConnectionString();
-  var db = new neo4j(connectionString);
+  var db = new Neo4j(connectionString);
   stdin.addListener("data", function (d) {
     console.log("=> Running: " + d.toString().trim());
     db.cypherQuery(d.toString().trim(), function (err, result) {
