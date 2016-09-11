@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./bin/www",
-    "test": "mocha test"
+    "test": "mocha test",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,8 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "deepcopy": "^0.6.3",
+    "eslint": "^3.5.0",
+    "eslint-config-airbnb": "^11.0.0",
     "gulp": "^3.9.0",
     "gulp-livereload": "^3.8.0",
     "gulp-nodemon": "^2.0.2",

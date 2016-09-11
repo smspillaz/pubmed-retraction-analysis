@@ -1,0 +1,6 @@
+/venv/*
+/build/*
+/dist/*
+/public/components/*
+/python-virtualenv/*
+/public/js/bundle*
