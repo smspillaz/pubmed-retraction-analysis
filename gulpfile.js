@@ -4,14 +4,14 @@ var plumber = require("gulp-plumber");
 var livereload = require("gulp-livereload");
 
 
-gulp.task("develop", function () {
+gulp.task("develop", function developHandler() {
   livereload.listen();
   nodemon({
     script: "bin/www",
     ext: "js jade coffee",
     stdout: false
-  }).on("readable", function () {
-    this.stdout.on("data", function (chunk) {
+  }).on("readable", function onNodemonReadable() {
+    this.stdout.on("data", function onStdoutData(chunk) {
       if (/^Express server listening on port/.test(chunk)) {
         livereload.changed(__dirname);
       }
