@@ -39,7 +39,6 @@ pies2overrides==2.6.7
 polysquare-generic-file-linter==0.1.18
 polysquare-setuptools-lint==0.0.41
 prospector==0.12.2
-pubmed-retraction-analysis==0.0.1
 pyaml==16.9.0
 pycodestyle==2.0.0
 pydocstyle==1.0.0
