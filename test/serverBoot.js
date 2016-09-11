@@ -11,10 +11,10 @@ describe("Booting the server", function bootingServer() {
   it("should fail if DATABASE_URL is not set", function failDBUrl(done) {
     testUtils.withOverriddenEnvironment({
       DATABASE_URL: undefined
-    }, function inEnv(done) {
+    }, function inEnv(doneEnv) {
       testUtils.startServerWithAutomaticPort(function onStart(server, port, err) {
         expect(err).to.be.an("error");
-        done();
+        doneEnv();
       });
     }, function onExit() {
       done();
