@@ -11,15 +11,15 @@ console.log("=> Connecting to " + process.env.DATABASE_URL);
 var db = new neo4j(connectionString);
 var stdin = process.openStdin();
 
-stdin.addListener("data", function(d) {
-    console.log("=> Running: " + d.toString().trim());
-    db.cypherQuery(d.toString().trim(), function(err, result) {
-        if (err) {
-            console.log(err);
-            return;
-        }
+stdin.addListener("data", function (d) {
+  console.log("=> Running: " + d.toString().trim());
+  db.cypherQuery(d.toString().trim(), function (err, result) {
+    if (err) {
+      console.log(err);
+      return;
+    }
 
-        console.log(result.data);
-        console.log(result.columns);
-    });
+    console.log(result.data);
+    console.log(result.columns);
+  });
 });
