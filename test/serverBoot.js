@@ -1,8 +1,6 @@
 var expect = require("chai").expect;
-var request = require("supertest");
 var dbUtils = require("../db/utils");
 var testUtils = require("./utils");
-var exec = require("child_process").exec;
 var URL = require("url");
 
 
