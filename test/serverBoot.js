@@ -22,7 +22,7 @@ describe("Booting the server", function bootingServer() {
   });
 
   it("should fail if two servers are on the same port", function failTwoServers(done) {
-    testUtils.startServerWithAutomaticPort(function onStarted(server, url, err) {
+    testUtils.startServerWithAutomaticPort(function onStarted(server, url) {
       var port = URL.parse(url).port;
       testUtils.invokeProcessForReturnCode("node bin/www", {
         env: {
