@@ -1,3 +1,5 @@
+/* global d3, $ */
+
 // Dummy Values
 var values = {
   continentYear: [5, 5, 10, 15, 20],
