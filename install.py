@@ -71,7 +71,8 @@ def main(argv):
     if not os.path.isdir("python-virtualenv"):
         add_args = (["--python=" + os.environ["PYTHON"]]
                     if os.environ.get("PYTHON", None) else [])
-        run_task("Creating virtual environment", "virtualenv", "python-virtualenv")
+        run_task("Creating virtual environment",
+                 *(add_args + ["virtualenv", "python-virtualenv"]))
 
     run_task("Installing python dependencies",
              os.path.join("python-virtualenv", "bin", "pip"),
