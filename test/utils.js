@@ -2,7 +2,7 @@ var exec = require("child_process").exec;
 var portfinder = require("portfinder");
 
 function startServer(port, done) {
-  var app = require("../app");
+  var app = require("../app");  // eslint-disable-line global-require
   app.set("port", port);
   return app.listen(app.get("port"), done);
 }
