@@ -9,7 +9,7 @@ function validateEnvironment(prog) {
     if (process.env[variableName] === "undefined") {
       throw new Error(variableName + " must be set in the environment before " +
                       "using this tool. For instance, " + variableName +
-                      "=.... " + String(prog ? prog : ""));
+                      "=.... " + String(prog || ""));
     }
   });
 
