@@ -4,23 +4,25 @@ var Neo4j = require("node-neo4j");
 var utils = require("./utils");
 
 var stdin = process.openStdin();
+var stdout = process.stdout;
+var stderr = process.stderr;
 
 utils.validateEnvironment("node db-admin.js");
-console.log("=> Connecting to " + process.env.DATABASE_URL);
+stderr.write("=> Connecting to " + process.env.DATABASE_URL + "\n");
 
 (function runAdminInterface() {
   var connectionString = utils.createConnectionString();
   var db = new Neo4j(connectionString);
-  stdin.addListener("data", function (d) {
-    console.log("=> Running: " + d.toString().trim());
-    db.cypherQuery(d.toString().trim(), function (err, result) {
+  stdin.addListener("data", function handleStdinData(d) {
+    stderr.write("=> Running: " + d.toString().trim() + "\n");
+    db.cypherQuery(d.toString().trim(), function handleQueryRes(err, result) {
       if (err) {
-        console.log(err);
+        stderr.write(String(err) + "\n");
         return;
       }
 
-      console.log(result.data);
-      console.log(result.columns);
+      stdout.write(JSON.stringify(result.data, null, 2) + "\n");
+      stdout.write(JSON.stringify(result.columns, null, 2) + "\n");
     });
   });
 }());
