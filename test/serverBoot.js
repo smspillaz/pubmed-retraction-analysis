@@ -7,40 +7,40 @@ var URL = require("url");
 
 
 dbUtils.validateEnvironment("mocha test");
-describe("Booting the server", function () {
+describe("Booting the server", function bootingServer() {
   var url = null;
   var server = null;
 
-  it("should fail if DATABASE_URL is not set", function (done) {
+  it("should fail if DATABASE_URL is not set", function failDBUrl(done) {
     testUtils.withOverriddenEnvironment({
       DATABASE_URL: undefined
-    }, function (done) {
-      testUtils.startServerWithAutomaticPort(function (server, port, err) {
+    }, function inEnv(done) {
+      testUtils.startServerWithAutomaticPort(function onStart(server, port, err) {
         expect(err).to.be.an("error");
         done();
       });
-    }, function () {
+    }, function onExit() {
       done();
     });
   });
 
-  it("should fail if two servers are on the same port", function (done) {
-    testUtils.startServerWithAutomaticPort(function (server, url, err) {
+  it("should fail if two servers are on the same port", function failTwoServers(done) {
+    testUtils.startServerWithAutomaticPort(function onStarted(server, url, err) {
       var port = URL.parse(url).port;
       testUtils.invokeProcessForReturnCode("node bin/www", {
         env: {
           PORT: String(port)
         }
       },
-            function (code) {
+            function onProcDone(code) {
               expect(code).to.equal(1);
               done();
             });
     });
   });
 
-  it("should succeed if DATABASE_URL is set", function (done) {
-    testUtils.startServerWithAutomaticPort(function (server, url, err) {
+  it("should succeed if DATABASE_URL is set", function succeedEnv(done) {
+    testUtils.startServerWithAutomaticPort(function onStarted(server, url, err) {
       expect(err).to.be.undefined;
       expect(server).to.be.defined;
       expect(URL.parse(url).port).to.be.at.least(1000);
