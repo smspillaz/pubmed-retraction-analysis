@@ -13,11 +13,12 @@ function updateGraph(newData) {
               .domain([0, d3.max(newData)])
               .range([0, 420]);
 
-    /* Drop any existing SVG elements */
-  Array.prototype.forEach.call(document.getElementsByClassName("chart"), function (element) {
-        /* Drop everything inside this chart */
-    element.innerHTML = "";
-  });
+  /* Drop any existing SVG elements */
+  Array.prototype.forEach.call(document.getElementsByClassName("chart"),
+                               function (element) {
+                                 /* Drop everything inside this chart */
+                                 element.innerHTML = "";
+                               });
 
   var svg = d3.select("div.chart")
                 .append("svg")
