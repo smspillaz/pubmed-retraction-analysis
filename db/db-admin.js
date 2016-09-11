@@ -1,29 +1,11 @@
 #!/usr/bin/env node
 
-var neo4j = require('node-neo4j');
-var requiredVariables = [
-    "DATABASE_URL",
-    "NEO_USER",
-    "NEO_PASS"
-];
+var neo4j = require("node-neo4j");
+var utils = require("./utils");
 
-requiredVariables.forEach(function(variableName) {
-    if (!process.env[variableName]) {
-        console.error(variableName + " must be set in the environment before " +
-                      "using this tool. For instance, " + variableName +
-                      "=.... node db-admin.js");
-        process.exit(0);
-    }
-});
+utils.validateEnvironment("node db-admin.js");
 
-var connectionString = [
-    'http://',
-    process.env.NEO_USER,
-    ':',
-    process.env.NEO_PASS,
-    '@',
-    process.env.DATABASE_URL
-].join("");
+var connectionString = utils.createConnectionString();
 console.log("=> Connecting to " + process.env.DATABASE_URL);
 
 var db = new neo4j(connectionString);

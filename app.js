@@ -9,6 +9,9 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/user');
+var dbUtils = require('./db/utils');
+
+dbUtils.validateEnvironment("node bin/wwww");
 
 var app = express();
 
