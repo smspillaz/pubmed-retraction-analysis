@@ -36,10 +36,10 @@ function updateGraph(newData) {
   rects.attr("width", function setWidthFromScale(d) {
     return x(d);
   })
-          .attr("height", 20)
-          .attr("y", function setYFromIndex(d, i) {
-            return 30 * i;
-          });
+  .attr("height", 20)
+  .attr("y", function setYFromIndex(d, i) {
+    return 30 * i;
+  });
 }
 
 // updates graph
