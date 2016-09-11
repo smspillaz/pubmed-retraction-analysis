@@ -1,6 +1,7 @@
 PyYAML==3.12
 Unidecode==0.04.19
 Whoosh==2.6.0
+argparse==1.4.0
 astroid==1.4.8
 backports.functools-lru-cache==1.2.1
 colorama==0.3.7
