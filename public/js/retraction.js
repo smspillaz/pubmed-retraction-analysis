@@ -9,6 +9,8 @@ var values = {
 
 
 function updateGraph(newData) {
+  var svg;
+  var rects;
   var x = d3.scale.linear()
               .domain([0, d3.max(newData)])
               .range([0, 420]);
@@ -20,16 +22,16 @@ function updateGraph(newData) {
                                  element.innerHTML = "";  // eslint-disable-line no-param-reassign
                                });
 
-  var svg = d3.select("div.chart")
-                .append("svg")
-                .attr("class", "svgchart")
-                .attr("width", 960)
-                .attr("height", 500);
+  svg = d3.select("div.chart")
+          .append("svg")
+          .attr("class", "svgchart")
+          .attr("width", 960)
+          .attr("height", 500);
 
-  var rects = svg.selectAll("rect")
-       .data(newData)
-       .enter()
-       .append("rect");
+  rects = svg.selectAll("rect")
+             .data(newData)
+             .enter()
+             .append("rect");
 
   rects.attr("width", function setWidthFromScale(d) {
     return x(d);
