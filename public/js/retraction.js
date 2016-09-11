@@ -15,7 +15,7 @@ function updateGraph(newData) {
 
   /* Drop any existing SVG elements */
   Array.prototype.forEach.call(document.getElementsByClassName("chart"),
-                               function (element) {
+                               function dropInnerHTMLOf(element) {
                                  /* Drop everything inside this chart */
                                  element.innerHTML = "";
                                });
@@ -31,11 +31,11 @@ function updateGraph(newData) {
        .enter()
        .append("rect");
 
-  rects.attr("width", function (d) {
+  rects.attr("width", function setWidthFromScale(d) {
     return x(d);
   })
           .attr("height", 20)
-          .attr("y", function (d, i) {
+          .attr("y", function setYFromIndex(d, i) {
             return 30 * i;
           });
 }
@@ -47,6 +47,6 @@ function updateSelection() {
   updateGraph(values[x]); // adding string rather than selection and doesnt remove old selections
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function onDOMContentLoad() {
   updateSelection(values.journalYear);
 });
