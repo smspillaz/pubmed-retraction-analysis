@@ -9,8 +9,10 @@ function startServer(port, done) {
 
 function startServerWithAutomaticPort(done) {
   portfinder.getPort(function onPortReady(err, port) {
+    var server;
+
     try {
-      var server = startServer(port, function onServerReady() {
+      server = startServer(port, function onServerReady() {
         url = "http://localhost:" + port;
         done(server, url);
       });
