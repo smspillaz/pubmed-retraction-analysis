@@ -38,8 +38,8 @@ describe("Booting the server", function bootingServer() {
 
   it("should succeed if DATABASE_URL is set", function succeedEnv(done) {
     testUtils.startServerWithAutomaticPort(function onStarted(server, url, err) {
-      expect(err).to.be.undefined;
-      expect(server).to.be.defined;
+      expect(err).to.be.undefined; // eslint-disable-line no-unused-expressions
+      expect(server).to.be.defined; // eslint-disable-line no-unused-expressions
       expect(URL.parse(url).port).to.be.at.least(1000);
       done();
     });
