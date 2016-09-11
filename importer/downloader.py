@@ -19,12 +19,18 @@ def attemptDownload(downloadurl, retries=0):
         retries += 1
         sys.stderr.write("Connection error.. retrying " + str(retries))
         return attemptDownload(downloadurl, retries)
-                
+
 def main(argv=None):
     """Entry point for downloader script."""
     argv = argv or sys.argv[1:]
-        
-    searchurl = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=Retracted+Publication&retmax=6000&retmode=json"
+
+    counturl = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=Retracted+Publication&rettype=count&retmode=json"
+    str_response = attemptDownload(counturl).decode('utf-8')
+    data = json.loads(str_response)    
+    articleCount = data["esearchresult"]["count"]
+
+    searchurl = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=Retracted+Publication&retmax=" + articleCount + "&retmode=json"
+
     fetchurl = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?&db=pubmed&rettype=xml&id="
     request = urllib.request.Request(searchurl)
         
