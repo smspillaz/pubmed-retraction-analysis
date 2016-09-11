@@ -5,13 +5,15 @@ python:
  - 2.7
  - 3.5
 install:
- - wget https://nodejs.org/download/release/v6.5.0/node-v6.5.0-linux-x86.tar.xz
- - tar -xJvf node-v6.5.0-linux-x86.tar.xz
- - export PATH="${PWD}/node-v6.5.0-linux-x86/bin:$PATH"
- - mkdir -p python-virtualenv/bin
- - ln -s $(which python) python-virtualenv/bin/python
- - ln -s $(which pip) python-virtualenv/bin/pip
- - python install.py
+ - wget http://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.9.1.tar.gz
+ - tar xzf virtualenv-1.9.1.tar.gz
+ - python virtualenv-1.9.1/virtualenv.py bootstrap-virtualenv
+ - bootstrap-virtualenv/bin/pip install virtualenv
+ - source bootstrap-virtualenv/bin/activate
+ - PYTHON=/usr/bin/python3 python install.py
+ - deactivate
+ - source python-virtualenv/bin/activate
+ - rm -rf bootstrap-virtualenv
 script:
  - export PATH="${PWD}/node-v6.5.0-linux-x86/bin:$PATH"
  - which npm
