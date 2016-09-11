@@ -4,6 +4,7 @@ var expect = require("chai").expect;
 var dbUtils = require("../db/utils");
 var testUtils = require("./utils");
 var URL = require("url");
+var which = require("which");
 
 
 dbUtils.validateEnvironment("mocha test");
@@ -24,14 +25,20 @@ describe("Booting the server", function bootingServer() {
   it("should fail if two servers are on the same port", function failTwoServers(done) {
     testUtils.startServerWithAutomaticPort(function onStarted(server, url) {
       var port = URL.parse(url).port;
-      testUtils.invokeProcessForReturnCode("node bin/www", {
-        env: {
-          PORT: String(port)
+      which("node", function(err, resolved) {
+        if (err) {
+          throw new Error("Can't find node in path");
+        } else {
+          testUtils.invokeProcessForReturnCode([resolved, "bin/www"].join(" "), {
+            env: {
+              PORT: String(port)
+            }
+          },
+          function onProcDone(code) {
+            expect(code).to.equal(1);
+            done();
+          });
         }
-      },
-      function onProcDone(code) {
-        expect(code).to.equal(1);
-        done();
       });
     });
   });
