@@ -17,7 +17,7 @@ function updateGraph(newData) {
   Array.prototype.forEach.call(document.getElementsByClassName("chart"),
                                function dropInnerHTMLOf(element) {
                                  /* Drop everything inside this chart */
-                                 element.innerHTML = "";
+                                 element.innerHTML = "";  // eslint-disable-line no-param-reassign
                                });
 
   var svg = d3.select("div.chart")
