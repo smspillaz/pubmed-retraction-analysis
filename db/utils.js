@@ -1,4 +1,4 @@
-function validateEnvironment (prog) {
+function validateEnvironment(prog) {
   var requiredVariables = [
     "DATABASE_URL",
     "NEO_USER",
@@ -17,7 +17,7 @@ function validateEnvironment (prog) {
   return true;
 }
 
-function createConnectionString () {
+function createConnectionString() {
   return [
     "http://",
     process.env.NEO_USER,
