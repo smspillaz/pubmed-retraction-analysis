@@ -40,7 +40,7 @@ function withOverriddenEnvironment(environment, callback, done) {
     try {
       callback();
     } finally {
-      proces.env = backup;
+      process.env = backup;
     }
   }
 }
