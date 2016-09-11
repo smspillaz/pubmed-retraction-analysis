@@ -1,7 +1,3 @@
-var w = 100,
-  h = 100
-;
-
 // Dummy Values
 var values = {
   continentYear: [5, 5, 10, 15, 20],
