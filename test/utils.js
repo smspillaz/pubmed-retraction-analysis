@@ -10,6 +10,7 @@ function startServer(port, done) {
 function startServerWithAutomaticPort(done) {
   portfinder.getPort(function onPortReady(err, port) {
     var server;
+    var url;
 
     try {
       server = startServer(port, function onServerReady() {
