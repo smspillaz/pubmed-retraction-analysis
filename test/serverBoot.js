@@ -29,10 +29,10 @@ describe("Booting the server", function bootingServer() {
           PORT: String(port)
         }
       },
-            function onProcDone(code) {
-              expect(code).to.equal(1);
-              done();
-            });
+      function onProcDone(code) {
+        expect(code).to.equal(1);
+        done();
+      });
     });
   });
 
