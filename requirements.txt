@@ -9,6 +9,8 @@ configparser==3.5.0
 docutils==0.12
 dodgy==0.1.9
 enum34==1.1.6
+extras==1.0.0
+fixtures==3.0.0
 flake8==2.3.0
 flake8-blind-except==0.1.1
 flake8-docstrings==1.0.2
@@ -22,6 +24,7 @@ ipaddress==1.0.17
 isort==4.2.5
 jobstamps==0.0.19
 lazy-object-proxy==1.2.2
+linecache2==1.0.0
 logilab-common==0.63.0
 mccabe==0.5.2
 mock==2.0.0
@@ -37,6 +40,7 @@ polysquare-generic-file-linter==0.1.18
 polysquare-setuptools-lint==0.0.41
 prospector==0.12.2
 pubmed-retraction-analysis==0.0.1
+pyaml==16.9.0
 pycodestyle==2.0.0
 pydocstyle==1.0.0
 pyflakes==1.3.0
@@ -47,12 +51,16 @@ pylint-django==0.7.2
 pylint-flask==0.5
 pylint-plugin-utils==0.2.4
 pyroma==1.8.3
+python-mimeparse==1.5.2
 python-termstyle==0.1.10
 requirements-detector==0.5.2
 setoptconf==0.2.0
 setuptools-green==0.0.16
 shutilwhich==1.1.0
 six==1.10.0
+testtools==2.2.0
+traceback2==1.4.0
+unittest2==1.1.0
 vulture==0.10
 wrapt==1.10.8
 wsgiref==0.1.2
