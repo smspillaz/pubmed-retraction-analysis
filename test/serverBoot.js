@@ -8,9 +8,6 @@ var URL = require("url");
 
 dbUtils.validateEnvironment("mocha test");
 describe("Booting the server", function bootingServer() {
-  var url = null;
-  var server = null;
-
   it("should fail if DATABASE_URL is not set", function failDBUrl(done) {
     testUtils.withOverriddenEnvironment({
       DATABASE_URL: undefined
