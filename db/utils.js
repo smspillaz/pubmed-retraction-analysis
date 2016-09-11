@@ -5,7 +5,7 @@ function validateEnvironment(prog) {
     "NEO_PASS"
   ];
 
-  requiredVariables.forEach(function (variableName) {
+  requiredVariables.forEach(function onEachReqVar(variableName) {
     if (process.env[variableName] === "undefined") {
       var msg = variableName + " must be set in the environment before " +
                         "using this tool. For instance, " + variableName +
