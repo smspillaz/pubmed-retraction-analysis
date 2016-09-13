@@ -10,9 +10,7 @@
 function updateGraph(newData) {
   var svg;
   var rects;
-  var x = bundle.scaleLinear()
-                .domain([0, bundle.max(newData)])
-                .range([0, svg.clientWidth]);
+  var x;
 
   /* Drop any existing SVG elements */
   Array.prototype.forEach.call(document.getElementsByClassName("chart"),
@@ -35,6 +33,10 @@ function updateGraph(newData) {
               var y = this.parentNode.clientHeight * 0.10;
               return ["transform: translate(", x, "px,", y, "px", ")"].join("");
           });
+
+  x = bundle.scaleLinear()
+            .domain([0, bundle.max(newData)])
+            .range([0, svg.clientWidth]);
 
   rects = svg.selectAll("rect")
              .data(newData)
