@@ -1,0 +1,6 @@
+{
+    "extends": ["eslint-config-airbnb/legacy"],
+    "rules": {
+        "quotes": [1, "double"]
+    }
+}

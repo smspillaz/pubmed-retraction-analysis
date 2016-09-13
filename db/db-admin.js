@@ -1,43 +1,28 @@
 #!/usr/bin/env node
 
-var neo4j = require('node-neo4j');
-var requiredVariables = [
-    "DATABASE_URL",
-    "NEO_USER",
-    "NEO_PASS"
-];
+var Neo4j = require("node-neo4j");
+var utils = require("./utils");
 
-requiredVariables.forEach(function(variableName) {
-    if (!process.env[variableName]) {
-        console.error(variableName + " must be set in the environment before " +
-                      "using this tool. For instance, " + variableName +
-                      "=.... node db-admin.js");
-        process.exit(0);
-    }
-});
-
-var connectionString = [
-    'http://',
-    process.env.NEO_USER,
-    ':',
-    process.env.NEO_PASS,
-    '@',
-    process.env.DATABASE_URL
-].join("");
-console.log("=> Connecting to " + process.env.DATABASE_URL);
-
-var db = new neo4j(connectionString);
 var stdin = process.openStdin();
+var stdout = process.stdout;
+var stderr = process.stderr;
 
-stdin.addListener("data", function(d) {
-    console.log("=> Running: " + d.toString().trim());
-    db.cypherQuery(d.toString().trim(), function(err, result) {
-        if (err) {
-            console.log(err);
-            return;
-        }
+utils.validateEnvironment("node db-admin.js");
+stderr.write("=> Connecting to " + process.env.DATABASE_URL + "\n");
 
-        console.log(result.data);
-        console.log(result.columns);
+(function runAdminInterface() {
+  var connectionString = utils.createConnectionString();
+  var db = new Neo4j(connectionString);
+  stdin.addListener("data", function handleStdinData(d) {
+    stderr.write("=> Running: " + d.toString().trim() + "\n");
+    db.cypherQuery(d.toString().trim(), function handleQueryRes(err, result) {
+      if (err) {
+        stderr.write(String(err) + "\n");
+        return;
+      }
+
+      stdout.write(JSON.stringify(result.data, null, 2) + "\n");
+      stdout.write(JSON.stringify(result.columns, null, 2) + "\n");
     });
-});
+  });
+}());

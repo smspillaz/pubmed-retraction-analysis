@@ -1,0 +1,7 @@
+/venv/*
+/build/*
+/dist/*
+/public/components/*
+/python-virtualenv/*
+/public/js/bundle*
+/node-v6.5.0-linux-x64/*

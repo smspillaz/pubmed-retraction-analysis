@@ -4,7 +4,9 @@
   "description": "Analysis of why papers were retracted from PubMed (CITS3200 project)",
   "main": "index.js",
   "scripts": {
-    "test": "npm run test"
+    "start": "node ./bin/www",
+    "test": "mocha test",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -17,9 +19,6 @@
   },
   "homepage": "https://github.com/smspillaz/pubmed-retraction-analysis#readme",
   "private": true,
-  "scripts": {
-    "start": "node ./bin/www"
-  },
   "dependencies": {
     "express": "^4.13.3",
     "serve-favicon": "^2.3.0",
@@ -29,11 +28,19 @@
     "jade": "^1.11.0"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
+    "deepcopy": "^0.6.3",
+    "eslint": "^3.5.0",
+    "eslint-config-airbnb": "^11.0.0",
     "gulp": "^3.9.0",
-    "gulp-nodemon": "^2.0.2",
     "gulp-livereload": "^3.8.0",
+    "gulp-nodemon": "^2.0.2",
     "gulp-plumber": "^1.0.0",
+    "mocha": "^3.0.2",
     "neo4j-driver": "^1.1.0-M01",
-    "node-neo4j": "^2.0.3"
+    "node-neo4j": "^2.0.3",
+    "portfinder": "^1.0.7",
+    "supertest": "^2.0.0",
+    "which": "^1.2.11"
   }
 }
