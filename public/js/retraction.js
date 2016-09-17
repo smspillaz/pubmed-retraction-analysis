@@ -22,15 +22,15 @@ function updateGraph(newData) {
           .append("svg")
           .attr("class", "svgchart")
           .attr("width", function computeWidth() {
-              return this.parentNode.clientWidth * 0.80;
+            return this.parentNode.clientWidth * 0.80;
           })
           .attr("height", function computeHeight() {
-              return this.parentNode.clientHeight * 0.80;
+            return this.parentNode.clientHeight * 0.80;
           })
           .attr("style", function computeTransform() {
-              var x = this.parentNode.clientWidth * 0.10;
-              var y = this.parentNode.clientHeight * 0.10;
-              return ["transform: translate(", x, "px,", y, "px", ")"].join("");
+            var x = this.parentNode.clientWidth * 0.10;
+            var y = this.parentNode.clientHeight * 0.10;
+            return ["transform: translate(", x, "px,", y, "px", ")"].join("");
           });
 
   rects = svg.selectAll("rect")
@@ -39,23 +39,23 @@ function updateGraph(newData) {
              .append("rect");
 
   rects.attr("width", function computeBarWidth(d) {
-     var x = bundle.scaleLinear()
-                   .domain([0, bundle.max(newData)])
-                   .range([0, this.parentNode.clientWidth]);
-     return x(d);
+    var x = bundle.scaleLinear()
+                 .domain([0, bundle.max(newData)])
+                 .range([0, this.parentNode.clientWidth]);
+    return x(d);
   })
   .attr("height", function computeBarHeight() {
-      var chartHeight = this.parentNode.clientHeight;
-      var barSpacing = 10;
-      return (chartHeight - barSpacing * newData.length) / newData.length;
+    var chartHeight = this.parentNode.clientHeight;
+    var barSpacing = 10;
+    return (chartHeight - barSpacing * newData.length) / newData.length;
   })
   .attr("y", function computeBarY(d, i) {
-      var chartHeight = this.parentNode.clientHeight;
-      var barSpacing = 10;
-      var barHeight = ((chartHeight - barSpacing * newData.length) /
-                       newData.length);
+    var chartHeight = this.parentNode.clientHeight;
+    var barSpacing = 10;
+    var barHeight = ((chartHeight - barSpacing * newData.length) /
+                     newData.length);
 
-      return i * barSpacing + i * barHeight;
+    return i * barSpacing + i * barHeight;
   });
 }
 
@@ -84,13 +84,15 @@ function updateSelection() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-    $('#chartSelectionDropdown ul li a').click(function(event) {
-        var div = $(this).parent().parent().parent();
-        var button = div.find('button');
-        button.html(this.text + ' <span class="caret"></span>');
-        div.removeClass('open');
-        event.preventDefault();
-        postGraphUpdateRequest($(this).attr("data-selection-id"));
-        return false;
-    });
+  $('#chartSelectionDropdown ul li a').click(function(event) {
+    var div = $(this).parent().parent().parent();
+    var button = div.find('button');
+
+    button.html(this.text + ' <span class="caret"></span>');
+    div.removeClass('open');
+    event.preventDefault();
+
+    postGraphUpdateRequest($(this).attr("data-selection-id"));
+    return false;
+  });
 });
