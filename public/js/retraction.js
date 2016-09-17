@@ -47,15 +47,15 @@ function updateGraph(newData) {
   .attr("height", function computeBarHeight() {
     var chartHeight = this.parentNode.clientHeight;
     var barSpacing = 10;
-    return (chartHeight - barSpacing * newData.length) / newData.length;
+    return (chartHeight - (barSpacing * newData.length)) / newData.length;
   })
   .attr("y", function computeBarY(d, i) {
     var chartHeight = this.parentNode.clientHeight;
     var barSpacing = 10;
-    var barHeight = ((chartHeight - barSpacing * newData.length) /
+    var barHeight = ((chartHeight - (barSpacing * newData.length)) /
                      newData.length);
 
-    return i * barSpacing + i * barHeight;
+    return (i * barSpacing) + (i * barHeight);
   });
 }
 
