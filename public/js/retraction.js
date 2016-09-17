@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function onDOMLoaded() {
     var div = $(this).parent().parent().parent();
     var button = div.find("button");
 
-    button.html(this.text + " <span class="caret"></span>");
+    button.html(this.text + " <span class='caret'></span>");
     div.removeClass("open");
     event.preventDefault();
 
