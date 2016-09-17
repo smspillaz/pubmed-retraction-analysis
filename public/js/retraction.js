@@ -73,7 +73,6 @@ function postGraphUpdateRequest(name) {
   });
 }
 
-
 /**
  * updateSelection
  *
@@ -83,8 +82,8 @@ function updateSelection() {
   postGraphUpdateRequest(document.getElementById("graphs").value);
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-  $('#chartSelectionDropdown ul li a').click(function(event) {
+document.addEventListener("DOMContentLoaded", function onDOMLoaded() {
+  $('#chartSelectionDropdown ul li a').click(function onDropdownClick(event) {
     var div = $(this).parent().parent().parent();
     var button = div.find('button');
 
