@@ -1,6 +1,6 @@
 module.exports = {
-    d3.select,
-    d3.selectAll,
-    d3.scaleLinear,
-    d3.max
+    select: d3.select,
+    selectAll: d3.selectAll,
+    scaleLinear: d3.scaleLinear,
+    max: d3.max
 };
