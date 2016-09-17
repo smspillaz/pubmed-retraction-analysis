@@ -1,4 +1,4 @@
-var npm = require("rollup-plugin-node-resolve").npm;
+var npm = require("rollup-plugin-node-resolve");
 
 module.exports = {
   entry: "index.js",
