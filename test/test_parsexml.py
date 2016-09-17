@@ -17,7 +17,6 @@ from testtools import (ExpectedException, TestCase)
 from testtools.matchers import (Contains,
                                 Equals,
                                 Is,
-                                MatchesDict,
                                 MatchesStructure)
 
 from xml.etree import ElementTree
