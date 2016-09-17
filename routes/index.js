@@ -47,7 +47,7 @@ router.get("/get_bar_chart", function onGetBarChart(req, res) {
   } else {
     res.json({
       result: "success",
-      data: values[req.query.name].map(function (v) {
+      data: values[req.query.name].map(function onEachValue(v) {
         return {
           name: v[0],
           value: v[1]
