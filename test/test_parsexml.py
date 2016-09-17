@@ -44,6 +44,19 @@ def construct_document_from(**kwargs):
     return "\n".join(document_list)
 
 
+def append_slash_n_to_values(dictionary):
+    """For each value in :dictionary:, append control characters."""
+    result = {
+        k: v + "\n\t\r"
+        if isinstance(v, str)
+        else (append_slash_n_to_values(v)
+              if isinstance(v, dict)
+              else v)
+        for k, v in dictionary.items()
+    }
+    return result
+
+
 POSSIBLE_MOCK_FIELDS = {
     "MedlineCitation": {
         "PMID": "medline_cit"
@@ -236,3 +249,22 @@ class TestFileToElementTree(TestCase):
             result = parsexml.parse_element_tree(
                 parsexml.file_to_element_tree(stream)
             )
+
+    @parameterized.expand(CORRESPONDING_ENTRIES.items())
+    def test_parsing_fields_with_control_characters(self, field, entry):
+        """4.5.3.7 Parse fields with spurious control characters."""
+        fields = append_slash_n_to_values({
+            k: v for k, v in POSSIBLE_MOCK_FIELDS.items()
+            if k == field
+        })
+        stream = StringIO(
+            wrap_document_text(construct_document_from(**fields))
+        )
+        result = parsexml.parse_element_tree(
+            parsexml.file_to_element_tree(stream)
+        )
+
+        # Should match EXPECTED_ENTRY_VALUES, i.e, no trailing newlines
+        # or control characters
+        self.assertThat(result[entry],
+                        Equals(EXPECTED_ENTRY_VALUES[entry]))
