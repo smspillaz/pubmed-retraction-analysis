@@ -41,7 +41,7 @@ class InvalidCombinationExpection(Exception):
     """Exception raised if combination of entries not found in object."""
 
     def __init__(self, entry, valid_combinations):
-        """Initialise this exception with combinations."""
+        """Initialize this exception with combinations."""
         Exception.__init__(self)
         self._entry = entry
         self._valid_combinations = valid_combinations
