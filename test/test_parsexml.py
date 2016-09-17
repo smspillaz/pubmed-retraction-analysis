@@ -16,8 +16,7 @@ from six.moves import StringIO
 from testtools import (ExpectedException, TestCase)
 from testtools.matchers import (Contains,
                                 Equals,
-                                Is,
-                                MatchesStructure)
+                                Is)
 
 from xml.etree import ElementTree
 
@@ -142,7 +141,7 @@ class TestFileToElementTree(TestCase):
             parsexml.file_to_element_tree(stream)
         )
         self.assertThat(result[entry],
-                        MatchesStructure.fromExample(EXPECTED_ENTRY_VALUES[entry]))
+                        Equals(EXPECTED_ENTRY_VALUES[entry]))
 
     def test_invalid_html_file(self):
         """4.5.3.2 Throw error when parsing invalid html file."""
@@ -191,7 +190,7 @@ class TestFileToElementTree(TestCase):
         )
         self.assertThat(result["pubDate"]["date"], Equals("2011-01-01"))
         self.assertThat(result["pubDate"]["components"],
-                        MatchesStructure.fromExample({
+                        Equals({
                             "Year": True,
                             "Month": False,
                             "Day": False
@@ -212,7 +211,7 @@ class TestFileToElementTree(TestCase):
         )
         self.assertThat(result["pubDate"]["date"], Equals("2011-10-01"))
         self.assertThat(result["pubDate"]["components"],
-                        MatchesStructure.fromExample({
+                        Equals({
                             "Year": True,
                             "Month": True,
                             "Day": False
@@ -234,7 +233,7 @@ class TestFileToElementTree(TestCase):
         )
         self.assertThat(result["pubDate"]["date"], Equals("2011-10-02"))
         self.assertThat(result["pubDate"]["components"],
-                        MatchesStructure.fromExample({
+                        Equals({
                             "Year": True,
                             "Month": True,
                             "Day": True
