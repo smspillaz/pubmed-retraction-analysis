@@ -104,12 +104,12 @@ class NoFieldsError(Exception):
 
 
 def sanitise_string(string):
-    """Sanitise a particular string."""
+    """Sanitize a particular string."""
     return re.sub(r"[\\t\\n\\r]", "", string.strip())
 
 
 def sanitise_field_values(structure):
-    """For each value in structure, sanitise field values."""
+    """For each value in structure, sanitize field values."""
     return {
         k: sanitise_string(v)
         if isinstance(v, str)
