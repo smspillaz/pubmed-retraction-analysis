@@ -1,3 +1,11 @@
+/**
+ * validateEnvironment
+ *
+ * Examine the user's environment variables to check if we can make
+ * a connection to a neo4j database.
+ *
+ * @prog: Name of the current application, to be displayed in an error message.
+ */
 function validateEnvironment(prog) {
   var requiredVariables = [
     "DATABASE_URL",
@@ -16,6 +24,11 @@ function validateEnvironment(prog) {
   return true;
 }
 
+/**
+ * createConnectionString
+ *
+ * Create a conection string for a neo4j database.
+ */
 function createConnectionString() {
   return [
     "http://",
