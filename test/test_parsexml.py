@@ -169,7 +169,7 @@ class TestFileToElementTree(TestCase):
         self.assertThat(result[entry], Is(None))
 
     def test_parsing_file_with_no_fields_throws(self):
-        """4.5.3.4 Throw error file has no relevant fileds."""
+        """4.5.3.4 Throw error file has no relevant fields."""
         stream = StringIO("<PubmedArticleSet><PubmedArticle>"
                           "</PubmedArticle></PubmedArticleSet>")
         with ExpectedException(parsexml.NoFieldsError):
