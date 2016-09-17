@@ -13,7 +13,7 @@ router.get("/", function handleIndexRequest(req, res) {
  * Parameters include 'name', which specifies the name
  * of the chart that we want to get.
  */
-router.get("/get_bar_chart", function (req, res) {
+router.get("/get_bar_chart", function onGetBarChart(req, res) {
   // Dummy Values
   var values = {
     continentYear: [
