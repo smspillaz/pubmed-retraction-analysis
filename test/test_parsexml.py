@@ -12,7 +12,7 @@ from nose_parameterized import parameterized
 from six.moves import StringIO
 
 from testtools import (ExpectedException, TestCase)
-from testtools.matchers import Is
+from testtools.matchers import (Equals, Is)
 
 from xml.etree import ElementTree
 
@@ -78,6 +78,14 @@ CORRESPONDING_ENTRIES = {
     "MedlineJournalInfo": "country"
 }
 
+EXPECTED_ENTRY_VALUES = {
+    "Author": "fore_name last_name",
+    "pubDate": "2011-11-11",
+    "reviseDate": "2012-11-11",
+    "ISSN": "0",
+    "country": "Australia"
+}
+
 
 class TestFileToElementTree(TestCase):
     """Test conversion of a file to an element tree."""
@@ -86,6 +94,23 @@ class TestFileToElementTree(TestCase):
         """4.5.3.1 File can be converted to element tree."""
         stream = StringIO("<html></html>")
         parsexml.file_to_element_tree(stream)
+
+    @parameterized.expand(CORRESPONDING_ENTRIES.items())
+    def test_parsing_file_in_normal_case(self, field, entry):
+        """4.5.3.1 Parse field from data."""
+        # Construct document that has all fields but field
+        fields = {
+            k: v for k, v in POSSIBLE_MOCK_FIELDS.items()
+            if k == field
+        }
+        stream = StringIO(
+            wrap_document_text(construct_document_from(**fields))
+        )
+        result = parsexml.parse_element_tree(
+            parsexml.file_to_element_tree(stream)
+        )
+        self.assertThat(result[entry],
+                        Equals(EXPECTED_ENTRY_VALUES[entry]))
 
     def test_invalid_html_file(self):
         """4.5.3.2 Throw error when parsing invalid html file."""
