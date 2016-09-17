@@ -102,6 +102,17 @@ class NoFieldsError(Exception):
         return "XML document has no relevant fields."""
 
 
+def sanitise_field_values(structure):
+    """For each value in structure, sanitise field values."""
+    return {
+        k: v.strip().replace("\n", "").replace("\t", "").replace("\r", "")
+        if isinstance(v, str)
+        else (sanitise_field_values(v) if isinstance(v, dict)
+              else v)
+        for k, v in structure.items()
+    }
+
+
 def parse_element_tree(tree):
     """For a given ElementTree :tree:, parse it into JSON."""
     root = tree.getroot()
@@ -150,7 +161,7 @@ def parse_element_tree(tree):
     if len([k for k in article_data.keys() if article_data[k]]) == 0:
         raise NoFieldsError()
 
-    return article_data
+    return sanitise_field_values(article_data)
 
 
 def main(argv=None):
