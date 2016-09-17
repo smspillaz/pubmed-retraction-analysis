@@ -12,6 +12,7 @@ This file will contain all the relevant fields for each retraction.
 import argparse
 from datetime import date, datetime
 import os
+import re
 import sys
 import itertools
 import json
@@ -99,13 +100,18 @@ class NoFieldsError(Exception):
 
     def __str__(self):
         """Convert to string."""
-        return "XML document has no relevant fields."""
+        return """XML document has no relevant fields."""
+
+
+def sanitise_string(string):
+    """Sanitise a particular string."""
+    return re.sub(r"[\\t\\n\\r]", "", string.strip())
 
 
 def sanitise_field_values(structure):
     """For each value in structure, sanitise field values."""
     return {
-        k: v.strip().replace("\n", "").replace("\t", "").replace("\r", "")
+        k: sanitise_string(v)
         if isinstance(v, str)
         else (sanitise_field_values(v) if isinstance(v, dict)
               else v)
