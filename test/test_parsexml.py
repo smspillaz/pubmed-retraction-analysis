@@ -23,7 +23,7 @@ from xml.etree import ElementTree
 
 
 def wrap_document_text(text):
-    """Wrap a valid XML document's txt with PubMed headers."""
+    """Wrap a valid XML document's text with PubMed headers."""
     return ("<PubmedArticleSet><PubmedArticle>{}"
             "</PubmedArticle></PubmedArticleSet>").format(text)
 
