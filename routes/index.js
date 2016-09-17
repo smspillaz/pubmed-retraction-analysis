@@ -14,7 +14,7 @@ router.get("/", function handleIndexRequest(req, res) {
  * of the chart that we want to get.
  */
 router.get("/get_bar_chart", function (req, res) {
-    // Dummy Values
+  // Dummy Values
   var values = {
     continentYear: [
       ["Australia", 5],
