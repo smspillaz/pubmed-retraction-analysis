@@ -36,10 +36,25 @@ def parse_selected_sections(object, *args):
     ]
 
 
+class NoFieldsError(Exception):
+    """Error thrown when XML document has no fields."""
+
+    def __str__(self):
+        """Convert to string."""
+        return "XML document has no relevant fields."""
+
+
 def parse_element_tree(tree):
     """For a given ElementTree :tree:, parse it into JSON."""
     root = tree.getroot()
-    article_data = {}
+    article_data = {
+        "pmid": None,
+        "pubDate": None,
+        "reviseDate": None,
+        "ISSN": None,
+        "country": None,
+        "Author": None
+    }
 
     for medinfo in root.iter("MedlineCitation"):
         article_data["pmid"] = medinfo.find("PMID").text
@@ -73,6 +88,9 @@ def parse_element_tree(tree):
         sections = parse_selected_sections(journalinfo, "Country")
         if all(sections):
             article_data["country"] = sections[0]
+
+    if len([k for k in article_data.keys() if article_data[k]]) == 0:
+        raise NoFieldsError()
 
     return article_data
 
