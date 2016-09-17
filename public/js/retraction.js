@@ -83,12 +83,12 @@ function updateSelection() {
 }
 
 document.addEventListener("DOMContentLoaded", function onDOMLoaded() {
-  $('#chartSelectionDropdown ul li a').click(function onDropdownClick(event) {
+  $("#chartSelectionDropdown ul li a").click(function onDropdownClick(event) {
     var div = $(this).parent().parent().parent();
-    var button = div.find('button');
+    var button = div.find("button");
 
-    button.html(this.text + ' <span class="caret"></span>');
-    div.removeClass('open');
+    button.html(this.text + " <span class="caret"></span>");
+    div.removeClass("open");
     event.preventDefault();
 
     postGraphUpdateRequest($(this).attr("data-selection-id"));
