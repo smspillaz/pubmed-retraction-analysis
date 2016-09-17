@@ -269,7 +269,7 @@ class TestFileToElementTree(TestCase):
             parsexml.file_to_element_tree(stream)
         )
 
-        # Should match EXPECTED_ENTRY_VALUES, i.e, no trailing newlines
+        # Should match EXPECTED_ENTRY_VALUES, i.e., no trailing newlines
         # or control characters
         self.assertThat(result[entry],
                         Equals(EXPECTED_ENTRY_VALUES[entry]))
