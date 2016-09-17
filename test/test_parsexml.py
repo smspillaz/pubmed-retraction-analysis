@@ -82,7 +82,7 @@ EXPECTED_ENTRY_VALUES = {
     "Author": "fore_name last_name",
     "pubDate": {
         "date": "2011-11-11",
-        "sections": {
+        "components": {
             "Year": True,
             "Month": True,
             "Day": True
@@ -90,7 +90,7 @@ EXPECTED_ENTRY_VALUES = {
     },
     "reviseDate": {
         "date": "2012-11-11",
-        "sections": {
+        "components": {
             "Year": True,
             "Month": True,
             "Day": True
