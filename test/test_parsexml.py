@@ -5,6 +5,8 @@
 # See /LICENCE.md for Copyright information
 """Tests for parsexml."""
 
+import sys
+
 from importer import parsexml
 
 from nose_parameterized import parameterized
@@ -12,7 +14,11 @@ from nose_parameterized import parameterized
 from six.moves import StringIO
 
 from testtools import (ExpectedException, TestCase)
-from testtools.matchers import (Equals, Is, MatchesDict, MatchesStructure)
+from testtools.matchers import (Contains,
+                                Equals,
+                                Is,
+                                MatchesDict,
+                                MatchesStructure)
 
 from xml.etree import ElementTree
 
@@ -268,3 +274,35 @@ class TestFileToElementTree(TestCase):
         # or control characters
         self.assertThat(result[entry],
                         Equals(EXPECTED_ENTRY_VALUES[entry]))
+
+    def test_contradictory_date_entries_warn(self):
+        """4.8.5.3 Emit warning on contradictory date entries."""
+        stream = StringIO(
+            wrap_document_text(construct_document_from(**{
+                "Author": {
+                    "ForeName": "John",
+                    "LastName": "Smith"
+                },
+                "DateCompleted": {
+                    "Year": "2011",
+                    "Month": "01",
+                    "Day": "01"
+                },
+                "DateRevised": {
+                    "Year": "2010",
+                    "Month": "01",
+                    "Day": "01"
+                },
+            }))
+        )
+        stderr = StringIO()
+        self.patch(sys, "stderr", stderr)
+        result = parsexml.parse_element_tree(
+            parsexml.file_to_element_tree(stream)
+        )
+        stderr.seek(0)
+        stderr_out = stderr.read()
+        self.assertThat(result["pubDate"], Is(None))
+        self.assertThat(result["reviseDate"], Is(None))
+        self.assertThat(stderr_out,
+                        Contains("is greater than"))

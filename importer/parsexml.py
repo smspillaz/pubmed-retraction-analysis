@@ -10,7 +10,7 @@ This file will contain all the relevant fields for each retraction.
 """
 
 import argparse
-from datetime import date
+from datetime import date, datetime
 import os
 import sys
 import itertools
@@ -113,7 +113,13 @@ def sanitise_field_values(structure):
     }
 
 
-def parse_element_tree(tree):
+def warning(filename, msg):
+    """Print warning about filename."""
+    sys.stderr.write("{}{}\n".format(filename + ": " if filename else "",
+                                     msg))
+
+
+def parse_element_tree(tree, filename=None):
     """For a given ElementTree :tree:, parse it into JSON."""
     root = tree.getroot()
     article_data = {
@@ -157,6 +163,20 @@ def parse_element_tree(tree):
         sections = parse_selected_sections(journalinfo, "Country")
         if all(sections):
             article_data["country"] = sections[0]
+
+    # Print error to stderr if there's contradictory field
+    # entries and don't insert a value if so
+    if all([article_data[a] is not None for a in ["pubDate", "reviseDate"]]):
+        if (datetime.strptime(article_data["pubDate"]["date"],
+                              "%Y-%m-%d") >
+                datetime.strptime(article_data["reviseDate"]["date"],
+                                  "%Y-%m-%d")):
+            warning(filename,
+                    """pubDate ({}) is greater than reviseDate ({})"""
+                    """""".format(article_data["pubDate"],
+                                  article_data["reviseDate"]))
+            article_data["pubDate"] = None
+            article_data["reviseDate"] = None
 
     if len([k for k in article_data.keys() if article_data[k]]) == 0:
         raise NoFieldsError()
