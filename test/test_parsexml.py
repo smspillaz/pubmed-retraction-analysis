@@ -251,7 +251,7 @@ class TestFileToElementTree(TestCase):
             }))
         )
         with ExpectedException(parsexml.InvalidCombinationExpection):
-            result = parsexml.parse_element_tree(
+            parsexml.parse_element_tree(
                 parsexml.file_to_element_tree(stream)
             )
 
