@@ -1,9 +1,9 @@
-import npm from "rollup-plugin-node-resolve";
+var npm = require("rollup-plugin-node-resolve").npm;
 
-export default {
-    entry: "index.js",
-    format: "umd",
-    moduleName: "bundle",
-    plugins: [npm({jsnext: true})],
-    dest: "public/js/bundle.js"
+module.exports = {
+  entry: "index.js",
+  format: "umd",
+  moduleName: "bundle",
+  plugins: [npm({ jsnext: true })],
+  dest: "public/js/bundle.js"
 };
