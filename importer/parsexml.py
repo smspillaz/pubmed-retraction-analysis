@@ -10,9 +10,10 @@ This file will contain all the relevant fields for each retraction.
 """
 
 import argparse
-from datetime import date
+from datetime import date, datetime
 import os
 import sys
+import itertools
 import json
 import xml.etree.ElementTree as ET
 
@@ -36,10 +37,99 @@ def parse_selected_sections(object, *args):
     ]
 
 
-def parse_element_tree(tree):
+class InvalidCombinationExpection(Exception):
+    """Exception raised if combination of entries not found in object."""
+
+    def __init__(self, entry, valid_combinations):
+        """Initialise this exception with combinations."""
+        Exception.__init__(self)
+        self._entry = entry
+        self._valid_combinations = valid_combinations
+
+    def __str__(self):
+        """Convert to string."""
+        return ("""No combination of children found in entry {} """
+                """satisfying {}""".format(self._entry,
+                                           self._valid_combinations))
+
+
+def expect_section_combinations(entry, object, combinations):
+    """Expect object to have one of the passed valid section combinations.
+
+    If it doesn't, then throw an InvalidCombinationExpection specifying
+    why it is invalid.
+    """
+    # We need to use 'is not None' instead of the unspecified-bool-value
+    # test here, since the Element itself does not resolve to true
+    # on a general if-test.
+    if not any([all([object.find(e) is not None for e in c]) and
+                len(c) == len(list(object))
+               for c in combinations]):
+        raise InvalidCombinationExpection(entry, combinations)
+
+
+def expect_valid_date_combinations(entry, object):
+    """Expect object to have valid date combinations as children."""
+    return expect_section_combinations(entry, object, [
+        tuple(),
+        ("Year", ),
+        ("Year", "Month"),
+        ("Year", "Month", "Day")
+    ])
+
+
+def sections_to_date_entry(sections):
+    """Given a list of date sections, return a date entry."""
+    # Set every other component to 1
+    date_sections = sections + list(itertools.repeat("1", 3 - len(sections)))
+    return {
+        "date": date(*[
+            int(a) for a in date_sections
+        ]).isoformat(),
+        "components": {
+            "Year": len(sections) > 0,
+            "Month": len(sections) > 1,
+            "Day": len(sections) == 3
+        }
+    }
+
+
+class NoFieldsError(Exception):
+    """Error thrown when XML document has no fields."""
+
+    def __str__(self):
+        """Convert to string."""
+        return "XML document has no relevant fields."""
+
+
+def sanitise_field_values(structure):
+    """For each value in structure, sanitise field values."""
+    return {
+        k: v.strip().replace("\n", "").replace("\t", "").replace("\r", "")
+        if isinstance(v, str)
+        else (sanitise_field_values(v) if isinstance(v, dict)
+              else v)
+        for k, v in structure.items()
+    }
+
+
+def warning(filename, msg):
+    """Print warning about filename."""
+    sys.stderr.write("{}{}\n".format(filename + ": " if filename else "",
+                                     msg))
+
+
+def parse_element_tree(tree, filename=None):
     """For a given ElementTree :tree:, parse it into JSON."""
     root = tree.getroot()
-    article_data = {}
+    article_data = {
+        "pmid": None,
+        "pubDate": None,
+        "reviseDate": None,
+        "ISSN": None,
+        "country": None,
+        "Author": None
+    }
 
     for medinfo in root.iter("MedlineCitation"):
         article_data["pmid"] = medinfo.find("PMID").text
@@ -51,18 +141,18 @@ def parse_element_tree(tree):
         article_data["Author"] = authorname
 
     for pubDate in root.iter("DateCompleted"):
+        expect_valid_date_combinations("DateCompleted", pubDate)
         sections = parse_selected_sections(pubDate, "Year", "Month", "Day")
-        if all(sections):
-            article_data["pubDate"] = date(*[
-                int(a) for a in sections
-            ]).isoformat()
+        article_data["pubDate"] = sections_to_date_entry([
+            s for s in sections if s
+        ])
 
     for reviseDate in root.iter("DateRevised"):
+        expect_valid_date_combinations("DateRevised", reviseDate)
         sections = parse_selected_sections(reviseDate, "Year", "Month", "Day")
-        if all(sections):
-            article_data["reviseDate"] = date(*[
-                int(a) for a in sections
-            ]).isoformat()
+        article_data["reviseDate"] = sections_to_date_entry([
+            s for s in sections if s
+        ])
 
     for journal in root.iter("Journal"):
         sections = parse_selected_sections(journal, "ISSN")
@@ -74,7 +164,24 @@ def parse_element_tree(tree):
         if all(sections):
             article_data["country"] = sections[0]
 
-    return article_data
+    # Print error to stderr if there's contradictory field
+    # entries and don't insert a value if so
+    if all([article_data[a] is not None for a in ["pubDate", "reviseDate"]]):
+        if (datetime.strptime(article_data["pubDate"]["date"],
+                              "%Y-%m-%d") >
+                datetime.strptime(article_data["reviseDate"]["date"],
+                                  "%Y-%m-%d")):
+            warning(filename,
+                    """pubDate ({}) is greater than reviseDate ({})"""
+                    """""".format(article_data["pubDate"],
+                                  article_data["reviseDate"]))
+            article_data["pubDate"] = None
+            article_data["reviseDate"] = None
+
+    if len([k for k in article_data.keys() if article_data[k]]) == 0:
+        raise NoFieldsError()
+
+    return sanitise_field_values(article_data)
 
 
 def main(argv=None):

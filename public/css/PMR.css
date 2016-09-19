@@ -11,10 +11,14 @@ input[type=text], select {
     box-sizing: border-box;
 }
 
-.chart div {       /*Update colour scheme*/
+.chart-container {       /*Update colour scheme*/
   font: 10px "Lucida Console";
-  background-color: #99ccff; /*gradient?/ different for each*/
-  text-align: right;
-  padding: 3px;
-  margin: 1px;
+  background-image: linear-gradient(180deg, #ffffff, #99ccff); /*gradient?/ different for each*/
+  border-radius: 0.5em;
+  margin-top: 2em;
+  height: 500px;
+}
+
+.chart {
+  height: 100%;
 }
