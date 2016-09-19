@@ -7,7 +7,13 @@ var values = {
   journalYear: [5, 10, 3, 20, 15]
 };
 
-
+/**
+ * updateGraph
+ *
+ * Update the graph with some new data and remove the old one.
+ *
+ * @newData: New tuples of data to update the graph with
+ */
 function updateGraph(newData) {
   var svg;
   var rects;
@@ -42,9 +48,12 @@ function updateGraph(newData) {
   });
 }
 
-// updates graph
+/**
+ * updateSelection
+ *
+ * Get the new value from the graph selection and update the graph with it.
+ */
 function updateSelection() {
-    // make function to remove before every update
   var x = document.getElementById("graphs").value;
   updateGraph(values[x]); // adding string rather than selection and doesnt remove old selections
 }
