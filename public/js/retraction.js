@@ -59,6 +59,13 @@ function updateGraph(newData) {
   });
 }
 
+/**
+ * postGraphUpdateRequest
+ *
+ * Post a request to the server to get a new graph.
+ *
+ * @name The chart name to fetch.
+ */
 function postGraphUpdateRequest(name) {
   $.ajax({
     url: "/get_bar_chart",
