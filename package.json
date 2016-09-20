@@ -32,6 +32,7 @@
     "neo4j-driver": "^1.1.0-M01",
     "node-neo4j": "^2.0.3",
     "rollup": "^0.34.13",
+    "rollup-plugin-commonjs": "^5.0.4",
     "rollup-plugin-node-resolve": "^2.0.0",
     "serve-favicon": "^2.3.0",
     "uglify-js": "^2.7.3"

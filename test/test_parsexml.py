@@ -16,15 +16,13 @@ from six.moves import StringIO
 from testtools import (ExpectedException, TestCase)
 from testtools.matchers import (Contains,
                                 Equals,
-                                Is,
-                                MatchesDict,
-                                MatchesStructure)
+                                Is)
 
 from xml.etree import ElementTree
 
 
 def wrap_document_text(text):
-    """Wrap a valid XML document's txt with PubMed headers."""
+    """Wrap a valid XML document's text with PubMed headers."""
     return ("<PubmedArticleSet><PubmedArticle>{}"
             "</PubmedArticle></PubmedArticleSet>").format(text)
 
@@ -143,7 +141,7 @@ class TestFileToElementTree(TestCase):
             parsexml.file_to_element_tree(stream)
         )
         self.assertThat(result[entry],
-                        MatchesStructure.fromExample(EXPECTED_ENTRY_VALUES[entry]))
+                        Equals(EXPECTED_ENTRY_VALUES[entry]))
 
     def test_invalid_html_file(self):
         """4.5.3.2 Throw error when parsing invalid html file."""
@@ -170,7 +168,7 @@ class TestFileToElementTree(TestCase):
         self.assertThat(result[entry], Is(None))
 
     def test_parsing_file_with_no_fields_throws(self):
-        """4.5.3.4 Throw error file has no relevant fileds."""
+        """4.5.3.4 Throw error file has no relevant fields."""
         stream = StringIO("<PubmedArticleSet><PubmedArticle>"
                           "</PubmedArticle></PubmedArticleSet>")
         with ExpectedException(parsexml.NoFieldsError):
@@ -192,7 +190,7 @@ class TestFileToElementTree(TestCase):
         )
         self.assertThat(result["pubDate"]["date"], Equals("2011-01-01"))
         self.assertThat(result["pubDate"]["components"],
-                        MatchesStructure.fromExample({
+                        Equals({
                             "Year": True,
                             "Month": False,
                             "Day": False
@@ -213,7 +211,7 @@ class TestFileToElementTree(TestCase):
         )
         self.assertThat(result["pubDate"]["date"], Equals("2011-10-01"))
         self.assertThat(result["pubDate"]["components"],
-                        MatchesStructure.fromExample({
+                        Equals({
                             "Year": True,
                             "Month": True,
                             "Day": False
@@ -235,7 +233,7 @@ class TestFileToElementTree(TestCase):
         )
         self.assertThat(result["pubDate"]["date"], Equals("2011-10-02"))
         self.assertThat(result["pubDate"]["components"],
-                        MatchesStructure.fromExample({
+                        Equals({
                             "Year": True,
                             "Month": True,
                             "Day": True
@@ -252,7 +250,7 @@ class TestFileToElementTree(TestCase):
             }))
         )
         with ExpectedException(parsexml.InvalidCombinationExpection):
-            result = parsexml.parse_element_tree(
+            parsexml.parse_element_tree(
                 parsexml.file_to_element_tree(stream)
             )
 
@@ -270,7 +268,7 @@ class TestFileToElementTree(TestCase):
             parsexml.file_to_element_tree(stream)
         )
 
-        # Should match EXPECTED_ENTRY_VALUES, i.e, no trailing newlines
+        # Should match EXPECTED_ENTRY_VALUES, i.e., no trailing newlines
         # or control characters
         self.assertThat(result[entry],
                         Equals(EXPECTED_ENTRY_VALUES[entry]))

@@ -1,14 +1,17 @@
 Analyser
+bool
 C
 Capitan
 Ctrl
 curl
 DATABASE_URL
 downloader
+e
 easy_install
 El
 fsSL
 homebrew
+i
 JSON
 NEO_USER
 NEO_PASS
@@ -17,6 +20,7 @@ npm
 org
 OSX
 PubMed
+recurse
 sudo
 systemwide
 virtualenv
