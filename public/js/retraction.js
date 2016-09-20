@@ -80,15 +80,6 @@ function postGraphUpdateRequest(name) {
   });
 }
 
-/**
- * updateSelection
- *
- * Get the new value from the graph selection and update the graph with it.
- */
-function updateSelection() {
-  postGraphUpdateRequest(document.getElementById("graphs").value);
-}
-
 document.addEventListener("DOMContentLoaded", function onDOMLoaded() {
   $("#chartSelectionDropdown ul li a").click(function onDropdownClick(event) {
     var div = $(this).parent().parent().parent();
