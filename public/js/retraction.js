@@ -1,5 +1,7 @@
 /* global bundle, $ */
 
+var d3 = require("d3");
+
 /**
  * updateGraph
  *
@@ -18,7 +20,7 @@ function updateGraph(newData) {
                                  element.innerHTML = "";  // eslint-disable-line no-param-reassign
                                });
 
-  svg = bundle.select("div.chart")
+  svg = d3.select("div.chart")
           .append("svg")
           .attr("class", "svgchart")
           .attr("width", function computeWidth() {
@@ -39,8 +41,8 @@ function updateGraph(newData) {
              .append("rect");
 
   rects.attr("width", function computeBarWidth(d) {
-    var x = bundle.scaleLinear()
-                 .domain([0, bundle.max(newData)])
+    var x = d3.scaleLinear()
+                 .domain([0, d3.max(newData)])
                  .range([0, this.parentNode.clientWidth]);
     return x(d);
   })
