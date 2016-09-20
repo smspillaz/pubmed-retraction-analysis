@@ -1,0 +1,22 @@
+sudo: false
+language: python
+cache: pip
+python:
+ - 2.7
+ - 3.5
+install:
+ - wget https://nodejs.org/download/release/v6.5.0/node-v6.5.0-linux-x64.tar.xz
+ - tar -xJvf node-v6.5.0-linux-x64.tar.xz
+ - export PATH="${PWD}/node-v6.5.0-linux-x64/bin:$PATH"
+ - mkdir -p python-virtualenv/bin
+ - ln -s $(which python) python-virtualenv/bin/python
+ - ln -s $(which pip) python-virtualenv/bin/pip
+ - python install.py
+script:
+ - export PATH="${PWD}/node-v6.5.0-linux-x64/bin:$PATH"
+ - which npm
+ - which node
+ - npm run lint
+ - python setup.py polysquarelint --exclusions=*/venv/*,*/node_modules/*,*/dist/*,*/public/components/* --suppress-codes=I100,LongDescription,D203
+ - python setup.py green
+ - npm run test
