@@ -5,41 +5,23 @@ import os
 from datetime import date, datetime
 from neo4j.v1 import GraphDatabase, basic_auth
 
-# Entities defined:
-# - Article
-# - Author
-# - Country
-# - Month
-# - Publication
-# - RetractionReason
-# - Topic
-# - Year
-
-# Relationships defined:
-# - (Article) -[PUBLISHED_IN]-> (Publication)
-# - (Article) -[AUTHORED_BY]-> (Author)
-# - (Article) -[ORIGINATED_IN]-> (Country)
-# - (Article) -[DISCUSSES]-> (Topic)
-# - (Article) -[RETRACTED_FOR]-> (RetractionReason)
-# - (Article) -[PUBLISHED_IN]-> (Year)
-# - (Article) -[PUBLISHED_IN]-> (Month)
-
-# NOTE: How do we handle Python dependencies currently?
 # NOTE: Doesn't work with outbound Neo4j, just Docker
 
 
 def main(argv):
 
-    URL = 'localhost'
-    USER = 'neo4j'
-    PASS = 'neo4j'
+    # url = 'localhost'
+    # user = 'neo4j'
+    # password = 'neo4j'
 
-    if 'DATABASE_URL' in os.environ:
-        URL = os.environ['DATABASE_URL']
-    if 'DATABASE_PASS' in os.environ:
-        PASS = os.environ['DATABASE_PASS']
-    if 'DATABASE_USER' in os.environ:
-        USER = os.environ['DATABASE_USER']
+    if all(var in os.environ for
+           var in ['DATABASE_URL', 'DATABASE_USER', 'DATABASE_PASS']):
+                url = os.environ['DATABASE_URL']
+                pwd = os.environ['DATABASE_PASS']
+                usr = os.environ['DATABASE_USER']
+    else:
+        raise ValueError("Ensure environment variables DATABASE_URL, "
+                         "DATABASE_PASS and DATABASE_USER set.")
 
     parser = argparse.ArgumentParser(description="Load articles into Neo4j")
     parser.add_argument("file",
@@ -48,50 +30,52 @@ def main(argv):
                         type=str,
                         metavar="FILE")
     parse_result = parser.parse_args(argv)
-    FILE = parse_result.file
 
-    driver = GraphDatabase.driver("bolt://"+URL, auth=basic_auth(USER, PASS))
+    driver = GraphDatabase.driver("bolt://"+url, auth=basic_auth(usr, pwd))
     session = driver.session()
 
-    with open(FILE, 'r') as file:
+    with open(parse_result.file, 'r') as file:
         for line in file:
-            data = json.loads(line)            
+            data = json.loads(line)
+            for record in data:
                 commands = []
                 command = ""
                 # Assuming always has a pmid value to be valid article
                 if 'pmid' in record:
-                    commands.append("MERGE (article:Article \
-                    {title:'{record[pmid]}'})")
+                    commands.append("MERGE (article:Article "
+                                    "{{title:'{0}'}})".format(record['pmid']))
                     if 'ISSN' in record:
-                        commands.append("SET article.ISSN = '{record[ISSN]}'")
+                        commands.append("SET article.ISSN = '{0}'"
+                                        .format(record['ISSN']))
                     if 'Author' in record:
-                        commands.append('MERGE (author:Author {name:\
-                        "{record[Author]}"}) MERGE (article)-[:AUTHORED_BY]\
-                        ->(author)')
-                        print (record['Author'])
+                        commands.append("MERGE (author:Author {{name:'"
+                                        "{0}'}}) MERGE (article)-"
+                                        "[:AUTHORED_BY]->(author)"
+                                        .format(record['Author']))
                     if 'country' in record:
                         # TODO: Camel case the country name
-                        commands.append('MERGE (country:Country {name:\
-                        "{record[country]}"}) MERGE (article)-[:ORIGINATED_IN]\
-                        ->(country)')
-                        print (record['country'])
+                        commands.append("MERGE (country:Country {{name:"
+                                        "'{0}'}}) MERGE (article)"
+                                        "-[:ORIGINATED_IN]->(country)"
+                                        .format(record['country']))
                     if 'pubDate' in record:
                         date = datetime.strptime(record['pubDate'], "%Y-%m-%d")
                         year = str(date.year)
                         month = date.strftime("%B")
-                        commands.append('MERGE (month:Month {name:"{month}"})\
-                         MERGE (article)-[:PUBLISHED_IN]->(month)')
-                        commands.append('MERGE (year:Year {name:"{year}"})\
-                         MERGE (article)-[:PUBLISHED_IN]->(year)')
+                        commands.append("MERGE (month:Month {{name:'{0}'}})"
+                                        "MERGE (article)-[:PUBLISHED_IN]->"
+                                        "(month)".format(month))
+                        commands.append("MERGE (year:Year {{name:'{0}'}})"
+                                        "MERGE (article)-[:PUBLISHED_IN]->"
+                                        "(year)".format(year))
 
                     command = " ".join(commands)
+                    print(command)
 
                 if command != "":
                     session.run(command)
 
     session.close()
 
-if __name__ == "main":
+if __name__ == "__main__":
     main(sys.argv[1:])
-
-main(sys.argv[1:])
