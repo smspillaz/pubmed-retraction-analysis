@@ -55,13 +55,7 @@ def main(argv):
 
     with open(FILE, 'r') as file:
         for line in file:
-            data = json.loads(line)
-            print (len(data))
-            count = 0
-            for record in data:
-                if count > 1:
-                    break
-                count += 1
+            data = json.loads(line)            
                 commands = []
                 command = ""
                 # Assuming always has a pmid value to be valid article
