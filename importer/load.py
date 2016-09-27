@@ -1,5 +1,9 @@
-from neo4j.v1 import GraphDatabase, basic_auth
 import json
+import argparse
+import sys
+import os
+from datetime import date, datetime
+from neo4j.v1 import GraphDatabase, basic_auth
 
 # Entities defined:
 # - Article
@@ -21,58 +25,79 @@ import json
 # - (Article) -[PUBLISHED_IN]-> (Month)
 
 # NOTE: How do we handle Python dependencies currently?
-# NOTE: Needs to work with outbound Neo4j / not just Docker
-# NOTE: Hardcoded password, username and file location
+# NOTE: Doesn't work with outbound Neo4j, just Docker
 
-months = ['January','February','March','April','May','June','July','August','September','October','November','December']
 
-def main():
-    driver = GraphDatabase.driver("bolt://localhost", auth=basic_auth("neo4j", "neo4j"))
+def main(argv):
+
+    URL = 'localhost'
+    USER = 'neo4j'
+    PASS = 'neo4j'
+
+    if 'DATABASE_URL' in os.environ:
+        URL = os.environ['DATABASE_URL']
+    if 'DATABASE_PASS' in os.environ:
+        PASS = os.environ['DATABASE_PASS']
+    if 'DATABASE_USER' in os.environ:
+        USER = os.environ['DATABASE_USER']
+
+    parser = argparse.ArgumentParser(description="Load articles into Neo4j")
+    parser.add_argument("file",
+                        help="File to read",
+                        default="data.json",
+                        type=str,
+                        metavar="FILE")
+    parse_result = parser.parse_args(argv)
+    FILE = parse_result.file
+
+    driver = GraphDatabase.driver("bolt://"+URL, auth=basic_auth(USER, PASS))
     session = driver.session()
 
-    # session.run("MERGE (publication:Publication {title:'Pretend Journal of Science', country:'Australia', founded:1978})")
-    # session.run("MERGE (author:Author {name:'John Doe'})")
-
-    # result = session.run("MATCH (a:Author) RETURN (a)")
-
-    # for record in result:
-    #     print(record)
-
-    FILE = "data.json"
     with open(FILE, 'r') as file:
         for line in file:
             data = json.loads(line)
-            print len(data)
-            # count = 0
+            print (len(data))
+            count = 0
             for record in data:
-                # if count > 5:
-                    # break
-                # count += 1
+                if count > 1:
+                    break
+                count += 1
+                commands = []
                 command = ""
                 # Assuming always has a pmid value to be valid article
                 if 'pmid' in record:
-                    command += "MERGE (article:Article {title:'"+record['pmid']+"'}) "
+                    commands.append("MERGE (article:Article \
+                    {title:'{record[pmid]}'})")
                     if 'ISSN' in record:
-                        command += "SET article.ISSN = '" + record['ISSN']+"' "
+                        commands.append("SET article.ISSN = '{record[ISSN]}'")
                     if 'Author' in record:
-                        command += 'MERGE (author:Author {name:"'+record['Author']+'"}) MERGE (article)-[:AUTHORED_BY]->(author)'
-                        print record['Author']
+                        commands.append('MERGE (author:Author {name:\
+                        "{record[Author]}"}) MERGE (article)-[:AUTHORED_BY]\
+                        ->(author)')
+                        print (record['Author'])
                     if 'country' in record:
-                        # TODO: Camel case the country name to ensure consistency
-                        command += 'MERGE (country:Country {name:"'+record['country']+'"}) MERGE (article)-[:ORIGINATED_IN]->(country)'
-                        print record['country']
+                        # TODO: Camel case the country name
+                        commands.append('MERGE (country:Country {name:\
+                        "{record[country]}"}) MERGE (article)-[:ORIGINATED_IN]\
+                        ->(country)')
+                        print (record['country'])
                     if 'pubDate' in record:
-                        date = record['pubDate'].split('-')
-                        year = date[0]
-                        month = months[int(date[1]) - 1]
-                        print year
-                        print month
-                        command += 'MERGE (month:Month {name:"'+month+'"}) MERGE (article)-[:PUBLISHED_IN]->(month)'
-                        command += 'MERGE (year:Year {name:"'+year+'"}) MERGE (article)-[:PUBLISHED_IN]->(year)'
+                        date = datetime.strptime(record['pubDate'], "%Y-%m-%d")
+                        year = str(date.year)
+                        month = date.strftime("%B")
+                        commands.append('MERGE (month:Month {name:"{month}"})\
+                         MERGE (article)-[:PUBLISHED_IN]->(month)')
+                        commands.append('MERGE (year:Year {name:"{year}"})\
+                         MERGE (article)-[:PUBLISHED_IN]->(year)')
+
+                    command = " ".join(commands)
 
                 if command != "":
                     session.run(command)
 
     session.close()
 
-main()
+if __name__ == "main":
+    main(sys.argv[1:])
+
+main(sys.argv[1:])
