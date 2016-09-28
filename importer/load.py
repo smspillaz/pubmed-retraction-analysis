@@ -1,6 +1,4 @@
-"""Given a JSON formatted file containing details of retractions import
-all data into a Neo4j database.
-"""
+"""Import article data from JSON into a Neo4j database."""
 
 import argparse
 from datetime import datetime
