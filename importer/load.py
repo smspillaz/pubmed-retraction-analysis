@@ -1,6 +1,4 @@
-"""
-Import article data from JSON into a Neo4j database.
-"""
+"""Import article data from JSON into a Neo4j database."""
 
 import argparse
 from datetime import datetime
