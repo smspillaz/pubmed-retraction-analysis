@@ -1,24 +1,22 @@
+"""Given a JSON formatted file containing details of retractions,
+import all data into a Neo4j database.
+"""
+
 import json
 import argparse
 import sys
 import os
-from datetime import date, datetime
+from datetime import datetime
 from neo4j.v1 import GraphDatabase, basic_auth
-
-# NOTE: Doesn't work with outbound Neo4j, just Docker
 
 
 def main(argv):
-
-    # url = 'localhost'
-    # user = 'neo4j'
-    # password = 'neo4j'
-
+    """Import all data in JSON file into Neo4j database."""
     if all(var in os.environ for
-           var in ['DATABASE_URL', 'DATABASE_USER', 'DATABASE_PASS']):
-                url = os.environ['DATABASE_URL']
-                pwd = os.environ['DATABASE_PASS']
-                usr = os.environ['DATABASE_USER']
+           var in ["DATABASE_URL", "DATABASE_USER", "DATABASE_PASS"]):
+                url = os.environ["DATABASE_URL"]
+                pwd = os.environ["DATABASE_PASS"]
+                usr = os.environ["DATABASE_USER"]
     else:
         raise ValueError("Ensure environment variables DATABASE_URL, "
                          "DATABASE_PASS and DATABASE_USER set.")
@@ -31,35 +29,34 @@ def main(argv):
                         metavar="FILE")
     parse_result = parser.parse_args(argv)
 
-    driver = GraphDatabase.driver("bolt://"+url, auth=basic_auth(usr, pwd))
+    driver = GraphDatabase.driver("bolt://" + url, auth=basic_auth(usr, pwd))
     session = driver.session()
 
-    with open(parse_result.file, 'r') as file:
+    with open(parse_result.file, "r") as file:
         for line in file:
             data = json.loads(line)
             for record in data:
                 commands = []
                 command = ""
                 # Assuming always has a pmid value to be valid article
-                if 'pmid' in record:
+                if "pmid" in record:
                     commands.append("MERGE (article:Article "
-                                    "{{title:'{0}'}})".format(record['pmid']))
-                    if 'ISSN' in record:
+                                    "{{title:'{0}'}})".format(record["pmid"]))
+                    if "ISSN" in record:
                         commands.append("SET article.ISSN = '{0}'"
-                                        .format(record['ISSN']))
-                    if 'Author' in record:
+                                        .format(record["ISSN"]))
+                    if "Author" in record:
                         commands.append("MERGE (author:Author {{name:'"
                                         "{0}'}}) MERGE (article)-"
                                         "[:AUTHORED_BY]->(author)"
-                                        .format(record['Author']))
-                    if 'country' in record:
-                        # TODO: Camel case the country name
+                                        .format(record["Author"]))
+                    if "country" in record:
                         commands.append("MERGE (country:Country {{name:"
                                         "'{0}'}}) MERGE (article)"
                                         "-[:ORIGINATED_IN]->(country)"
-                                        .format(record['country']))
-                    if 'pubDate' in record:
-                        date = datetime.strptime(record['pubDate'], "%Y-%m-%d")
+                                        .format(record["country"]))
+                    if "pubDate" in record:
+                        date = datetime.strptime(record["pubDate"], "%Y-%m-%d")
                         year = str(date.year)
                         month = date.strftime("%B")
                         commands.append("MERGE (month:Month {{name:'{0}'}})"
