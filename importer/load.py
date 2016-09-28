@@ -1,3 +1,8 @@
+# /importer/load.py
+#
+# Import article data from JSON into a Neo4j database.
+#
+# See /LICENCE.md for Copyright information
 """Import article data from JSON into a Neo4j database."""
 
 import argparse
