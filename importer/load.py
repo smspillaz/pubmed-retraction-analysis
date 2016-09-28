@@ -1,12 +1,13 @@
-"""Given a JSON formatted file containing details of retractions,
-import all data into a Neo4j database.
+"""Given a JSON formatted file containing details of retractions import
+all data into a Neo4j database.
 """
 
-import json
 import argparse
-import sys
-import os
 from datetime import datetime
+import json
+import os
+import sys
+
 from neo4j.v1 import GraphDatabase, basic_auth
 
 
