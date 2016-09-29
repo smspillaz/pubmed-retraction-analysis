@@ -75,14 +75,15 @@ def main(argv=None):
 
     with open_or_default(parse_result.file, sys.stdin) as fileobj:
         data = json.load(fileobj)
-        command = "\n".join([a for a in [
+        commands = ["MATCH(n) DETACH DELETE n"]
+        commands = [a for a in [
             generate_command_for_record(record)
             for record in data
-        ] if a is not None])
+        ] if a is not None]
 
     if parse_result.no_execute:
-        print(command)
-    elif command:
+        print(json.dumps(commands))
+    elif len(commands):
         if all(var in os.environ for
                var in ["DATABASE_URL", "DATABASE_USER", "DATABASE_PASS"]):
                     url = os.environ["DATABASE_URL"]
@@ -94,7 +95,8 @@ def main(argv=None):
 
         driver = GraphDatabase.driver("bolt://" + url, auth=basic_auth(usr, pwd))
         session = driver.session()
-        session.run(command)
+        for command in commands:
+            session.run(command)
         session.close()
 
 if __name__ == "__main__":
