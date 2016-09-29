@@ -2,11 +2,19 @@
 #
 # Install the project and dependencies
 
+import contextlib
 import errno
+from io import BytesIO
 import os
 import platform
 import stat
 import subprocess
+import tarfile
+
+try:
+    from urllib.request import urlopen
+except ImportError:
+    from urllib import urlopen
 
 
 def run_task(desc, *args):
@@ -81,6 +89,18 @@ def main(argv):
              os.path.join("python-virtualenv", "bin", "python"),
              "setup.py", "install")
     run_task("Installing node dependencies", "npm", "install")
+
+    if not os.environ.get("TRAVIS", None):
+        print("=> Downloading and installing local neo4j (may take some time)")
+        url = urlopen("http://dist.neo4j.org/"
+                      "neo4j-community-2.2.0-M03-unix.tar.gz")
+        with contextlib.closing(url) as neo4j_remote:
+            membuf = BytesIO()
+            membuf.write(neo4j_remote.read())
+            membuf.seek(0)
+            with tarfile.open(fileobj=membuf) as neo4j_tar:
+                print("\n".join([t.name for t in neo4j_tar.getmembers()]))
+                neo4j_tar.extractall(path=os.path.join(os.getcwd(), "neo4j"))
 
     print("Project installed. Enter the Python Virtual Environment with ")
     print("$ source python-virtualenv/bin/activate")
