@@ -6,6 +6,7 @@
 """Import article data from JSON into a Neo4j database."""
 
 import argparse
+from contextlib import contextmanager
 from datetime import datetime
 import json
 import os
@@ -50,18 +51,29 @@ def generate_command_for_record(record):
     return None
 
 
-def main(argv):
+@contextmanager
+def open_or_default(path, default):
+    """A context with either path as an open file, or some default."""
+    try:
+        with open(path or '', 'r') as fileobj:
+            yield fileobj
+    except IOError:
+        yield default
+
+
+def main(argv=None):
     """Import all data in JSON file into Neo4j database."""
     parser = argparse.ArgumentParser(description="Load articles into Neo4j")
     parser.add_argument("file",
                         help="File to read",
                         type=str,
+                        nargs='?',
                         metavar="FILE")
     parser.add_argument("--no-execute",
                         action="store_true")
-    parse_result = parser.parse_args(argv)
+    parse_result = parser.parse_args(argv or sys.argv[1:])
 
-    with open(parse_result.file or sys.stdin, "r") as fileobj:
+    with open_or_default(parse_result.file, sys.stdin) as fileobj:
         data = json.load(fileobj)
         command = "\n".join([a for a in [
             generate_command_for_record(record)
