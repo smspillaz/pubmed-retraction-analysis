@@ -14,6 +14,42 @@ import sys
 from neo4j.v1 import GraphDatabase, basic_auth
 
 
+def generate_command_for_record(record):
+    """For a particular record, generate a database command."""
+    # Assuming always has a pmid value to be valid article
+    if "pmid" in record:
+        commands = []
+        commands.append("MERGE (article:Article "
+                        "{{title:'{0}'}})".format(record["pmid"]))
+        if "ISSN" in record:
+            commands.append("SET article.ISSN = '{0}'"
+                            .format(record["ISSN"]))
+        if "Author" in record:
+            commands.append("MERGE (author:Author {{name:\""
+                            "{0}\"}}) MERGE (article)-"
+                            "[:AUTHORED_BY]->(author)"
+                            .format(record["Author"]))
+        if "country" in record:
+            commands.append("MERGE (country:Country {{name:"
+                            "'{0}'}}) MERGE (article)"
+                            "-[:ORIGINATED_IN]->(country)"
+                            .format(record["country"]))
+        if "pubDate" in record:
+            date = datetime.strptime(record["pubDate"], "%Y-%m-%d")
+            year = str(date.year)
+            month = date.strftime("%B")
+            commands.append("MERGE (month:Month {{name:'{0}'}})"
+                            "MERGE (article)-[:PUBLISHED_IN]->"
+                            "(month)".format(month))
+            commands.append("MERGE (year:Year {{name:'{0}'}})"
+                            "MERGE (article)-[:PUBLISHED_IN]->"
+                            "(year)".format(year))
+
+        return " ".join(commands)
+
+    return None
+
+
 def main(argv):
     """Import all data in JSON file into Neo4j database."""
     if all(var in os.environ for
@@ -40,39 +76,8 @@ def main(argv):
         for line in file:
             data = json.loads(line)
             for record in data:
-                commands = []
-                command = ""
-                # Assuming always has a pmid value to be valid article
-                if "pmid" in record:
-                    commands.append("MERGE (article:Article "
-                                    "{{title:'{0}'}})".format(record["pmid"]))
-                    if "ISSN" in record:
-                        commands.append("SET article.ISSN = '{0}'"
-                                        .format(record["ISSN"]))
-                    if "Author" in record:
-                        commands.append("MERGE (author:Author {{name:\""
-                                        "{0}\"}}) MERGE (article)-"
-                                        "[:AUTHORED_BY]->(author)"
-                                        .format(record["Author"]))
-                    if "country" in record:
-                        commands.append("MERGE (country:Country {{name:"
-                                        "'{0}'}}) MERGE (article)"
-                                        "-[:ORIGINATED_IN]->(country)"
-                                        .format(record["country"]))
-                    if "pubDate" in record:
-                        date = datetime.strptime(record["pubDate"], "%Y-%m-%d")
-                        year = str(date.year)
-                        month = date.strftime("%B")
-                        commands.append("MERGE (month:Month {{name:'{0}'}})"
-                                        "MERGE (article)-[:PUBLISHED_IN]->"
-                                        "(month)".format(month))
-                        commands.append("MERGE (year:Year {{name:'{0}'}})"
-                                        "MERGE (article)-[:PUBLISHED_IN]->"
-                                        "(year)".format(year))
-
-                    command = " ".join(commands)
-
-                if command != "":
+                command = generate_command_for_record(record)
+                if command:
                     session.run(command)
 
     session.close()
