@@ -36,7 +36,7 @@ def generate_command_for_record(record):
                             "-[:ORIGINATED_IN]->(country)"
                             .format(record["country"]))
         if record.get("pubDate", None):
-            date = datetime.strptime(record["pubDate"], "%Y-%m-%d")
+            date = datetime.strptime(record["pubDate"]["date"], "%Y-%m-%d")
             year = str(date.year)
             month = date.strftime("%B")
             commands.append("MERGE (month:Month {{name:'{0}'}})"
