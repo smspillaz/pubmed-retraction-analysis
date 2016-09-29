@@ -22,20 +22,20 @@ def generate_command_for_record(record):
         commands = []
         commands.append("MERGE (article:Article "
                         "{{title:'{0}'}})".format(record["pmid"]))
-        if "ISSN" in record:
+        if record.get("ISSN", None):
             commands.append("SET article.ISSN = '{0}'"
                             .format(record["ISSN"]))
-        if "Author" in record:
+        if record.get("Author", None):
             commands.append("MERGE (author:Author {{name:\""
                             "{0}\"}}) MERGE (article)-"
                             "[:AUTHORED_BY]->(author)"
                             .format(record["Author"]))
-        if "country" in record:
+        if record.get("country", None):
             commands.append("MERGE (country:Country {{name:"
                             "'{0}'}}) MERGE (article)"
                             "-[:ORIGINATED_IN]->(country)"
                             .format(record["country"]))
-        if "pubDate" in record:
+        if record.get("pubDate", None):
             date = datetime.strptime(record["pubDate"], "%Y-%m-%d")
             year = str(date.year)
             month = date.strftime("%B")
