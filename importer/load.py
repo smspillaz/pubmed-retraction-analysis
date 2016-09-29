@@ -50,8 +50,8 @@ def main(argv):
                         commands.append("SET article.ISSN = '{0}'"
                                         .format(record["ISSN"]))
                     if "Author" in record:
-                        commands.append("MERGE (author:Author {{name:'"
-                                        "{0}'}}) MERGE (article)-"
+                        commands.append("MERGE (author:Author {{name:\""
+                                        "{0}\"}}) MERGE (article)-"
                                         "[:AUTHORED_BY]->(author)"
                                         .format(record["Author"]))
                     if "country" in record:
@@ -71,7 +71,6 @@ def main(argv):
                                         "(year)".format(year))
 
                     command = " ".join(commands)
-                    print(command)
 
                 if command != "":
                     session.run(command)
