@@ -20,18 +20,18 @@ def generate_command_for_record(record):
     # Assuming always has a pmid value to be valid article
     if "pmid" in record:
         commands = []
-        commands.append("MERGE (article:Article "
+        commands.append(u"MERGE (article:Article "
                         "{{title:'{0}'}})".format(record["pmid"]))
         if record.get("ISSN", None):
-            commands.append("SET article.ISSN = '{0}'"
+            commands.append(u"SET article.ISSN = '{0}'"
                             .format(record["ISSN"]))
         if record.get("Author", None):
-            commands.append("MERGE (author:Author {{name:\""
+            commands.append(u"MERGE (author:Author {{name:\""
                             "{0}\"}}) MERGE (article)-"
                             "[:AUTHORED_BY]->(author)"
                             .format(record["Author"]))
         if record.get("country", None):
-            commands.append("MERGE (country:Country {{name:"
+            commands.append(u"MERGE (country:Country {{name:"
                             "'{0}'}}) MERGE (article)"
                             "-[:ORIGINATED_IN]->(country)"
                             .format(record["country"]))
@@ -39,14 +39,14 @@ def generate_command_for_record(record):
             date = datetime.strptime(record["pubDate"]["date"], "%Y-%m-%d")
             year = str(date.year)
             month = date.strftime("%B")
-            commands.append("MERGE (month:Month {{name:'{0}'}})"
+            commands.append(u"MERGE (month:Month {{name:'{0}'}})"
                             "MERGE (article)-[:PUBLISHED_IN]->"
                             "(month)".format(month))
-            commands.append("MERGE (year:Year {{name:'{0}'}})"
+            commands.append(u"MERGE (year:Year {{name:'{0}'}})"
                             "MERGE (article)-[:PUBLISHED_IN]->"
                             "(year)".format(year))
 
-        return " ".join(commands)
+        return u" ".join(commands)
 
     return None
 
