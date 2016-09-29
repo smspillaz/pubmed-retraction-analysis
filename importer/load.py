@@ -39,10 +39,10 @@ def generate_command_for_record(record):
             date = datetime.strptime(record["pubDate"]["date"], "%Y-%m-%d")
             year = str(date.year)
             month = date.strftime("%B")
-            commands.append(u"MERGE (month:Month {{name:'{0}'}})"
+            commands.append(u"MERGE (month:Month {{name:'{0}'}}) "
                             "MERGE (article)-[:PUBLISHED_IN]->"
                             "(month)".format(month))
-            commands.append(u"MERGE (year:Year {{name:'{0}'}})"
+            commands.append(u"MERGE (year:Year {{name:'{0}'}}) "
                             "MERGE (article)-[:PUBLISHED_IN]->"
                             "(year)".format(year))
 
