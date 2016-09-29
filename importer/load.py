@@ -61,6 +61,16 @@ def open_or_default(path, default):
         yield default
 
 
+def commands_from_data(data):
+    """Given an iterable of JSON objects yield Neo4j commands."""
+    yield "MATCH(n) DETACH DELETE n"
+
+    for record in data:
+        command = generate_command_for_record(record)
+        if command:
+            yield command
+
+
 def main(argv=None):
     """Import all data in JSON file into Neo4j database."""
     parser = argparse.ArgumentParser(description="Load articles into Neo4j")
@@ -75,11 +85,7 @@ def main(argv=None):
 
     with open_or_default(parse_result.file, sys.stdin) as fileobj:
         data = json.load(fileobj)
-        commands = ["MATCH(n) DETACH DELETE n"]
-        commands = [a for a in [
-            generate_command_for_record(record)
-            for record in data
-        ] if a is not None]
+        commands = list(commands_from_data(data))
 
     if parse_result.no_execute:
         print(json.dumps(commands))
