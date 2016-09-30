@@ -93,7 +93,7 @@ def main(argv=None):
             raise ValueError("Ensure environment variables DATABASE_URL, "
                              "DATABASE_PASS and DATABASE_USER set.")
 
-        driver = GraphDatabase.driver("bolt://" + url, auth=basic_auth(usr, pwd))
+        driver = GraphDatabase.driver(url, auth=basic_auth(usr, pwd))
         session = driver.session()
         for command in commands:
             session.run(command)
