@@ -107,5 +107,18 @@ describe("Web Server Backend", function bootingServer() {
         done();
       });
     });
+
+    it("4.5.0.2 returns an error for nonexistent charts", function retE(done) {
+      request.get(serverUrl(serverBase, "/get_bar_chart"), {
+        qs: {
+          name: "barFoo"
+        }
+      }, function onData(error, response, body) {
+        var result = JSON.parse(body);
+        expect(result.result).to.equal("failure");
+        expect(result.reason).to.match(/.*how to get chart barFoo.*/);
+        done();
+      });
+    });
   });
 });
