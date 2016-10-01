@@ -93,7 +93,25 @@ function launchTestingDatabase(done) {
  * @done: Callback to call when server is ready.
  */
 function startServer(port, done) {
-  var app = require("../app");  // eslint-disable-line global-require
+  var app = null;
+
+  /* We want to completely reload the server, so clear it from the require
+   * cache */
+  var clearModules = ["../app", "../routes"].map(function toAbsolute(relative) {
+    return path.resolve(path.join(__dirname, relative));
+  });
+  var removeKeys = Object.keys(require.cache).filter(function check(cacheMod) {
+    return clearModules.some(function checkAgainstClear(clearMod) {
+      return cacheMod.indexOf(clearMod) !== -1;
+    });
+  });
+
+  removeKeys.forEach(function removeKey(key) {
+    delete require.cache[key];
+  });
+
+  /* Now require the app */
+  app = require("../app");  // eslint-disable-line global-require
   app.set("port", port);
   return app.listen(app.get("port"), done);
 }
