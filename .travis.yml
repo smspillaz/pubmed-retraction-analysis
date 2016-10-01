@@ -34,5 +34,5 @@ script:
  - python setup.py polysquarelint --exclusions=*/neo4j/*,*/venv/*,*/node_modules/*,*/dist/*,*/public/components/* --suppress-codes=I100,LongDescription,D203
  - python setup.py green
  - echo "Killing remaining database processes"
- - killall -9 java
+ - killall -9 java || true
  - npm run test
