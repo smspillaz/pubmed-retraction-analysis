@@ -88,7 +88,7 @@ def main(argv=None):
         commands = list(commands_from_data(data))
 
     if parse_result.no_execute:
-        print(json.dumps(commands))
+        sys.stdout.write(json.dumps(commands))
     elif len(commands):
         if all(var in os.environ for
                var in ["DATABASE_URL", "DATABASE_PASS"]):
