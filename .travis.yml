@@ -19,6 +19,7 @@ install:
  - rm -rf - wget neo4j-community-2.2.0-M03-unix.tar.gz
  - popd
  - python install.py
+ - mkdir -p neo4j
  - pushd neo4j
  - wget dist.neo4j.org/neo4j-community-2.2.0-M03-unix.tar.gz
  - tar -xzvf neo4j-community-2.2.0-M03-unix.tar.gz
