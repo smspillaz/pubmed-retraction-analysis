@@ -52,6 +52,7 @@
     "neo4j-driver": "^1.1.0-M01",
     "node-neo4j": "^2.0.3",
     "portfinder": "^1.0.7",
+    "request": "^2.75.0",
     "supertest": "^2.0.0",
     "which": "^1.2.11"
   }
