@@ -17,7 +17,7 @@ var TEST_TOKEN = "4287e44985b04c7536c523ca6ea8e67c";
  * @returns {undefined}
  */
 function setTestingDatabaseEnvironment() {
-  process.env.DATABASE_URL = "http://localhost:7474";
+  process.env.DATABASE_URL = "localhost:7474";
   process.env.DATABASE_PASS = TEST_TOKEN;
 }
 
