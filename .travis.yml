@@ -29,7 +29,7 @@ script:
  - export LEGACY_NEO4J=1
  - which npm
  - which node
- - export DATABASE_URL=http://localhost:7474
+ - export DATABASE_URL=localhost:7474
  - npm run lint
  - python setup.py polysquarelint --exclusions=*/neo4j/*,*/venv/*,*/node_modules/*,*/dist/*,*/public/components/* --suppress-codes=I100,LongDescription,D203
  - python setup.py green
