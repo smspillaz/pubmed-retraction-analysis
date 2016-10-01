@@ -17,11 +17,15 @@ import shutil
 
 import subprocess
 
+import sys
+
 from importer import load
 
 from nose_parameterized import parameterized
 
 import requests
+
+from six.moves import StringIO
 
 from testtools import (ExpectedException, TestCase)
 from testtools.matchers import Equals
@@ -203,3 +207,12 @@ class TestImporterLoad(TestCase):
             MockSocket.return_value.connect = raise_socket_error
             with ExpectedException(requests.exceptions.ConnectionError):
                 run_commands(load.commands_from_data([ENTRY_VALUES]))
+
+    def test_throw_exception_if_input_data_invalid(self):
+        """4.5.5.3 Throw exception if input data is invalid."""
+        membuf = StringIO()
+        membuf.write("invalid")
+        membuf.seek(0)
+        self.patch(sys, "stdin", membuf)
+        with ExpectedException(ValueError):
+            load.main()
