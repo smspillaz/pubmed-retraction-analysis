@@ -1,26 +1,13 @@
 /* eslint-env mocha */
 
 var expect = require("chai").expect;
-var dbUtils = require("../db/utils");
 var testUtils = require("./utils");
 var URL = require("url");
 var which = require("which");
 
+require("./database");
 
 describe("Booting the server", function bootingServer() {
-  var databaseProcess = null;
-
-  before(function launchDatabase(done) {
-    this.timeout(8000);
-    databaseProcess = testUtils.launchTestingDatabase(done);
-    testUtils.setTestingDatabaseEnvironment();
-    dbUtils.validateEnvironment("mocha test");
-  });
-
-  after(function teardownDatabase() {
-    databaseProcess.kill("SIGKILL");
-  });
-
   it("should fail if DATABASE_URL is not set", function failDBUrl(done) {
     testUtils.withOverriddenEnvironment({
       DATABASE_URL: ""
