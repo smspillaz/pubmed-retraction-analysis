@@ -18,7 +18,7 @@ describe("Booting the server", function bootingServer() {
   });
 
   after(function teardownDatabase() {
-    databaseProcess.kill();
+    databaseProcess.kill("SIGKILL");
   });
 
   it("should fail if DATABASE_URL is not set", function failDBUrl(done) {
