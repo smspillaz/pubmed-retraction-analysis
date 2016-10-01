@@ -120,5 +120,13 @@ describe("Web Server Backend", function bootingServer() {
         done();
       });
     });
+
+    it("4.5.10.10 returns an error for nonexistent page", function retE(done) {
+      request.get(serverUrl(serverBase, "/undefined"),
+                  function onData(error, response) {
+                    expect(response.statusCode).to.equal(404);
+                    done();
+                  });
+    });
   });
 });
