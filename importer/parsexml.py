@@ -125,6 +125,19 @@ def warning(filename, msg):
                                      msg))
 
 
+def get_author_name(author_element):
+    """Given an author_element attempt to get a name."""
+    lastname_element = author_element.find("LastName")
+    forename_element = author_element.find("ForeName")
+    name = " ".join([a.text for a in [forename_element, lastname_element]
+                     if a is not None])
+
+    if not name:
+        name = author_element.find("CollectiveName").text
+
+    return name
+
+
 def parse_element_tree(tree, filename=None):
     """For a given ElementTree :tree:, parse it into JSON."""
     root = tree.getroot()
@@ -141,10 +154,7 @@ def parse_element_tree(tree, filename=None):
         article_data["pmid"] = medinfo.find("PMID").text
 
     for author in root.iter("Author"):
-        lastname = author.find("LastName").text
-        firstname = author.find("ForeName").text
-        authorname = firstname + " " + lastname
-        article_data["Author"] = authorname
+        article_data["Author"] = get_author_name(author)
 
     for pubDate in root.iter("DateCompleted"):
         expect_valid_date_combinations("DateCompleted", pubDate)
