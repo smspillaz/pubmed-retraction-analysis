@@ -11,7 +11,10 @@ describe("Booting the server", function bootingServer() {
   var databaseProcess = null;
 
   before(function launchDatabase(done) {
+    this.timeout(6000);
     databaseProcess = testUtils.launchTestingDatabase(done);
+    testUtils.setTestingDatabaseEnvironment();
+    dbUtils.validateEnvironment("mocha test");
   });
 
   after(function teardownDatabase() {
