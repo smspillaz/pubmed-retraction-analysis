@@ -1,5 +1,72 @@
+/* eslint-env node */
+
 var exec = require("child_process").exec;
+var path = require("path");
 var portfinder = require("portfinder");
+var request = require("request");
+var currentDirectory = __dirname;
+
+var TEST_TOKEN = "4287e44985b04c7536c523ca6ea8e67c";
+
+/**
+ * setTestingDatabaseEnvironment
+ *
+ * Sets up environment variables for the testing database
+ *
+ * @returns {undefined}
+ */
+function setTestingDatabaseEnvironment() {
+  process.env.DATABASE_URL = "http://localhost:7474";
+  process.env.DATABASE_PASS = TEST_TOKEN;
+}
+
+/**
+ * resetDatabaseCredentials
+ *
+ * @url {string} - the location of a neo4j database.
+ * @returns {object} - a Promise that resolves when credential reset is done.
+ */
+function resetDatabaseCredentials(url) {
+  return new Promise(function authorizationTokenPromise(resolve, reject) {
+    request.post(url + "/user/neo4j/authorization_token", {
+      json: {
+        password: "neo4j",
+        authorization_token: TEST_TOKEN
+      }
+    }, function onDoneAuthorizationToken(error, response, body) {
+      if (error) {
+        return reject(error);
+      }
+
+      return resolve(JSON.parse(body));
+    });
+  });
+}
+
+/**
+ * launchTestingDatabase
+ *
+ * Start a Neo4j instance running on the default port, calling
+ * @done when it has finished booting up.
+ *
+ * @done {function}: Callback to call when the database is ready.
+ * @returns {object}: Process handle for the database.
+ */
+function launchTestingDatabase(done) {
+  return exec(path.resolve(path.join(currentDirectory,
+                                     "..",
+                                     "neo4j",
+                                     "neo4j-community-2.2.0-M03",
+                                     "bin",
+                                     "neo4j") + " console"),
+              function onDatabaseLaunched() {
+                /* Immediately make a request to reset the
+                 * database credentials and clear all
+                 * data */
+                var host = "http://localhost:7474";
+                resetDatabaseCredentials(host).then(done);
+              });
+}
 
 /**
  * startServer
@@ -96,5 +163,7 @@ module.exports = {
   startServer: startServer,
   startServerWithAutomaticPort: startServerWithAutomaticPort,
   withOverriddenEnvironment: withOverriddenEnvironment,
-  invokeProcessForReturnCode: invokeProcessForReturnCode
+  invokeProcessForReturnCode: invokeProcessForReturnCode,
+  launchTestingDatabase: launchTestingDatabase,
+  setTestingDatabaseEnvironment: setTestingDatabaseEnvironment
 };

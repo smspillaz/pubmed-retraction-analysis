@@ -9,6 +9,16 @@ var which = require("which");
 
 dbUtils.validateEnvironment("mocha test");
 describe("Booting the server", function bootingServer() {
+  var databaseProcess = null;
+
+  before(function launchDatabase(done) {
+    databaseProcess = testUtils.launchTestingDatabase(done);
+  });
+
+  after(function teardownDatabase() {
+    databaseProcess.kill();
+  });
+
   it("should fail if DATABASE_URL is not set", function failDBUrl(done) {
     testUtils.withOverriddenEnvironment({
       DATABASE_URL: undefined
