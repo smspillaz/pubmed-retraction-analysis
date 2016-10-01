@@ -7,6 +7,8 @@
 
 import errno
 
+import json
+
 import mock
 
 import os
@@ -214,5 +216,10 @@ class TestImporterLoad(TestCase):
         membuf.write("invalid")
         membuf.seek(0)
         self.patch(sys, "stdin", membuf)
-        with ExpectedException(ValueError):
-            load.main()
+
+        if sys.version_info.major <= 2:
+            with ExpectedException(ValueError):
+                load.main()
+        elif sys.version_info.major >= 3:
+            with ExpectedException(json.decoder.JSONDecodeError):
+                load.main()
