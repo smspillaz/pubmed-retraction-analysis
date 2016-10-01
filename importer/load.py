@@ -91,10 +91,10 @@ def main(argv=None):
         print(json.dumps(commands))
     elif len(commands):
         if all(var in os.environ for
-               var in ["DATABASE_URL", "DATABASE_USER", "DATABASE_PASS"]):
+               var in ["DATABASE_URL", "DATABASE_PASS"]):
                     url = os.environ["DATABASE_URL"]
                     pwd = os.environ["DATABASE_PASS"]
-                    usr = os.environ["DATABASE_USER"]
+                    usr = os.environ.get("DATABASE_USER", "")
         else:
             raise ValueError("Ensure environment variables DATABASE_URL, "
                              "DATABASE_PASS and DATABASE_USER set.")
