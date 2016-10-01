@@ -1,6 +1,7 @@
-/* eslint-env node */
+/* eslint-env node, es6 */
 
 var exec = require("child_process").exec;
+var spawn = require("child_process").spawn;
 var path = require("path");
 var portfinder = require("portfinder");
 var request = require("request");
@@ -38,7 +39,7 @@ function resetDatabaseCredentials(url) {
         return reject(error);
       }
 
-      return resolve(JSON.parse(body));
+      return resolve(body);
     });
   });
 }
@@ -53,19 +54,33 @@ function resetDatabaseCredentials(url) {
  * @returns {object}: Process handle for the database.
  */
 function launchTestingDatabase(done) {
-  return exec(path.resolve(path.join(currentDirectory,
-                                     "..",
-                                     "neo4j",
-                                     "neo4j-community-2.2.0-M03",
-                                     "bin",
-                                     "neo4j") + " console"),
-              function onDatabaseLaunched() {
-                /* Immediately make a request to reset the
-                 * database credentials and clear all
-                 * data */
-                var host = "http://localhost:7474";
-                resetDatabaseCredentials(host).then(done);
-              });
+  var dbPath = path.resolve(path.join(currentDirectory,
+                                      "..",
+                                      "neo4j",
+                                      "neo4j-community-2.2.0-M03",
+                                      "bin",
+                                      "neo4j"));
+  var pid = spawn(dbPath, ["console"]);
+
+  pid.stdout.on("data", function onDatabaseStdout(data) {
+    var host = "http://localhost:7474";
+
+    /* A nice little indent */
+    process.stdout.write("    neo4j: " + data);
+    if (data.indexOf("Remote interface") !== -1) {
+      /* Immediately make a request to reset the
+       * database credentials and clear all
+       * data */
+      resetDatabaseCredentials(host).then(function onResetDone() {
+        done();
+      });
+    }
+  });
+  pid.stderr.on("data", function onDatabaseStderr(data) {
+    process.stderr.write("    neo4j: " + data);
+  });
+
+  return pid;
 }
 
 /**
