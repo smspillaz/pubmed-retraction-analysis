@@ -6,7 +6,7 @@ var URL = require("url");
 var which = require("which");
 
 describe("Booting the server", function bootingServer() {
-  it("should fail if DATABASE_URL is not set", function failDBUrl(done) {
+  it("4.5.9.2 should fail if DATABASE_URL is not set", function failDB(done) {
     testUtils.withOverriddenEnvironment({
       DATABASE_URL: ""
     }, function inEnv(doneEnv) {
@@ -19,7 +19,7 @@ describe("Booting the server", function bootingServer() {
     });
   });
 
-  it("should fail if two servers are on the same port", function failTwoServers(done) {
+  it("4.5.9.3 should fail if two servers are on the same port", function failTwoServers(done) {
     testUtils.startServerWithAutomaticPort(function onStarted(server, url) {
       var port = URL.parse(url).port;
       which("node", function onFoundNode(err, resolved) {
@@ -40,7 +40,7 @@ describe("Booting the server", function bootingServer() {
     });
   });
 
-  it("should succeed if DATABASE_URL is set", function succeedEnv(done) {
+  it("4.5.9.1 should succeed if DATABASE_URL is set", function succeed(done) {
     testUtils.startServerWithAutomaticPort(function onStarted(server, url, err) {
       expect(err).to.be.undefined; // eslint-disable-line no-unused-expressions
       expect(server).to.be.defined; // eslint-disable-line no-unused-expressions
