@@ -63,7 +63,7 @@ def open_or_default(path, default):
 
 def commands_from_data(data):
     """Given an iterable of JSON objects yield Neo4j commands."""
-    yield "MATCH(n) DETACH DELETE n"
+    yield "MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n, r"
 
     for record in data:
         command = generate_command_for_record(record)
