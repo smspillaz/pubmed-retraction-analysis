@@ -13,7 +13,7 @@ function validateEnvironment(prog) {
   ];
 
   requiredVariables.forEach(function onEachReqVar(variableName) {
-    if (process.env[variableName] === undefined) {
+    if (!process.env[variableName]) {
       throw new Error(variableName + " must be set in the environment before " +
                       "using this tool. For instance, " + variableName +
                       "=.... " + String(prog || ""));
