@@ -55,7 +55,7 @@ def generate_command_for_record(record):
 def open_or_default(path, default):
     """A context with either path as an open file, or some default."""
     try:
-        with open(path or '', 'r') as fileobj:
+        with open(path or "", "r") as fileobj:
             yield fileobj
     except IOError:
         yield default
@@ -67,7 +67,7 @@ def main(argv=None):
     parser.add_argument("file",
                         help="File to read",
                         type=str,
-                        nargs='?',
+                        nargs="?",
                         metavar="FILE")
     parser.add_argument("--no-execute",
                         action="store_true")
