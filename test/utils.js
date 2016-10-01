@@ -34,7 +34,7 @@ function resetDatabaseCredentials(url) {
     request.post(url + "/user/neo4j/authorization_token", {
       json: {
         password: "neo4j",
-        authorization_token: TEST_TOKEN
+        new_authorization_token: TEST_TOKEN
       }
     }, function onDoneAuthorizationToken(error, response, body) {
       if (error) {
