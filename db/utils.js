@@ -9,7 +9,7 @@
 function validateEnvironment(prog) {
   var requiredVariables = [
     "DATABASE_URL",
-    "NEO_PASS"
+    "DATABASE_PASS"
   ];
 
   requiredVariables.forEach(function onEachReqVar(variableName) {
@@ -31,9 +31,9 @@ function validateEnvironment(prog) {
 function createConnectionString() {
   return [
     "http://",
-    process.env.NEO_USER || "",
+    process.env.DATABASE_USER || "",
     ":",
-    process.env.NEO_PASS,
+    process.env.DATABASE_PASS,
     "@",
     process.env.DATABASE_URL
   ].join("");
