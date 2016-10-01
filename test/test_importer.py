@@ -7,7 +7,11 @@
 
 import errno
 
+import mock
+
 import os
+
+import socket
 
 import shutil
 
@@ -19,7 +23,7 @@ from nose_parameterized import parameterized
 
 import requests
 
-from testtools import TestCase
+from testtools import (ExpectedException, TestCase)
 from testtools.matchers import Equals
 
 
@@ -187,3 +191,15 @@ class TestImporterLoad(TestCase):
                         " RETURN r")
         self.assertThat(res.json()["data"][0][0]["data"]["name"],
                         Equals("November"))
+
+    def test_throw_exception_if_network_connection_fails(self):
+        """4.5.5.2 Throw exception if network connection is down."""
+        with mock.patch("socket.socket") as MockSocket:
+            def raise_socket_error(*args):
+                """Raise socket error."""
+                del args
+                raise socket.error()
+
+            MockSocket.return_value.connect = raise_socket_error
+            with ExpectedException(requests.exceptions.ConnectionError):
+                run_commands(load.commands_from_data([ENTRY_VALUES]))
