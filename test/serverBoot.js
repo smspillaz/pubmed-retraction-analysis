@@ -5,8 +5,6 @@ var testUtils = require("./utils");
 var URL = require("url");
 var which = require("which");
 
-require("./database");
-
 describe("Booting the server", function bootingServer() {
   it("should fail if DATABASE_URL is not set", function failDBUrl(done) {
     testUtils.withOverriddenEnvironment({
