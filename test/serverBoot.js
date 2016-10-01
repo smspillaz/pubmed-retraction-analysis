@@ -7,7 +7,6 @@ var URL = require("url");
 var which = require("which");
 
 
-dbUtils.validateEnvironment("mocha test");
 describe("Booting the server", function bootingServer() {
   var databaseProcess = null;
 
