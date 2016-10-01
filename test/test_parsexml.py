@@ -167,6 +167,20 @@ class TestFileToElementTree(TestCase):
         )
         self.assertThat(result[entry], Is(None))
 
+    def test_parsing_author_with_collective_name(self):
+        """4.5.3.1 Parse collective name from author."""
+        entry = POSSIBLE_MOCK_FIELDS.copy()
+        entry["Author"] = {
+            "CollectiveName": "collective"
+        }
+        stream = StringIO(
+            wrap_document_text(construct_document_from(**entry))
+        )
+        result = parsexml.parse_element_tree(
+            parsexml.file_to_element_tree(stream)
+        )
+        self.assertThat(result["Author"], Equals("collective"))
+
     def test_parsing_file_with_no_fields_throws(self):
         """4.5.3.4 Throw error file has no relevant fields."""
         stream = StringIO("<PubmedArticleSet><PubmedArticle>"
