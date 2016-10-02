@@ -1,12 +1,12 @@
 .dropdown{	//dropdown button
-    font-family: "Lucida Console";
+    font-family: "Lucida Console" monospace;
     font-size: 10px;
     margin: 10px 0;
     padding: 15px 30px;
 }
 
 .chart-container {
-    font: 10px "Lucida Console";
+    font: 10px "Lucida Console" monospace;
     height: 500px;
     margin-top: 2em;
 }
@@ -21,7 +21,7 @@ body {
 }
 .navbar-default .navbar-brand {	//Navbar brand on left of navbar
     color: #ffffff;
-  	font-family: "Trebuchet MS";
+    font-family: "Trebuchet MS" sans;
     font-size: 25px;
 }
 .navbar-default .navbar-brand:hover {	//when navbar brand is hovered
@@ -30,7 +30,7 @@ body {
 .navbar-default .navbar-nav > li > a {	//admin button on right of navbar
     color: #263238;
     font-size: 16px;
-  	font-family: "Trebuchet MS";  
+    font-family: "Trebuchet MS" sans;
 }
 .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {	//when admin button is hovered
     background-color: #42a5f5;
