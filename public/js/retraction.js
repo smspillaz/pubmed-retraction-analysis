@@ -15,7 +15,6 @@ var COLOR_TABLE = [
  */
 function updateGraph(newData) {
   var svg;
-  var rects;
 
   /* The individual points of data, not including labels */
   var dataPoints = newData.map(function onEachDataPoint(w) {
@@ -44,34 +43,36 @@ function updateGraph(newData) {
             return ["transform: translate(", x, "px,", y, "px", ")"].join("");
           });
 
-  rects = svg.selectAll("rect")
-             .data(dataPoints)
-             .enter()
-             .append("rect");
+  newData.map(function forEachDataPoint(dataPoint, index) {
+    var g = svg.append("g")
+               .attr("transform", function computeBarY(d) {
+                 var chartHeight = this.parentNode.clientHeight;
+                 var barSpacing = 10;
+                 var barHeight = ((chartHeight - (barSpacing *
+                                                  newData.length)) /
+                                  newData.length);
 
-  rects.attr("width", function computeBarWidth(d) {
-    var x = d3.scaleLinear()
-                 .domain([0, d3.max(dataPoints)])
-                 .range([0, this.parentNode.clientWidth]);
-    return x(d);
-  })
-  .attr("height", function computeBarHeight() {
-    var chartHeight = this.parentNode.clientHeight;
-    var barSpacing = 10;
-    return (chartHeight - (barSpacing * newData.length)) / newData.length;
-  })
-  .attr("y", function computeBarY(d, i) {
-    var chartHeight = this.parentNode.clientHeight;
-    var barSpacing = 10;
-    var barHeight = ((chartHeight - (barSpacing * newData.length)) /
-                     newData.length);
-
-    return (i * barSpacing) + (i * barHeight);
-  })
-  .attr("rx", "15")
-  .attr("ry", "15")
-  .attr("fill", function(d, i) {
-    return COLOR_TABLE[i % newData.length];
+                 var y = (index * barSpacing) + (index * barHeight);
+                 return "translate(0.0, " + y + ")";
+               });
+    g.append("rect")
+     .attr("width", function computeBarWidth() {
+       var parentWidth = this.parentNode.parentNode.clientWidth;
+       var x = d3.scaleLinear().domain([0, d3.max(dataPoints)])
+                               .range([0, parentWidth]);
+       return x(dataPoint.value);
+     })
+     .attr("height", function computeBarHeight() {
+       var chartHeight = this.parentNode.parentNode.clientHeight;
+       var barSpacing = 10;
+       return ((chartHeight - (barSpacing * newData.length)) /
+               newData.length);
+     })
+     .attr("rx", "15")
+     .attr("ry", "15")
+     .attr("fill", function() {
+       return COLOR_TABLE[index % newData.length];
+     });
   });
 }
 
