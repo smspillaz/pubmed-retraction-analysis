@@ -3,11 +3,9 @@
     font-family: "Lucida Console" monospace;
     font-size: 10px;
     margin: 10px 0;
-    padding: 15px 30px;
 }
 
 .chart-container {
-    font: 10px "Lucida Console" monospace;
     height: 500px;
     margin-top: 2em;
 }
