@@ -43,7 +43,7 @@ function updateGraph(newData) {
             return ["transform: translate(", x, "px,", y, "px", ")"].join("");
           });
 
-  newData.map(function forEachDataPoint(dataPoint, index) {
+  newData.forEach(function forEachDataPoint(dataPoint, index) {
     var g = svg.append("g")
                .attr("transform", function computeBarY() {
                  var chartHeight = this.parentNode.clientHeight;
