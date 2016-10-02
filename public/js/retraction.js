@@ -3,7 +3,7 @@
 var d3 = require("d3");
 
 var COLOR_TABLE = [
-    "#C8D2D9", "#97ABB8", "#FFBEB9", "#FFD1CE"
+  "#C8D2D9", "#97ABB8", "#FFBEB9", "#FFD1CE"
 ];
 
 /**
@@ -75,17 +75,17 @@ function updateGraph(newData) {
      .attr("rx", "15")
      .attr("ry", "15")
      .attr("fill", COLOR_TABLE[index % COLOR_TABLE.length]);
-   g.append("text")
-    .attr("fill", "#ffffff")
-    .text(dataPoint.name)
-    .attr("y", function computeY() {
-      var chartHeight = this.parentNode.parentNode.clientHeight;
-      var barSpacing = 10;
-      var textHeight = 15;
-      return ((chartHeight - (barSpacing * newData.length)) /
-              newData.length) / 2 + (textHeight / 2);
-    })
-    .attr("x", 10);
+    g.append("text")
+     .attr("fill", "#ffffff")
+     .text(dataPoint.name)
+     .attr("y", function computeY() {
+       var chartHeight = this.parentNode.parentNode.clientHeight;
+       var barSpacing = 10;
+       var textHeight = 15;
+       return ((chartHeight - (barSpacing * newData.length)) /
+               newData.length) / 2 + (textHeight / 2);
+     })
+     .attr("x", 10);
   });
 }
 
