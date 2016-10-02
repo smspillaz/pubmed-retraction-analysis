@@ -2,6 +2,10 @@
 
 var d3 = require("d3");
 
+var COLOR_TABLE = [
+    "#C8D2D9", "#97ABB8", "#FFBEB9", "#FFD1CE", "#FFFBE9", "#FFF5CE"
+];
+
 /**
  * updateGraph
  *
@@ -58,6 +62,11 @@ function updateGraph(newData) {
                      newData.length);
 
     return (i * barSpacing) + (i * barHeight);
+  })
+  .attr("rx", "15")
+  .attr("ry", "15")
+  .attr("fill", function(d, i) {
+    return COLOR_TABLE[i % newData.length];
   });
 }
 
