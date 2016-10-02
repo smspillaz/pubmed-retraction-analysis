@@ -45,7 +45,7 @@ function updateGraph(newData) {
 
   newData.map(function forEachDataPoint(dataPoint, index) {
     var g = svg.append("g")
-               .attr("transform", function computeBarY(d) {
+               .attr("transform", function computeBarY() {
                  var chartHeight = this.parentNode.clientHeight;
                  var barSpacing = 10;
                  var barHeight = ((chartHeight - (barSpacing *
