@@ -56,17 +56,21 @@ function updateGraph(newData) {
                  return "translate(0.0, " + y + ")";
                });
     g.append("rect")
-     .attr("width", function computeBarWidth() {
-       var parentWidth = this.parentNode.parentNode.clientWidth;
-       var x = d3.scaleLinear().domain([0, d3.max(dataPoints)])
-                               .range([0, parentWidth]);
-       return x(dataPoint.value);
-     })
      .attr("height", function computeBarHeight() {
        var chartHeight = this.parentNode.parentNode.clientHeight;
        var barSpacing = 10;
        return ((chartHeight - (barSpacing * newData.length)) /
                newData.length);
+     })
+     .transition()
+     .delay(index * 50)
+     .duration(750)
+     .ease(d3.easeElastic.period(0.4))
+     .attr("width", function computeBarWidth() {
+       var parentWidth = this.parentNode.parentNode.clientWidth;
+       var x = d3.scaleLinear().domain([0, d3.max(dataPoints)])
+                               .range([0, parentWidth]);
+       return x(dataPoint.value);
      })
      .attr("rx", "15")
      .attr("ry", "15")
