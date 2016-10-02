@@ -3,7 +3,7 @@
 var d3 = require("d3");
 
 var COLOR_TABLE = [
-    "#C8D2D9", "#97ABB8", "#FFBEB9", "#FFD1CE", "#FFFBE9", "#FFF5CE"
+    "#C8D2D9", "#97ABB8", "#FFBEB9", "#FFD1CE"
 ];
 
 /**
