@@ -82,8 +82,8 @@ function updateGraph(newData) {
        var chartHeight = this.parentNode.parentNode.clientHeight;
        var barSpacing = 10;
        var textHeight = 15;
-       return ((chartHeight - (barSpacing * newData.length)) /
-               newData.length) / 2 + (textHeight / 2);
+       return (((chartHeight - (barSpacing * newData.length)) /
+               newData.length) / 2) + (textHeight / 2);
      })
      .attr("x", 10);
   });
