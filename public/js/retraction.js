@@ -17,6 +17,11 @@ function updateGraph(newData) {
   var svg;
   var rects;
 
+  /* The individual points of data, not including labels */
+  var dataPoints = newData.map(function onEachDataPoint(w) {
+    return w.value;
+  });
+
   /* Drop any existing SVG elements */
   Array.prototype.forEach.call(document.getElementsByClassName("chart"),
                                function dropInnerHTMLOf(element) {
@@ -40,13 +45,13 @@ function updateGraph(newData) {
           });
 
   rects = svg.selectAll("rect")
-             .data(newData)
+             .data(dataPoints)
              .enter()
              .append("rect");
 
   rects.attr("width", function computeBarWidth(d) {
     var x = d3.scaleLinear()
-                 .domain([0, d3.max(newData)])
+                 .domain([0, d3.max(dataPoints)])
                  .range([0, this.parentNode.clientWidth]);
     return x(d);
   })
@@ -84,9 +89,7 @@ function postGraphUpdateRequest(name) {
       name: name
     },
     success: function onXHRSuccess(data) {
-      updateGraph(data.data.map(function onEachPoint(w) {
-        return w.value;
-      }));
+      updateGraph(data.data);
     }
   });
 }
