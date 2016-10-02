@@ -28,18 +28,17 @@ body {
 }
 /* when navbar brand is hovered */
 .navbar-default .navbar-brand:hover {
-    color: #263238;
+    background-color: #42a5f5;
 }
 /* admin button on right of navbar */
 .navbar-default .navbar-nav > li > a {
-    color: #263238;
+    color: #ffffff;
     font-size: 16px;
     font-family: "Trebuchet MS" sans;
 }
 /* when admin button is hovered */
 .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
     background-color: #42a5f5;
-    color: #ffffff;
 }
 
 
