@@ -71,8 +71,25 @@ function updateGraph(newData) {
      .attr("rx", "15")
      .attr("ry", "15")
      .attr("fill", function() {
-       return COLOR_TABLE[index % newData.length];
+       return COLOR_TABLE[index % COLOR_TABLE.length];
      });
+   g.append("text")
+    .attr("fill", function() {
+      return "#ffffff";
+    })
+    .text(function() {
+      return dataPoint.name  ;
+    })
+    .attr("y", function() {
+      var chartHeight = this.parentNode.parentNode.clientHeight;
+      var barSpacing = 10;
+      var textHeight = 15;
+      return ((chartHeight - (barSpacing * newData.length)) /
+              newData.length) / 2 + (textHeight / 2);
+    })
+    .attr("x", function() {
+      return 10;
+    });
   });
 }
 
