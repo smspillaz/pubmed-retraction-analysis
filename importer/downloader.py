@@ -1,42 +1,87 @@
+# /importer/downloader.py
+#
+# Downloads PubMed articles.
+#
+# See /LICENCE.md for Copyright information
+"""Download PubMed articles."""
+
 import contextlib
 import json
 import os
 import errno
 import sys
-import xml.etree.ElementTree as ET
+
 from six.moves import urllib
 
-# Attempt to download the given url, returning the xml document
-# Exits after 5 failed attempts
-def attemptDownload(downloadurl, retries=0):
+
+def pubmed_api(function):
+    """Get entry point for PubMed API."""
+    pubmed_api_url = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/{}.fcgi?"
+    return pubmed_api_url.format(function)
+
+
+def pubmed_search_for_articles_url(term, retmax=10):
+    """Get a URL to search PubMed for articles."""
+    return pubmed_api("esearch") + urllib.parse.urlencode({
+        "db": "pubmed",
+        "term": term,
+        "retmax": str(retmax),
+        "retmode": "json"
+    })
+
+
+def pubmed_fetch_article_url(article):
+    """Get a URL to fetch a single PubMed article."""
+    return pubmed_api("efetch") + urllib.parse.urlencode({
+        "db": "pubmed",
+        "id": str(article),
+        "rettype": "xml"
+    })
+
+
+def pubmed_count_articles_url(term):
+    """Get a URL to fetch a single PubMed article."""
+    return pubmed_api("esearch") + urllib.parse.urlencode({
+        "db": "pubmed",
+        "term": term,
+        "retmode": "json",
+        "rettype": "count"
+    })
+
+
+def attempt_download(url, retries=0):
+    """Attempt to download the given url, exits after 5 failed attempts."""
     if retries > 5:
         sys.stderr.write("Connection failed.")
         sys.exit(1)
     try:
-        with contextlib.closing(urllib.request.urlopen(downloadurl)) as response:
-            return response.read()
+        print(url)
+        with contextlib.closing(urllib.request.urlopen(url)) as response:
+            return response.read().decode("utf-8")
     except urllib.error.URLError:
-        retries += 1
-        sys.stderr.write("Connection error.. retrying " + str(retries))
-        return attemptDownload(downloadurl, retries)
+        sys.stderr.write("Connection error.. retrying {}\n".format(retries))
+        return attempt_download(url, retries + 1)
+
+
+def attempt_download_json(url):
+    """Attempt to download the given url, returning JSON."""
+    return json.loads(attempt_download(url))
+
 
 def main(argv=None):
     """Entry point for downloader script."""
     argv = argv or sys.argv[1:]
 
-    counturl = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=Retracted+Publication&rettype=count&retmode=json"
-    str_response = attemptDownload(counturl).decode('utf-8')
-    data = json.loads(str_response)    
-    articleCount = data["esearchresult"]["count"]
+    article_count_data = attempt_download_json(
+        pubmed_count_articles_url("Retracted+Publications")
+    )
+    article_count = article_count_data["esearchresult"]["count"]
 
-    searchurl = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=Retracted+Publication&retmax=" + articleCount + "&retmode=json"
-
-    fetchurl = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?&db=pubmed&rettype=xml&id="
-    request = urllib.request.Request(searchurl)
-        
-    str_response = attemptDownload(request).decode('utf-8')
-    data = json.loads(str_response)
-    idlist = data["esearchresult"]["idlist"]
+    id_list_data = attempt_download_json(
+        pubmed_search_for_articles_url("Retracted+Publications",
+                                       retmax=article_count)
+    )
+    id_list = id_list_data["esearchresult"]["idlist"]
 
     try:
         os.makedirs("Retractions")
@@ -44,15 +89,14 @@ def main(argv=None):
         if error.errno != errno.EEXIST:
             raise error
 
-    for id in idlist:
-        if not os.path.isfile("Retractions/" + id + ".xml"):
-            downloadurl = "%s%s" % (fetchurl,id)
-            out_name = "Retractions/%s.xml" % (id)
-            print("Downloading article " + id)
-            data = attemptDownload(downloadurl)
-            with open(out_name, 'wb') as out_file:
-                out_file.write(data)
-
+    for article_id in id_list:
+        if not os.path.isfile("Retractions/" + article_id + ".xml"):
+            downloadurl = pubmed_fetch_article_url(article_id)
+            out_name = "Retractions/%s.xml" % (article_id)
+            print("Downloading article " + article_id)
+            data = attempt_download(downloadurl)
+            with open(out_name, "wb") as out_file:
+                out_file.write(data.encode("utf-8"))
 
 if __name__ == "__main__":
     main(sys.argv[1:])

@@ -1,8 +1,22 @@
 # PubMed Retraction Analyser
 
+## Working broken Python installations on OS X El Capitan
+
+OSX 10.11 ships with a known broken python installation. Install
+homebrew and then install python:
+
+    $ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    $ brew install python
+
 ## Installing dependencies
 
 Before you do anything, go install [node](http://nodejs.org).
+
+You will also need to install pip from `easy_install` and virtualenv
+from `pip` systemwide:
+
+   $ sudo easy_install pip
+   $ sudo pip install virtualenv
 
 Once you're done with that `npm install` will install all the dependencies.
 
