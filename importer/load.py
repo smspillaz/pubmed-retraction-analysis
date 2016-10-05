@@ -63,11 +63,7 @@ def open_or_default(path, default):
 
 def commands_from_data(data):
     """Given an iterable of JSON objects yield Neo4j commands."""
-<<<<<<< HEAD
     yield "MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n, r"
-=======
-    yield "MATCH(n) DETACH DELETE n"
->>>>>>> tests.importer
 
     for record in data:
         command = generate_command_for_record(record)
