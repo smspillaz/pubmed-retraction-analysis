@@ -4,7 +4,9 @@ C
 Capitan
 Ctrl
 curl
+DATABASE_PASS
 DATABASE_URL
+DATABASE_USER
 downloader
 e
 easy_install
@@ -12,12 +14,12 @@ El
 fsSL
 homebrew
 i
+iterable
 JSON
-NEO_USER
-NEO_PASS
 Neo4j
 neo4j
 npm
+O
 org
 OSX
 pmid
