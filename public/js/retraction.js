@@ -2,6 +2,10 @@
 
 var d3 = require("d3");
 
+var COLOR_TABLE = [
+  "#C8D2D9", "#97ABB8", "#FFBEB9", "#FFD1CE"
+];
+
 /**
  * updateGraph
  *
@@ -11,7 +15,11 @@ var d3 = require("d3");
  */
 function updateGraph(newData) {
   var svg;
-  var rects;
+
+  /* The individual points of data, not including labels */
+  var dataPoints = newData.map(function onEachDataPoint(w) {
+    return w.value;
+  });
 
   /* Drop any existing SVG elements */
   Array.prototype.forEach.call(document.getElementsByClassName("chart"),
@@ -35,29 +43,49 @@ function updateGraph(newData) {
             return ["transform: translate(", x, "px,", y, "px", ")"].join("");
           });
 
-  rects = svg.selectAll("rect")
-             .data(newData)
-             .enter()
-             .append("rect");
+  newData.forEach(function forEachDataPoint(dataPoint, index) {
+    var g = svg.append("g")
+               .attr("transform", function computeBarY() {
+                 var chartHeight = this.parentNode.clientHeight;
+                 var barSpacing = 10;
+                 var barHeight = ((chartHeight - (barSpacing *
+                                                  newData.length)) /
+                                  newData.length);
 
-  rects.attr("width", function computeBarWidth(d) {
-    var x = d3.scaleLinear()
-                 .domain([0, d3.max(newData)])
-                 .range([0, this.parentNode.clientWidth]);
-    return x(d);
-  })
-  .attr("height", function computeBarHeight() {
-    var chartHeight = this.parentNode.clientHeight;
-    var barSpacing = 10;
-    return (chartHeight - (barSpacing * newData.length)) / newData.length;
-  })
-  .attr("y", function computeBarY(d, i) {
-    var chartHeight = this.parentNode.clientHeight;
-    var barSpacing = 10;
-    var barHeight = ((chartHeight - (barSpacing * newData.length)) /
-                     newData.length);
-
-    return (i * barSpacing) + (i * barHeight);
+                 var y = (index * barSpacing) + (index * barHeight);
+                 return "translate(0.0, " + y + ")";
+               });
+    g.append("rect")
+     .attr("height", function computeBarHeight() {
+       var chartHeight = this.parentNode.parentNode.clientHeight;
+       var barSpacing = 10;
+       return ((chartHeight - (barSpacing * newData.length)) /
+               newData.length);
+     })
+     .transition()
+     .delay(index * 50)
+     .duration(750)
+     .ease(d3.easeElastic.period(0.4))
+     .attr("width", function computeBarWidth() {
+       var parentWidth = this.parentNode.parentNode.clientWidth;
+       var x = d3.scaleLinear().domain([0, d3.max(dataPoints)])
+                               .range([0, parentWidth]);
+       return x(dataPoint.value);
+     })
+     .attr("rx", "15")
+     .attr("ry", "15")
+     .attr("fill", COLOR_TABLE[index % COLOR_TABLE.length]);
+    g.append("text")
+     .attr("fill", "#ffffff")
+     .text(dataPoint.name)
+     .attr("y", function computeY() {
+       var chartHeight = this.parentNode.parentNode.clientHeight;
+       var barSpacing = 10;
+       var textHeight = 15;
+       return (((chartHeight - (barSpacing * newData.length)) /
+               newData.length) / 2) + (textHeight / 2);
+     })
+     .attr("x", 10);
   });
 }
 
@@ -75,9 +103,7 @@ function postGraphUpdateRequest(name) {
       name: name
     },
     success: function onXHRSuccess(data) {
-      updateGraph(data.data.map(function onEachPoint(w) {
-        return w.value;
-      }));
+      updateGraph(data.data);
     }
   });
 }
