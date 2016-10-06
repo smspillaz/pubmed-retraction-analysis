@@ -28,10 +28,10 @@ function generateQueryForChart(chartName) {
   var chartDispatch = {
     countryYear: "MATCH(a:Country)-[r]-() " +
                  "RETURN a, count(r) as rel_count " +
-                 "ORDER BY rel_count, a.name desc LIMIT 10",
+                 "ORDER BY rel_count desc LIMIT 10",
     authorYear: "MATCH(a:Author)-[r]-() " +
                 "RETURN a, count(r) as rel_count " +
-                "ORDER BY rel_count, a.name desc LIMIT 10"
+                "ORDER BY rel_count desc LIMIT 10"
   };
   var dispatchFunc = null;
 
