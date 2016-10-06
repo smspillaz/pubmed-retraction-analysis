@@ -9,7 +9,7 @@ var COLOR_TABLE = [
 /* This is a poor-man's estimate, given the fact that measuring the
  * actual size of the characters (accounting for kerning) will involve
  * significant DOM mutation. */
-var INDIVIDUAL_CHARACTER_SIZE = 7;
+var INDIVIDUAL_CHARACTER_SIZE = 10;
 
 /**
  * calculateChartOffset
@@ -82,6 +82,20 @@ function updateGraph(newData) {
           });
 
   postprocessedData.forEach(function forEachDataPoint(dataPoint, index) {
+    var computeTextY = function computeTextY() {
+      var chartHeight = this.parentNode.parentNode.clientHeight;
+      var barSpacing = 10;
+      var textHeight = 15;
+      return (((chartHeight - (barSpacing * postprocessedData.length)) /
+              postprocessedData.length) / 2) + (textHeight / 2);
+    };
+    var computeBarWidth = function computeBarWidth() {
+      var parentWidth = (this.parentNode.parentNode.clientWidth -
+                         offsetAmount);
+      var x = d3.scaleLinear().domain([0, d3.max(dataPoints)])
+                              .range([0, parentWidth]);
+      return x(dataPoint.value);
+    };
     var g = svg.append("g")
                .attr("transform", function computeBarY() {
                  var chartHeight = this.parentNode.clientHeight;
@@ -104,13 +118,7 @@ function updateGraph(newData) {
      .delay(index * 50)
      .duration(750)
      .ease(d3.easeElastic.period(0.4))
-     .attr("width", function computeBarWidth() {
-       var parentWidth = (this.parentNode.parentNode.clientWidth -
-                          offsetAmount);
-       var x = d3.scaleLinear().domain([0, d3.max(dataPoints)])
-                               .range([0, parentWidth]);
-       return x(dataPoint.value);
-     })
+     .attr("width", computeBarWidth)
      .attr("rx", "15")
      .attr("ry", "15")
      .attr("x", String(offsetAmount))
@@ -118,14 +126,22 @@ function updateGraph(newData) {
     g.append("text")
      .attr("fill", dataPoint.isOffset ? "#000000" : "#ffffff")
      .text(dataPoint.name)
-     .attr("y", function computeY() {
-       var chartHeight = this.parentNode.parentNode.clientHeight;
-       var barSpacing = 10;
-       var textHeight = 15;
-       return (((chartHeight - (barSpacing * postprocessedData.length)) /
-               postprocessedData.length) / 2) + (textHeight / 2);
-     })
+     .attr("y", computeTextY)
      .attr("x", dataPoint.isOffset ? 10 : 10 + offsetAmount);
+    g.append("text")
+     .attr("fill", "#ffffff")
+     .text(dataPoint.value)
+     .attr("y", computeTextY)
+     .transition()
+     .delay(index * 50)
+     .duration(750)
+     .ease(d3.easeElastic.period(0.4))
+     .attr("x", function computeNumberX() {
+       var barWidth = computeBarWidth.call(this);
+       var label = String(dataPoint.value);
+       var labelSize = label.length * INDIVIDUAL_CHARACTER_SIZE;
+       return (barWidth - labelSize) + offsetAmount;
+     });
   });
 }
 
