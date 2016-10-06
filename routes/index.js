@@ -48,6 +48,26 @@ function generateQueryForChart(chartName) {
   return dispatchFunc.apply(this, Array.prototype.slice.call(arguments, 1));
 }
 
+/**
+ * normaliseName
+ *
+ * Normalise a name such that the name is always in title case.
+ *
+ * @param name {string} - The name to normalise
+ * @returns {string} - The normalised name.
+ */
+function normaliseName(name) {
+  return name.toLowerCase().split(" ").map(function forEachSection(s) {
+    return Array.prototype.map.call(s, function forEachChar(c, i) {
+      if (i === 0) {
+        return c.toUpperCase();
+      }
+
+      return c;
+    }).join("");
+  }).join(" ");
+}
+
 /* API endpoint for the frontend to get a particular
  * chart.
  *
@@ -67,6 +87,8 @@ router.get("/get_bar_chart", function onGetBarChart(req, res) {
   }
 
   db.cypherQuery(query, function handleQueryRes(err, result) {
+    var accumulator = {};
+
     if (err) {
       res.json({
         result: "failure",
@@ -75,12 +97,23 @@ router.get("/get_bar_chart", function onGetBarChart(req, res) {
       return;
     }
 
+    /* Merge together entities that really have the same name but
+     * with a different capitalisation convention */
+    result.data.forEach(function forEachRow(r) {
+      var name = normaliseName(r[0].name);
+      if (Object.keys(accumulator).indexOf(name) !== -1) {
+        accumulator[name] += r[1];
+      } else {
+        accumulator[name] = r[1];
+      }
+    });
+
     res.json({
       result: "success",
-      data: result.data.map(function forEachRow(r) {
+      data: Object.keys(accumulator).map(function forEachKey(k) {
         return {
-          name: r[0].name,
-          value: r[1]
+          name: k,
+          value: accumulator[k]
         };
       })
     });
