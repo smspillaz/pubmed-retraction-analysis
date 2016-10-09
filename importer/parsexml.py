@@ -182,7 +182,9 @@ def parse_element_tree(tree, filename=None):
             article_data["country"] = sections[0]
 
     for heading in root.iter("MeshHeadingList"):
-        article_data["Topic"] = heading.find('DescriptorName').text
+        sections = parse_selected_sections(heading, "DescriptorName")
+        if all(sections):
+            article_data["Topic"] = sections[0]
 
     # Print error to stderr if there's contradictory field
     # entries and don't insert a value if so
