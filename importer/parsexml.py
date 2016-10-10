@@ -147,7 +147,8 @@ def parse_element_tree(tree, filename=None):
         "reviseDate": None,
         "ISSN": None,
         "country": None,
-        "Author": None
+        "Author": None,
+        "Topic": None
     }
 
     for medinfo in root.iter("MedlineCitation"):
@@ -179,6 +180,11 @@ def parse_element_tree(tree, filename=None):
         sections = parse_selected_sections(journalinfo, "Country")
         if all(sections):
             article_data["country"] = sections[0]
+
+    for heading in root.iter("MeshHeadingList"):
+        sections = parse_selected_sections(heading, "DescriptorName")
+        if all(sections):
+            article_data["Topic"] = sections[0]
 
     # Print error to stderr if there's contradictory field
     # entries and don't insert a value if so
