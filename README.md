@@ -35,6 +35,38 @@ be set in order for the backend to function:
 The default values for all of these environment variables will be handed
 over in the private documentation.
 
+## Continuous Integration and Tests
+
+By default, every commit on the master branch of this repository will
+run the entire acceptance test suite on [Travis CI](http://travis-ci.org).
+Travis-CI uses the standard `install.py` script to install dependencies which
+includes the installation of a staging neo4j instance. You will not be able to
+run the test suite manually without that.
+
+To run the run the test suite manually manually, do the following:
+
+    $ python setup.py polysquarelint --exclusions=*/venv/*,*/node_modules/*,*/dist/*,*/public/components/* --suppress-codes=I100,LongDescription,D203
+    $ npm run lint
+
+You do not need to start neo4j or set any database credentials - this will
+be done automatically by the test fixtures. However, you should ensure there
+is no other instance of neo4j running on your session before running the tests
+since neo4j always allocates the same port for itself.
+
+## Automatic Code Quality Checks
+
+By default, every commit on the master branch will run automatic static
+analysis and code quality checks. A failure by any of these tools will fail
+the entire build.
+
+Python warnings can be suppressed using `#  suppress(warning-id)` whereas
+ESLint (JavaScript) warnings can be suppresed using `eslint-disable-line id`.
+
+To run the linting checks manually, do the following:
+
+    $ python setup.py polysquarelint --exclusions=*/venv/*,*/node_modules/*,*/dist/*,*/public/components/* --suppress-codes=I100,LongDescription,D203
+    $ npm run lint
+
 ## Database
 
 The database uses neo4j. You can set this up locally by following
