@@ -10,23 +10,15 @@ var REP_SAMPLE_PATH = path.join(__dirname, "representative_sample.json");
 var REPRESENTATIVE_SAMPLE = JSON.parse(fs.readFileSync(REP_SAMPLE_PATH));
 var REPRESENTATIVE_BAR_CHART = [
   {
-    name: "Wen-ling Zheng",
-    value: 1
+    name: "P Felig",
+    value: 3
   },
   {
-    name: "W Ambroze",
-    value: 1
+    name: "B Batlogg",
+    value: 2
   },
   {
-    name: "Vivian Y H Hook",
-    value: 1
-  },
-  {
-    name: "T R Geballe",
-    value: 1
-  },
-  {
-    name: "T Matsuda",
+    name: "J Bouma",
     value: 1
   },
   {
@@ -34,19 +26,27 @@ var REPRESENTATIVE_BAR_CHART = [
     value: 1
   },
   {
-    name: "S Perlman",
+    name: "R B Mellins",
     value: 1
   },
   {
-    name: "R Padmanabhan",
+    name: "Gerard Apodaca",
     value: 1
   },
   {
-    name: "R J Levinsky",
+    name: "P A Berger",
     value: 1
   },
   {
-    name: "R H Mertelsmann",
+    name: "C E Rowe",
+    value: 1
+  },
+  {
+    name: "E C Dunkel",
+    value: 1
+  },
+  {
+    name: "L Hood",
     value: 1
   }
 ];
