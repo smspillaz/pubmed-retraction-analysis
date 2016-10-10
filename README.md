@@ -30,7 +30,7 @@ the URL specified in the private documentation.
 
 You can interact with the database by using the db/db-admin.js script.
 
-You will need to provide credentials in NEO_USER, NEO_PASS
+You will need to provide credentials in DATABASE_USER, DATABASE_PASS
 and the database URL (shared secretly) in DATABASE_URL.
 
 Once the program starts, you can just start running neo4j database
