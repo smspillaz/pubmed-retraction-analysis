@@ -20,6 +20,21 @@ from `pip` systemwide:
 
 Once you're done with that `npm install` will install all the dependencies.
 
+## Deployment
+
+Deployment is to [heroku](http://heroku.com). Review apps are enabled on
+this repository and the `master` branch is always deployed automatically.
+
+Heroku configuration can be accessed in the credentials handed over
+in the private documentation. The following environment variables must
+be set in order for the backend to function:
+ - `DATABASE_USER`: The neo4j user name
+ - `DATABASE_PASS`: The neo4j password for that user name
+ - `DATABASE_URL`: Where the neo4j database is being hosted
+
+The default values for all of these environment variables will be handed
+over in the private documentation.
+
 ## Database
 
 The database uses neo4j. You can set this up locally by following
