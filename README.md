@@ -82,3 +82,34 @@ and the database URL (shared secretly) in DATABASE_URL.
 
 Once the program starts, you can just start running neo4j database
 commands and you'll get the result back. Hit Ctrl^C to quit.
+
+## Directory Structure
+
+The project is split into three separate components: A frontend, a backend
+and an importer.
+
+ - `importer`:
+    In here is the "importer" which fetches data from PubMed using the
+    Entrez API. Data is stored in a JSON file and uploaded to a neo4j
+    database.
+ - `routes`:
+    In here is a JavaScript file specifying the backend's behaviour for
+    each route. The default route is the `index` route, which specifies
+    the API endpoints that are available to the frontend.
+ - `public/js`:
+    In here is a JavaScript file called `retractions.js` which is the
+    JavaScript code managing the D3 charts for the fronted.
+ - `views`
+    In here are the "views" or the templates which are written in the
+    [Jade](https://www.npmjs.com/package/jade) templating language to construct
+    the HTML view which holds the charts. `pubmedRetraction.jade` is the main
+    view for the application.
+ - `tests`:
+    In here are the tests for both the backend and the importer. Anything
+    written in python is for the importer, anything written in JavaScript is
+    for the backend and frontend.
+
+    We use [green](http://github.com/CleanCut/green) in combination with
+    [testtools](http://github.com/testing-cabal/testtools) for Python tests
+    and [mocha](http://mochajs.org) and [chai](http://chaijs.org) for
+    JavaScript tests.
