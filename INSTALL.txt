@@ -1,0 +1,58 @@
+Installing PubMed Retraction Analysis
+=====================================
+
+This project ships with a script that automates the entire installation
+process on any UNIX-like system. It has been tested on macOS versions 10.10
+- 10.12 and Ubuntu Server 12.04. Run it using the bundled `install.py` file.
+
+The pre-requisites are to have:
+ - An installed nodejs runtime
+ - An installed python runtime
+ - virtualenv
+
+Out of those depenencies, it is likely that unless you already have a
+python development setup running, you will not have virtualenv. virtualenv is
+strictly-speaking optional, but highly recommended because it isolates all
+python dependencies into a single directory and does not permit interference
+between applications. You can get virtualenv by running:
+
+# sudo pip install virtualenv
+
+Running `install.py` will run the following:
+ - Creating a new python virtual environment using either the standard system
+   python installation or the python binary in `PYTHON`. This project has been
+   tested on Python 2 and 3, so either version will work.
+ - Installing project level python dependencies inside that virtual environment.
+ - Installing the python project inside that virtual environment
+ - Installing nodejs (backend) dependencies inside the current directory.
+
+As per the script's instructions, you will need to enter the python
+virtual environment if you wish to run any of the python code such as the
+downloaders. You can do that by using the `source` command in `bash`:
+
+$ source python-virtualenv/bin/activate
+
+Seeding the Database
+====================
+
+If you wish to run your own database, you will need to seed it with some data.
+This is a three-step process.
+
+First, use `download-pubmed-articles` to download some articles. They will
+appear in the `Retractions` subdirectory by default, or in any directory
+specified by `--output`. By default, all articles will be downloaded, but if
+you only want to download a few, you can pass `--article-count=N` to download
+N articles.
+
+Then, use `parse-pubmed-files DIR` where DIR is the directory articles are
+stored. This will emit a JSON-representation of parsed data to the standard
+output, which can be redirected to a file if you wish.
+
+With that JSON representation, you can then call `load-pubmed-files FILE` to
+seed a database. You will need to set the database environment variables
+DATABASE_URL, DATABASE_USER and DATABASE_PASS for this command to run. `FILE`
+specifies the JSON file to load which was emitted earlier by
+`parse-pubmed-files`.
+
+Note that running `load-pubmed-files` will clear any existing entries in the
+database and re-seed it from scratch.
