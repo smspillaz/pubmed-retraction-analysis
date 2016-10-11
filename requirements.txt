@@ -54,6 +54,7 @@ pylint-plugin-utils==0.2.4
 pyroma==1.8.3
 python-mimeparse==1.5.2
 python-termstyle==0.1.10
+requests==2.11.1
 requirements-detector==0.5.2
 setoptconf==0.2.0
 setuptools-green==0.0.16
