@@ -22,16 +22,18 @@ router.get("/", function handleIndexRequest(req, res) {
  * the query.
  *
  * @chartName {string}: The chart name to generate
+ * @filterString {string}: A string which may be used to filter on
+ * @filterType {string}: What we are filtering for
  * @returns {array}: An array of tuples of (string, value)
  */
-function generateQueryForChart(chartName) {
+function generateQueryForChart(chartName, filterString, filterType) {
   var chartDispatch = {
-    countryYear: "MATCH(a:Country)-[r]-() " +
-                 "RETURN a, count(r) as rel_count " +
-                 "ORDER BY rel_count desc LIMIT 10",
-    authorYear: "MATCH(a:Author)-[r]-() " +
-                "RETURN a, count(r) as rel_count " +
-                "ORDER BY rel_count desc LIMIT 10"
+    countryRetraction: "MATCH(a:Country)-[r]-() " +
+                       "RETURN a, count(r) as rel_count " +
+                       "ORDER BY rel_count desc LIMIT 10",
+    authorRetraction: "MATCH(a:Author)-[r]-() " +
+                      "RETURN a, count(r) as rel_count " +
+                      "ORDER BY rel_count desc LIMIT 10"
   };
   var dispatchFunc = null;
 
@@ -77,7 +79,9 @@ function normaliseName(name) {
 router.get("/get_bar_chart", function onGetBarChart(req, res) {
   var query = null;
   try {
-    query = generateQueryForChart(req.query.name);
+    query = generateQueryForChart(req.query.name,
+                                  req.query.filterString,
+                                  req.query.filterType);
   } catch (e) {
     res.json({
       result: "failure",
