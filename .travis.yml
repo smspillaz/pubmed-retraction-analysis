@@ -19,6 +19,7 @@ install:
  - rm -rf - wget neo4j-community-2.2.0-M03-unix.tar.gz
  - popd
  - python install.py
+ - mkdir -p neo4j
  - pushd neo4j
  - wget dist.neo4j.org/neo4j-community-2.2.0-M03-unix.tar.gz
  - tar -xzvf neo4j-community-2.2.0-M03-unix.tar.gz
@@ -28,8 +29,10 @@ script:
  - export LEGACY_NEO4J=1
  - which npm
  - which node
- - export DATABASE_URL=http://localhost:7474
+ - export DATABASE_URL=localhost:7474
  - npm run lint
  - python setup.py polysquarelint --exclusions=*/neo4j/*,*/venv/*,*/node_modules/*,*/dist/*,*/public/components/* --suppress-codes=I100,LongDescription,D203
  - python setup.py green
+ - echo "Killing remaining database processes"
+ - killall -9 java || true
  - npm run test

@@ -7,15 +7,12 @@ var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 
 var routes = require("./routes/index");
-var dbUtils = require("./db/utils");
 
 var app = express();
 
 var env = process.env.NODE_ENV || "development";
 app.locals.ENV = env;
 app.locals.ENV_DEVELOPMENT = env === "development";
-
-dbUtils.validateEnvironment("node bin/wwww");
 
 // view engine setup
 

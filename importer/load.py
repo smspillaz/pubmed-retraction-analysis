@@ -63,7 +63,7 @@ def open_or_default(path, default):
 
 def commands_from_data(data):
     """Given an iterable of JSON objects yield Neo4j commands."""
-    yield "MATCH(n) DETACH DELETE n"
+    yield "MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n, r"
 
     for record in data:
         command = generate_command_for_record(record)
@@ -88,13 +88,13 @@ def main(argv=None):
         commands = list(commands_from_data(data))
 
     if parse_result.no_execute:
-        print(json.dumps(commands))
+        sys.stdout.write(json.dumps(commands))
     elif len(commands):
         if all(var in os.environ for
-               var in ["DATABASE_URL", "DATABASE_USER", "DATABASE_PASS"]):
+               var in ["DATABASE_URL", "DATABASE_PASS"]):
                     url = os.environ["DATABASE_URL"]
                     pwd = os.environ["DATABASE_PASS"]
-                    usr = os.environ["DATABASE_USER"]
+                    usr = os.environ.get("DATABASE_USER", "")
         else:
             raise ValueError("Ensure environment variables DATABASE_URL, "
                              "DATABASE_PASS and DATABASE_USER set.")
