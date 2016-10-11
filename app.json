@@ -4,6 +4,15 @@
   "scripts": {
   },
   "env": {
+    "DATABASE_URL": {
+      "required": true
+    },
+    "DATABASE_USER": {
+      "required": true
+    },
+    "DATABASE_PASS": {
+      "required": true
+    }
   },
   "formation": {
   },
