@@ -12,6 +12,7 @@ import json
 import os
 import sys
 
+# from clint.textui import progress
 from neo4j.v1 import GraphDatabase, basic_auth
 
 
@@ -35,6 +36,11 @@ def generate_command_for_record(record):
                             "'{0}'}}) MERGE (article)"
                             "-[:ORIGINATED_IN]->(country)"
                             .format(record["country"]))
+        if record.get("Topic", None):
+            commands.append(u"MERGE (topic:Topic {{name:"
+                            "'{0}'}}) MERGE (article)"
+                            "-[:DISCUSSES]->(Topic)"
+                            .format(record["Topic"]))
         if record.get("pubDate", None):
             date = datetime.strptime(record["pubDate"]["date"], "%Y-%m-%d")
             year = str(date.year)
@@ -85,6 +91,7 @@ def main(argv=None):
 
     with open_or_default(parse_result.file, sys.stdin) as fileobj:
         data = json.load(fileobj)
+        print("Reading data from file.")
         commands = list(commands_from_data(data))
 
     if parse_result.no_execute:
@@ -101,9 +108,13 @@ def main(argv=None):
 
         driver = GraphDatabase.driver(url, auth=basic_auth(usr, pwd))
         session = driver.session()
+        print ("Loading to database.")
+        # for command in progress.bar(commands, expected_size=len(commands)):
         for command in commands:
             session.run(command)
+        print ("Cleaning up.")
         session.close()
+        print ("Done.")
 
 if __name__ == "__main__":
     main(sys.argv[1:])

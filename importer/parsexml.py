@@ -181,10 +181,16 @@ def parse_element_tree(tree, filename=None):
         if all(sections):
             article_data["country"] = sections[0]
 
-    for heading in root.iter("MeshHeadingList"):
-        sections = parse_selected_sections(heading, "DescriptorName")
-        if all(sections):
-            article_data["Topic"] = sections[0]
+    for headinglist in root.iter("MeshHeadingList"):
+        topics = list()
+        for heading in root.iter("MeshHeading"):
+            sections = parse_selected_sections(heading, "DescriptorName")
+            # print (sections)
+            if all(sections):
+                # print (sections)
+                # article_data["Topic"] = sections[0]
+                topics.append(sections[0])
+        article_data["Topic"] = topics
 
     # Print error to stderr if there's contradictory field
     # entries and don't insert a value if so
@@ -201,7 +207,9 @@ def parse_element_tree(tree, filename=None):
             article_data["reviseDate"] = None
 
     if len([k for k in article_data.keys() if article_data[k]]) == 0:
-        raise NoFieldsError()
+        print ("WE FAILING", file=sys.stderr)
+        # print(filename, file=sys.stderr)
+        # raise NoFieldsError()
 
     return sanitise_field_values(article_data)
 
