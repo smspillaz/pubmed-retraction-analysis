@@ -1,14 +1,11 @@
-.dropdown{	//dropdown button
-    font-family: "Lucida Console";
+/* //dropdown button */
+.dropdown {
+    font-family: "Lucida Console" monospace;
     font-size: 10px;
     margin: 10px 0;
-    padding: 15px 30px;
 }
 
-.chart-container {	
-    background-color: #eceff1;
-    border-radius: 0.5em;
-    font: 10px "Lucida Console";
+.chart-container {
     height: 500px;
     margin-top: 2em;
 }
@@ -21,22 +18,25 @@ body {
 .navbar-default {	
     background-color: #64b5f6;
 }
-.navbar-default .navbar-brand {	//Navbar brand on left of navbar
+/* Navbar brand on left of navbar */
+.navbar-default .navbar-brand {
     color: #ffffff;
-  	font-family: "Trebuchet MS";
+    font-family: "Trebuchet MS" sans;
     font-size: 25px;
 }
-.navbar-default .navbar-brand:hover {	//when navbar brand is hovered
-    color: #263238;
-}
-.navbar-default .navbar-nav > li > a {	//admin button on right of navbar
-    color: #263238;
-    font-size: 16px;
-  	font-family: "Trebuchet MS";  
-}
-.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {	//when admin button is hovered
+/* when navbar brand is hovered */
+.navbar-default .navbar-brand:hover {
     background-color: #42a5f5;
+}
+/* admin button on right of navbar */
+.navbar-default .navbar-nav > li > a {
     color: #ffffff;
+    font-size: 16px;
+    font-family: "Trebuchet MS" sans;
+}
+/* when admin button is hovered */
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    background-color: #42a5f5;
 }
 
 

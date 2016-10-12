@@ -5,6 +5,7 @@
 # See /LICENCE.md for Copyright information
 """Download PubMed articles."""
 
+import argparse
 import contextlib
 import json
 import os
@@ -71,11 +72,25 @@ def attempt_download_json(url):
 def main(argv=None):
     """Entry point for downloader script."""
     argv = argv or sys.argv[1:]
+    parser = argparse.ArgumentParser("Download PubMed Articles")
+    parser.add_argument("location",
+                        default="Retractions",
+                        type=str,
+                        nargs="?",
+                        metavar="DIR",
+                        help="Directory to store downloaded articles")
+    parser.add_argument("--article-count",
+                        type=int,
+                        metavar="COUNT",
+                        help="How many articles to download (default is all)")
+    result = parser.parse_args(argv)
 
-    article_count_data = attempt_download_json(
-        pubmed_count_articles_url("Retracted+Publications")
-    )
-    article_count = article_count_data["esearchresult"]["count"]
+    article_count = result.article_count
+    if not article_count:
+        article_count_data = attempt_download_json(
+            pubmed_count_articles_url("Retracted+Publications")
+        )
+        article_count = article_count_data["esearchresult"]["count"]
 
     id_list_data = attempt_download_json(
         pubmed_search_for_articles_url("Retracted+Publications",
@@ -84,15 +99,15 @@ def main(argv=None):
     id_list = id_list_data["esearchresult"]["idlist"]
 
     try:
-        os.makedirs("Retractions")
+        os.makedirs(result.location)
     except OSError as error:
         if error.errno != errno.EEXIST:
             raise error
 
     for article_id in id_list:
-        if not os.path.isfile("Retractions/" + article_id + ".xml"):
+        out_name = os.path.join(result.location, article_id + ".xml")
+        if not os.path.isfile(out_name):
             downloadurl = pubmed_fetch_article_url(article_id)
-            out_name = "Retractions/%s.xml" % (article_id)
             print("Downloading article " + article_id)
             data = attempt_download(downloadurl)
             with open(out_name, "wb") as out_file:

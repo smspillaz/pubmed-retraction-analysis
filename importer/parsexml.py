@@ -125,6 +125,19 @@ def warning(filename, msg):
                                      msg))
 
 
+def get_author_name(author_element):
+    """Given an author_element attempt to get a name."""
+    lastname_element = author_element.find("LastName")
+    forename_element = author_element.find("ForeName")
+    name = " ".join([a.text for a in [forename_element, lastname_element]
+                     if a is not None])
+
+    if not name:
+        name = author_element.find("CollectiveName").text
+
+    return name
+
+
 def parse_element_tree(tree, filename=None):
     """For a given ElementTree :tree:, parse it into JSON."""
     root = tree.getroot()
@@ -134,17 +147,15 @@ def parse_element_tree(tree, filename=None):
         "reviseDate": None,
         "ISSN": None,
         "country": None,
-        "Author": None
+        "Author": None,
+        "Topic": None
     }
 
     for medinfo in root.iter("MedlineCitation"):
         article_data["pmid"] = medinfo.find("PMID").text
 
     for author in root.iter("Author"):
-        lastname = author.find("LastName").text
-        firstname = author.find("ForeName").text
-        authorname = firstname + " " + lastname
-        article_data["Author"] = authorname
+        article_data["Author"] = get_author_name(author)
 
     for pubDate in root.iter("DateCompleted"):
         expect_valid_date_combinations("DateCompleted", pubDate)
@@ -169,6 +180,11 @@ def parse_element_tree(tree, filename=None):
         sections = parse_selected_sections(journalinfo, "Country")
         if all(sections):
             article_data["country"] = sections[0]
+
+    for heading in root.iter("MeshHeadingList"):
+        sections = parse_selected_sections(heading, "DescriptorName")
+        if all(sections):
+            article_data["Topic"] = sections[0]
 
     # Print error to stderr if there's contradictory field
     # entries and don't insert a value if so
