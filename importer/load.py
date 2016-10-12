@@ -8,6 +8,7 @@
 import argparse
 from contextlib import contextmanager
 from datetime import datetime
+from __future__ import print_function
 import json
 import os
 import sys
@@ -27,21 +28,26 @@ def generate_command_for_record(record):
             commands.append(u"SET article.ISSN = '{0}'"
                             .format(record["ISSN"]))
         if record.get("Author", None):
-            commands.append(u"MERGE (author:Author {{name:\""
-                            "{0}\"}}) MERGE (article)-"
-                            "[:AUTHORED_BY]->(author)"
-                            .format(record["Author"]))
+            count = 0
+            for author in record.get("Author"):
+                commands.append(u"MERGE (author{0}:Author {{name:\""
+                                "{1}\"}}) MERGE (article)-"
+                                "[:AUTHORED_BY]->(author{0})"
+                                .format(count, author))
+                count += 1
         if record.get("country", None):
             commands.append(u"MERGE (country:Country {{name:"
                             "'{0}'}}) MERGE (article)"
                             "-[:ORIGINATED_IN]->(country)"
                             .format(record["country"]))
         if record.get("Topic", None):
-            print (record.get("Topic"))
-            commands.append(u"MERGE (topic:Topic {{name:"
-                            "'{0}'}}) MERGE (article)"
-                            "-[:DISCUSSES]->(Topic)"
-                            .format(record["Topic"]))
+            count = 0
+            for topic in record.get("Topic"):
+                commands.append(u"MERGE (topic{0}:Topic {{name:\""
+                                "{1}\"}}) MERGE (article)"
+                                "-[:DISCUSSES]->(topic{0})"
+                                .format(count, topic))
+                count += 1
         if record.get("pubDate", None):
             date = datetime.strptime(record["pubDate"]["date"], "%Y-%m-%d")
             year = str(date.year)
