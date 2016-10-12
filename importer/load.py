@@ -37,6 +37,7 @@ def generate_command_for_record(record):
                             "-[:ORIGINATED_IN]->(country)"
                             .format(record["country"]))
         if record.get("Topic", None):
+            print (record.get("Topic"))
             commands.append(u"MERGE (topic:Topic {{name:"
                             "'{0}'}}) MERGE (article)"
                             "-[:DISCUSSES]->(Topic)"
