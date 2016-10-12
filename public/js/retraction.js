@@ -151,29 +151,73 @@ function updateGraph(newData) {
  * Post a request to the server to get a new graph.
  *
  * @name The chart name to fetch.
+ * @filter A filter string
+ # @filterType What to filter on
  */
-function postGraphUpdateRequest(name) {
-  $.ajax({
-    url: "/get_bar_chart",
-    data: {
-      name: name
-    },
-    success: function onXHRSuccess(data) {
-      updateGraph(data.data);
-    }
+function postGraphUpdateRequest(name, filterString, filterType) {
+  if (!name) {
+    $("#incorrectInputAlert").html("You need to specify a chart type to display");
+    $("#incorrectInputAlert").attr("style", "");
+    return;
+  }
+
+  if (filterString && (!filterType || filterType === "none")) {
+    $("#incorrectInputAlert").html("You need to specify what to search on");
+    $("#incorrectInputAlert").attr("style", "");
+    return;
+  }
+
+  $("#incorrectInputAlert").attr("style", "visibility: hidden;");
+
+  if (name) {
+    $.ajax({
+      url: "/get_bar_chart",
+      data: {
+        name: name,
+        filterString: filterString || null,
+        filterType: filterType || null
+      },
+      success: function onXHRSuccess(data) {
+        updateGraph(data.data);
+      }
+    });
+  }
+}
+
+/**
+ * listenForUserInteraction
+ *
+ * For a dropdown menu id and a it's contents' id, listen for
+ * click events and then post an update request to fetch a graph.
+ */
+function listenForUserInteraction(dropdownSelector, menuSelector) {
+  $(menuSelector + " li a").click(function onDropdownClick(event) {
+    var button = $(dropdownSelector);
+    var parentDiv = $(".open");
+
+    button.html(this.text + " <span class='caret'></span>");
+    button.attr("selection", $(this).attr("data-selection-id"));
+    parentDiv.removeClass("open");
+    event.preventDefault();
+
+    postGraphUpdateRequest($("#chartSelectionDropdown").attr("selection"),
+                           $("#chartFilterInput").val(),
+                           $("#filterSelectionDropdown").attr("selection"));
+    return false;
   });
 }
 
 document.addEventListener("DOMContentLoaded", function onDOMLoaded() {
-  $("#chartSelectionDropdown ul li a").click(function onDropdownClick(event) {
-    var div = $(this).parent().parent().parent();
-    var button = div.find("button");
-
-    button.html(this.text + " <span class='caret'></span>");
-    div.removeClass("open");
-    event.preventDefault();
-
-    postGraphUpdateRequest($(this).attr("data-selection-id"));
-    return false;
+  listenForUserInteraction("#chartSelectionDropdown", "#chartSelectionMenu");
+  listenForUserInteraction("#filterSelectionDropdown",
+                           "#filterSelectionMenu");
+  $("#chartFilterInput").keypress(function onKeyPress(event) {
+    var keyCode = event.keyCode || event.which;
+    if (keyCode === 13) {
+      /* User pressed enter, respond accordingly */
+      postGraphUpdateRequest($("#chartSelectionDropdown").attr("selection"),
+                             $("#chartFilterInput").val(),
+                             $("#filterSelectionDropdown").attr("selection"));
+    }
   });
 });
