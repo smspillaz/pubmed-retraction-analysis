@@ -33,6 +33,12 @@ python install.py
 source python-virtualenv/bin/activate
 ```
 
+Import the pubmed data and then parse the xml files.
+```
+python3 downloader.py
+python3 parsexml.py
+```
+
 Run the loader program.
 ```
 cd /importer
@@ -50,7 +56,7 @@ Navigate to ```http://188.166.209.201:7474/browser/``` to input queries through 
 ### Demo queries
 
 Return authors ordered by articles authored, limited to 10.
-```
+```cypher
 MATCH (a:Author)-[r]-()
 RETURN a, count(r) as rel_count
 ORDER BY rel_count desc
@@ -58,7 +64,7 @@ LIMIT 10
 ```
 
 Return countries ordered by number of articles, limited to 10.
-```
+```cypher
 MATCH (c:Country)-[r]-()
 RETURN c, count(r) as rel_count
 ORDER BY rel_count desc
@@ -66,17 +72,33 @@ LIMIT 10
 ```
 
 Return years ordered by articles authored, limited to 10.
-```
+```cypher
 MATCH (y:Year)-[r]-()
 RETURN y, count(r) as rel_count
 ORDER BY y.name desc
 LIMIT 10
 ```
 
-Return a year and country breakdown of articles authored (recommend viewing by row!)
+Return topics ordered by articles authored, limited to 10.
+```cypher
+MATCH (t:Topic)-[r]-()
+RETURN t, count(r) as rel_count
+ORDER BY rel_count desc
+LIMIT 10
 ```
+
+Return a year and country breakdown of articles authored (recommend viewing by row!)
+```cypher
 MATCH (y:Year)-[r]-(a:Article)-[rr]-(c:Country)
 RETURN distinct y, c, count(r) as x
+ORDER BY y.name desc
+LIMIT 100
+```
+
+Return a year and country breakdown of articles authored (recommend viewing by row!)
+```cypher
+MATCH (t:Topic {name: "Child"})-[r]-(a:Article)-[rr]-(y:Year)
+RETURN distinct y, count(rr) as x
 ORDER BY y.name desc
 LIMIT 100
 ```

@@ -30,6 +30,7 @@ def generate_command_for_record(record):
         if record.get("Author", None):
             count = 0
             for author in record.get("Author"):
+                print (author, file=sys.stderr)
                 commands.append(u"MERGE (author{0}:Author {{name:\""
                                 "{1}\"}}) MERGE (article)-"
                                 "[:AUTHORED_BY]->(author{0})"
