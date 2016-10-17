@@ -206,9 +206,7 @@ def parse_element_tree(tree, filename=None):
             article_data["reviseDate"] = None
 
     if len([k for k in article_data.keys() if article_data[k]]) == 0:
-        # Is raising an error necessary, or can we skip the file?
-        print ("File found with no fields, skipping", file=sys.stderr)
-        # raise NoFieldsError()
+        print("File found with no fields, skipping", file=sys.stderr)
 
     return sanitise_field_values(article_data)
 
