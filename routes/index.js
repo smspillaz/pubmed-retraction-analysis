@@ -14,6 +14,27 @@ router.get("/", function handleIndexRequest(req, res) {
   res.render("pubmedRetraction");
 });
 
+var names = {
+  topicRetraction: "Topic",
+  authorRetraction: "Author",
+  countryRetraction: "Country"
+};
+
+var filters = {
+  country: "Country",
+  author: "Author",
+  topic: "Topic",
+  year: "Year"
+};
+
+function generateMatchStatement(chartName, filterType, filterString) {
+  if (filterType === "none") {
+    return "MATCH(a:" + names[chartName] + ")-[r]-()";
+  } else {
+    return "MATCH(f:" + filters[filterType] + " { name: '" + filterString + "'})-[fr]-(t:Article)-[r]-(a:" + names[chartName] + ")";
+  }
+}
+
 /**
  * generateQueryForChart
  *
@@ -27,27 +48,12 @@ router.get("/", function handleIndexRequest(req, res) {
  * @returns {array}: An array of tuples of (string, value)
  */
 function generateQueryForChart(chartName, filterString, filterType) {
-  var chartDispatch = {
-    countryRetraction: "MATCH(a:Country)-[r]-() " +
-                       "RETURN a, count(r) as rel_count " +
-                       "ORDER BY rel_count desc LIMIT 10",
-    authorRetraction: "MATCH(a:Author)-[r]-() " +
-                      "RETURN a, count(r) as rel_count " +
-                      "ORDER BY rel_count desc LIMIT 10"
-  };
-  var dispatchFunc = null;
-
-  if (Object.keys(chartDispatch).indexOf(chartName) === -1) {
-    throw new Error("Don't know how to get chart " + chartName);
-  }
-
-  dispatchFunc = chartDispatch[chartName];
-  if (typeof dispatchFunc === "string") {
-    return util.format.apply(this,
-                             [dispatchFunc].concat(Array.prototype.slice.call(arguments, 1)));
-  }
-
-  return dispatchFunc.apply(this, Array.prototype.slice.call(arguments, 1));
+  var matchStatement = generateMatchStatement(chartName,
+                                              filterType,
+                                              filterString);
+  var limitStatement = ("RETURN a, count(r) as rel_count " +
+                        "ORDER BY rel_count desc LIMIT 10");
+  return [matchStatement, limitStatement].join(" ");
 }
 
 /**
