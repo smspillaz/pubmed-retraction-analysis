@@ -206,7 +206,7 @@ def parse_element_tree(tree, filename=None):
             article_data["reviseDate"] = None
 
     if len([k for k in article_data.keys() if article_data[k]]) == 0:
-        print("File found with no fields, skipping", file=sys.stderr)
+        sys.stderr.write("File found with no fields, skipping\n")
 
     return sanitise_field_values(article_data)
 
