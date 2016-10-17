@@ -8,7 +8,6 @@
 import argparse
 from contextlib import contextmanager
 from datetime import datetime
-from __future__ import print_function
 import json
 import os
 import sys
