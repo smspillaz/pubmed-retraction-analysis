@@ -8,10 +8,12 @@
 import argparse
 from contextlib import contextmanager
 from datetime import datetime
+from __future__ import print_function
 import json
 import os
 import sys
 
+# from clint.textui import progress
 from neo4j.v1 import GraphDatabase, basic_auth
 
 
@@ -26,15 +28,27 @@ def generate_command_for_record(record):
             commands.append(u"SET article.ISSN = '{0}'"
                             .format(record["ISSN"]))
         if record.get("Author", None):
-            commands.append(u"MERGE (author:Author {{name:\""
-                            "{0}\"}}) MERGE (article)-"
-                            "[:AUTHORED_BY]->(author)"
-                            .format(record["Author"]))
+            count = 0
+            for author in record.get("Author"):
+                print (author, file=sys.stderr)
+                commands.append(u"MERGE (author{0}:Author {{name:\""
+                                "{1}\"}}) MERGE (article)-"
+                                "[:AUTHORED_BY]->(author{0})"
+                                .format(count, author))
+                count += 1
         if record.get("country", None):
             commands.append(u"MERGE (country:Country {{name:"
                             "'{0}'}}) MERGE (article)"
                             "-[:ORIGINATED_IN]->(country)"
                             .format(record["country"]))
+        if record.get("Topic", None):
+            count = 0
+            for topic in record.get("Topic"):
+                commands.append(u"MERGE (topic{0}:Topic {{name:\""
+                                "{1}\"}}) MERGE (article)"
+                                "-[:DISCUSSES]->(topic{0})"
+                                .format(count, topic))
+                count += 1
         if record.get("pubDate", None):
             date = datetime.strptime(record["pubDate"]["date"], "%Y-%m-%d")
             year = str(date.year)
@@ -85,6 +99,7 @@ def main(argv=None):
 
     with open_or_default(parse_result.file, sys.stdin) as fileobj:
         data = json.load(fileobj)
+        print("Reading data from file.")
         commands = list(commands_from_data(data))
 
     if parse_result.no_execute:
@@ -101,9 +116,13 @@ def main(argv=None):
 
         driver = GraphDatabase.driver(url, auth=basic_auth(usr, pwd))
         session = driver.session()
+        print ("Loading to database.")
+        # for command in progress.bar(commands, expected_size=len(commands)):
         for command in commands:
             session.run(command)
+        print ("Cleaning up.")
         session.close()
+        print ("Done.")
 
 if __name__ == "__main__":
     main(sys.argv[1:])
