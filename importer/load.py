@@ -12,7 +12,6 @@ import json
 import os
 import sys
 
-# from clint.textui import progress
 from neo4j.v1 import GraphDatabase, basic_auth
 
 
@@ -116,7 +115,6 @@ def main(argv=None):
         driver = GraphDatabase.driver(url, auth=basic_auth(usr, pwd))
         session = driver.session()
         print ("Loading to database.")
-        # for command in progress.bar(commands, expected_size=len(commands)):
         for command in commands:
             session.run(command)
         print ("Cleaning up.")
