@@ -31,6 +31,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", routes);
 app.use("/visualization", visualization);
+app.use("/administration", visualization);
 
 // / catch 404 and forward to error handler
 app.use(function handle404(req, res, next) {
