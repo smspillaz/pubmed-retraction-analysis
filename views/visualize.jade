@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  include header
+  .container
+    .col-lg-6
+      .input-group
+        input.form-control(aria-label="..." type="text" id="visualizeFilterInput")
+        .input-group-btn
+          button.btn.btn-default.dropdown-toggle(type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filterSelectionDropdown") Country #[span.caret]
+          ul.dropdown-menu(id="filterSelectionMenu")
+            li
+              a(href="#" data-selection-id="country") Country
+              a(href="#" data-selection-id="topic") Topic
+    div(style="margin-top: 10px")
+      .alert.alert-danger(role="alert" id="incorrectInputAlert" style="visibility: hidden;")
+    .chart-container
+      .chart
+  script(src='/js/bundle-visualize.js')

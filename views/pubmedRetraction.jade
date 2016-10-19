@@ -12,6 +12,7 @@ block content
               a(href="#" data-selection-id="countryRetraction") Frequency of each Country
               a(href="#" data-selection-id="authorRetraction") Frequency of each Author
               a(href="#" data-selection-id="topicRetraction") Frequency of each Topic
+              a(href="#" data-selection-id="topicsInEachYear") Topics in each year
         input.form-control(aria-label="..." type="text" id="chartFilterInput")
         .input-group-btn
           button.btn.btn-default.dropdown-toggle(type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filterSelectionDropdown") No Filter #[span.caret]
@@ -26,3 +27,4 @@ block content
       .alert.alert-danger(role="alert" id="incorrectInputAlert" style="visibility: hidden;")
     .chart-container
       .chart
+  script(src='/js/bundle.js')
