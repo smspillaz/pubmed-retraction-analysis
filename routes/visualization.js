@@ -61,6 +61,54 @@ function normaliseName(name) {
   }).join(" ");
 }
 
+/**
+ * rowsToGraphNodes
+ *
+ * @param rows {array} - An odd-sized array, even elements representing nodes
+ *                       and odd elements representing elements (0-indexing)
+ * @param specification {array} An array the same size as rows describing each
+ *                              node or edge
+ * @returns {object} - An alchemy-friendly object with a relationship graph
+ */
+function rowsToGraphNodes(rows, specification) {
+  if (specification.length % 2 === 0) {
+    throw new Error("Specification must be odd-sized");
+  }
+
+  var edges = [];
+  var nodes = {};
+
+  rows.forEach(function onEachRow(row) {
+    if (row.length != specification.length) {
+      throw new Error("Must provide specification with the same length as rows");
+    }
+
+    for (var i = 0; i < row.length; ++i) {
+      /* Even index -> this is a node */
+      if (i % 2 === 0) {
+        /* Use a map here to deduplicate rows */
+        nodes[row[i]._id] = {
+          type: specification[i],
+          label: row[i].name,
+          id: row[i]._id
+        };
+      } else {
+        edges.push({
+          from: row[i - 1]._id,
+          to: row[i + 1]._id
+        });
+      }
+    }
+  });
+
+  return {
+    nodes: Object.keys(nodes).map(function onEachNodeKey(k) {
+      return nodes[k];
+    }),
+    edges: edges
+  };
+}
+
 /* API endpoint for the frontend to get a particular
  * chart.
  *
@@ -81,8 +129,6 @@ router.get("/get_visualisation", function onGetBarChart(req, res) {
   }
 
   db.cypherQuery(query, function handleQueryRes(err, result) {
-    var accumulator = {};
-
     if (err) {
       res.json({
         result: "failure",
@@ -91,25 +137,9 @@ router.get("/get_visualisation", function onGetBarChart(req, res) {
       return;
     }
 
-    /* Merge together entities that really have the same name but
-     * with a different capitalisation convention */
-    result.data.forEach(function forEachRow(r) {
-      var name = normaliseName(r[0].name);
-      if (Object.keys(accumulator).indexOf(name) !== -1) {
-        accumulator[name] += r[1];
-      } else {
-        accumulator[name] = r[1];
-      }
-    });
-
     res.json({
       result: "success",
-      data: Object.keys(accumulator).map(function forEachKey(k) {
-        return {
-          name: k,
-          value: accumulator[k]
-        };
-      })
+      data: rowsToGraphNodes(result.data, ["Country", "Published In", "Article", "About", "Topic"])
     });
   });
 });
