@@ -39,7 +39,8 @@
     "rollup-plugin-commonjs": "^5.0.4",
     "rollup-plugin-node-resolve": "^2.0.0",
     "serve-favicon": "^2.3.0",
-    "uglify-js": "^2.7.3"
+    "uglify-js": "^2.7.3",
+    "vis": "^4.16.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
