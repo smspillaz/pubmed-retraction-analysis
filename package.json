@@ -7,7 +7,9 @@
     "start": "node ./bin/www",
     "test": "mocha test",
     "lint": "eslint .",
-    "prepublish": "rollup -c && uglifyjs public/js/bundle.js -c -m -o public/js/bundle.min.js",
+    "prepublish-retraction": "rollup -c rollup.config.js && uglifyjs public/js/bundle.js -c -m -o public/js/bundle.min.js",
+    "prepublish-visualize": "rollup -c rollup.visualization.config.js && uglifyjs public/js/bundle-visualization.js -c -m -o public/js/bundle-visualization.min.js",
+    "prepublish": "npm run prepublish-visualize && npm run prepublish-retraction",
     "bower": "bower install",
     "postinstall": "run-s bower prepublish"
   },
@@ -37,7 +39,8 @@
     "rollup-plugin-commonjs": "^5.0.4",
     "rollup-plugin-node-resolve": "^2.0.0",
     "serve-favicon": "^2.3.0",
-    "uglify-js": "^2.7.3"
+    "uglify-js": "^2.7.3",
+    "vis": "^4.16.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",

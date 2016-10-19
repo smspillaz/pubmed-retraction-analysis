@@ -12,7 +12,70 @@ var COLOR_TABLE = [
 var INDIVIDUAL_CHARACTER_SIZE = 10;
 
 /**
- * calculateChartOffset
+ * drawBarForDataPoint
+ */
+function drawBarForDataPoint(svg, dataPoint, index, length, offsetAmount, dataMax) {
+  var computeTextY = function computeTextY() {
+    var chartHeight = this.parentNode.parentNode.clientHeight;
+    var barSpacing = 10;
+    var textHeight = 15;
+    return (((chartHeight - (barSpacing * length)) /
+            length) / 2) + (textHeight / 2);
+  };
+  var computeBarWidth = function computeBarWidth() {
+    var parentWidth = (this.parentNode.parentNode.clientWidth -
+                       offsetAmount);
+    var x = d3.scaleLinear().domain([0, dataMax])
+                            .range([0, parentWidth]);
+    return x(dataPoint.value);
+  };
+  var g = svg.append("g")
+             .attr("transform", function computeBarY() {
+               var chartHeight = this.parentNode.clientHeight;
+               var barSpacing = 10;
+               var barHeight = ((chartHeight - (barSpacing *
+                                                length)) /
+                                length);
+
+               var y = (index * barSpacing) + (index * barHeight);
+               return "translate(0.0, " + y + ")";
+             });
+  g.append("rect")
+   .attr("height", function computeBarHeight() {
+     var chartHeight = this.parentNode.parentNode.clientHeight;
+     var barSpacing = 10;
+     return ((chartHeight - (barSpacing * length)) /
+             length);
+   })
+   .transition()
+   .delay(index * 50)
+   .duration(750)
+   .ease(d3.easeElastic.period(0.4))
+   .attr("width", computeBarWidth)
+   .attr("rx", "15")
+   .attr("ry", "15")
+   .attr("x", String(offsetAmount))
+   .attr("fill", COLOR_TABLE[index % COLOR_TABLE.length]);
+  g.append("text")
+   .attr("fill", dataPoint.isOffset ? "#000000" : "#ffffff")
+   .text(dataPoint.name)
+   .attr("y", computeTextY)
+   .attr("x", dataPoint.isOffset ? 10 : 10 + offsetAmount);
+  g.append("text")
+   .attr("fill", "#ffffff")
+   .text(dataPoint.value)
+   .attr("y", computeTextY)
+   .transition()
+   .delay(index * 50)
+   .duration(750)
+   .ease(d3.easeElastic.period(0.4))
+   .attr("x", function computeNumberX() {
+     var barWidth = computeBarWidth.call(this);
+     var label = String(dataPoint.value);
+     var labelSize = label.length * INDIVIDUAL_CHARACTER_SIZE;
+     return (barWidth - labelSize) + offsetAmount;
+   });
+}
 
 /**
  * updateGraph
@@ -81,67 +144,9 @@ function updateGraph(newData) {
             return ["transform: translate(", x, "px,", y, "px", ")"].join("");
           });
 
+  var dataMax = d3.max(dataPoints);
   postprocessedData.forEach(function forEachDataPoint(dataPoint, index) {
-    var computeTextY = function computeTextY() {
-      var chartHeight = this.parentNode.parentNode.clientHeight;
-      var barSpacing = 10;
-      var textHeight = 15;
-      return (((chartHeight - (barSpacing * postprocessedData.length)) /
-              postprocessedData.length) / 2) + (textHeight / 2);
-    };
-    var computeBarWidth = function computeBarWidth() {
-      var parentWidth = (this.parentNode.parentNode.clientWidth -
-                         offsetAmount);
-      var x = d3.scaleLinear().domain([0, d3.max(dataPoints)])
-                              .range([0, parentWidth]);
-      return x(dataPoint.value);
-    };
-    var g = svg.append("g")
-               .attr("transform", function computeBarY() {
-                 var chartHeight = this.parentNode.clientHeight;
-                 var barSpacing = 10;
-                 var barHeight = ((chartHeight - (barSpacing *
-                                                  postprocessedData.length)) /
-                                  postprocessedData.length);
-
-                 var y = (index * barSpacing) + (index * barHeight);
-                 return "translate(0.0, " + y + ")";
-               });
-    g.append("rect")
-     .attr("height", function computeBarHeight() {
-       var chartHeight = this.parentNode.parentNode.clientHeight;
-       var barSpacing = 10;
-       return ((chartHeight - (barSpacing * postprocessedData.length)) /
-               postprocessedData.length);
-     })
-     .transition()
-     .delay(index * 50)
-     .duration(750)
-     .ease(d3.easeElastic.period(0.4))
-     .attr("width", computeBarWidth)
-     .attr("rx", "15")
-     .attr("ry", "15")
-     .attr("x", String(offsetAmount))
-     .attr("fill", COLOR_TABLE[index % COLOR_TABLE.length]);
-    g.append("text")
-     .attr("fill", dataPoint.isOffset ? "#000000" : "#ffffff")
-     .text(dataPoint.name)
-     .attr("y", computeTextY)
-     .attr("x", dataPoint.isOffset ? 10 : 10 + offsetAmount);
-    g.append("text")
-     .attr("fill", "#ffffff")
-     .text(dataPoint.value)
-     .attr("y", computeTextY)
-     .transition()
-     .delay(index * 50)
-     .duration(750)
-     .ease(d3.easeElastic.period(0.4))
-     .attr("x", function computeNumberX() {
-       var barWidth = computeBarWidth.call(this);
-       var label = String(dataPoint.value);
-       var labelSize = label.length * INDIVIDUAL_CHARACTER_SIZE;
-       return (barWidth - labelSize) + offsetAmount;
-     });
+    drawBarForDataPoint(svg, dataPoint, index, postprocessedData.length, offsetAmount, dataMax);
   });
 }
 
