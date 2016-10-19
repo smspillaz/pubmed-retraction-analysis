@@ -64,23 +64,20 @@ function listenForUserInteraction(dropdownSelector, menuSelector) {
     parentDiv.removeClass("open");
     event.preventDefault();
 
-    postGraphUpdateRequest($("#chartSelectionDropdown").attr("selection"),
-                           $("#chartFilterInput").val(),
+    postGraphUpdateRequest($("#visualizeFilterInput").val(),
                            $("#filterSelectionDropdown").attr("selection"));
     return false;
   });
 }
 
 document.addEventListener("DOMContentLoaded", function onDOMLoaded() {
-  listenForUserInteraction("#chartSelectionDropdown", "#chartSelectionMenu");
   listenForUserInteraction("#filterSelectionDropdown",
                            "#filterSelectionMenu");
-  $("#chartFilterInput").keypress(function onKeyPress(event) {
+  $("#visualizeFilterInput").keypress(function onKeyPress(event) {
     var keyCode = event.keyCode || event.which;
     if (keyCode === 13) {
       /* User pressed enter, respond accordingly */
-      postGraphUpdateRequest($("#chartSelectionDropdown").attr("selection"),
-                             $("#chartFilterInput").val(),
+      postGraphUpdateRequest($("#visualizeFilterInput").val(),
                              $("#filterSelectionDropdown").attr("selection"));
     }
   });
