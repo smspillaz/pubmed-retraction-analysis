@@ -35,11 +35,10 @@ var filters = {
  */
 function generateQueryForVisualization(filterString, filterType) {
   var filterTypeDispatch = {
-    country: "MATCH(c:Country { name: '" + filterString + "'" + " })-[ra]-(a:Article)-[rt]-(t:Topic) RETURN c, ra, a, rt",
-    country: "MATCH(t:Topic { name: '" + filterString + "'" + " })-[ra]-(a:Article)-[rt]-(t:Country) RETRUN t, ra, a, rt"
+    country: "MATCH(c:Country { name: '" + filterString + "'" + " })-[ra]-(a:Article)-[rt]-(t:Topic) RETURN c, ra, a, rt, t",
+    topic: "MATCH(t:Topic { name: '" + filterString + "'" + " })-[ra]-(a:Article)-[rt]-(c:Country) RETURN t, ra, a, rt, c"
   };
-  var limitStatement = ("ORDER BY rel_count desc LIMIT 10");
-  return [filterTypeDispatch[filterType], limitStatement].join(" ");
+  return filterTypeDispatch[filterType] + " LIMIT 75";
 }
 
 /**
