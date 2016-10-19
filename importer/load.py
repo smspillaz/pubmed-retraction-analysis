@@ -115,6 +115,7 @@ def main(argv=None):
         session = driver.session()
         print ("Loading to database.")
         for command in commands:
+            print(command)
             session.run(command)
         print ("Cleaning up.")
         session.close()
