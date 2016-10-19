@@ -4,6 +4,9 @@ block content
   include header
   .container
     .col-lg-6
+      div(style="margin-top: 10px")
+      .alert.alert-success
+        p Welcome to the #[b PubMed Retraction Analyser]. To get started, select a chart to display below. For instance, you might try 'Frequency by Topic' with the filter 'United States'
       .input-group
         .input-group-btn
           button.btn.btn-default.dropdown-toggle(type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="chartSelectionDropdown") Chart to Display #[span.caret]
