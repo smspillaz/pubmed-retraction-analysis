@@ -57,10 +57,10 @@ function drawBarForDataPoint(svg, dataPoint, index, length, offsetAmount, dataMa
    .attr("x", String(offsetAmount))
    .attr("fill", COLOR_TABLE[index % COLOR_TABLE.length]);
   g.append("text")
-   .attr("fill", dataPoint.isOffset ? "#000000" : "#ffffff")
+   .attr("fill", "#000000")
    .text(dataPoint.name)
    .attr("y", computeTextY)
-   .attr("x", dataPoint.isOffset ? 10 : 10 + offsetAmount);
+   .attr("x", 10);
   g.append("text")
    .attr("fill", "#ffffff")
    .text(dataPoint.value)
@@ -78,49 +78,112 @@ function drawBarForDataPoint(svg, dataPoint, index, length, offsetAmount, dataMa
 }
 
 /**
+ * drawBarChart
+ *
+ * Draws a bar chart using data on the given node.
+ *
+ * @data {array} - The data to use to draw the chart
+ * @chartContainer {object} - The containing element for this chart
+ * @returns {object} - The completed node
+ */
+function drawBarChart(data, chartContainer) {
+  /* The individual points of data, not including labels */
+  var dataPoints = data.map(function onEachDataPoint(w) {
+    return w.value;
+  });
+
+  var svg = d3.select("div.chart")
+              .append("svg")
+              .attr("class", "svgchart")
+              .attr("width", function computeWidth() {
+                return this.parentNode.clientWidth * 0.80;
+              })
+              .attr("height", function computeHeight() {
+                return this.parentNode.clientHeight * 0.80;
+              })
+              .attr("style", function computeTransform() {
+                var x = this.parentNode.clientWidth * 0.10;
+                var y = this.parentNode.clientHeight * 0.10;
+                return ["transform: translate(", x, "px,", y, "px", ")"].join("");
+              });
+
+  /* Estimated sizes of the labels and the bars if no scaling was applied -
+   * use this to determine whether an offset should be applied to the chart
+   * based on the width of the smallest bar and its corresponding label. If
+   * a bar's label size exceeds the size of the bar, we need to make
+   * at least enough room on the left hand side for the bar label */
+  var offsetAmount = 0;
+  var postprocessedData = data.map(function onEachDataPoint(d) {
+    var availableParentWidth = chartContainer.clientWidth * 0.80;
+    var x = d3.scaleLinear().domain([0, d3.max(dataPoints)])
+                            .range([0, availableParentWidth]);
+    var bar = x(d.value);
+    var label = 10 + (INDIVIDUAL_CHARACTER_SIZE * d.name.length);
+
+    if (offsetAmount < label) {
+      offsetAmount = label;
+    }
+
+    return {
+      name: d.name,
+      value: d.value
+    };
+  });
+
+  var dataMax = d3.max(dataPoints);
+  postprocessedData.forEach(function forEachDataPoint(dataPoint, index) {
+    drawBarForDataPoint(svg, dataPoint, index, postprocessedData.length, offsetAmount, dataMax);
+  });
+
+  return svg;
+}
+
+/**
+ * drawLineChart
+ *
+ * Draws a line chart using hte data on the given node.
+ *
+ * @svg {object} - An svg node to draw the bar chart on
+ * @data {array} = The data to use to draw the chart
+ * @chartContainer {object} - The containing element for this chart
+ * @returns {object} - The completed node
+ */
+function drawLineChart(data, chartContainer) {
+  var dataset = data.map(function onEachDataPoint(d) {
+    return {
+      year: Number(d.name),
+      retractions: d.value,
+      name: "Retractions"
+    };
+  });
+
+  return new d3plus.viz()
+                   .container(".chart")
+                   .data(dataset)
+                   .type("line")
+                   .id("name")
+                   .text("name")
+                   .y("retractions")
+                   .x("year")
+                   .draw();
+}
+
+var DrawChartDispatch = {
+  countryRetraction: drawBarChart,
+  authorRetraction: drawBarChart,
+  topicRetraction: drawBarChart,
+  retractionsOverTime: drawLineChart
+};
+
+/**
  * updateGraph
  *
  * Update the graph with some new data and remove the old one.
  *
  * @newData: New tuples of data to update the graph with
  */
-function updateGraph(newData) {
-  var svg;
+function updateGraph(newData, name) {
   var chartContainer = document.getElementsByClassName("chart")[0];
-
-  /* The individual points of data, not including labels */
-  var dataPoints = newData.map(function onEachDataPoint(w) {
-    return w.value;
-  });
-
-  /* Estimated sizes of the labels and the bars if no scaling was appleid -
-   * use this to determine whether an offset should be applied to the chart
-   * based on the width of the smallest bar and its corresponding label. If
-   * a bar's label size exceeds the size of the bar, we need to make
-   * at least enough room on the left hand side for the bar label */
-  var offsetAmount = 0;
-  var postprocessedData = newData.map(function onEachDataPoint(d) {
-    var availableParentWidth = chartContainer.clientWidth * 0.80;
-    var x = d3.scaleLinear().domain([0, d3.max(dataPoints)])
-                            .range([0, availableParentWidth]);
-    var bar = x(d.value);
-    var label = 10 + (INDIVIDUAL_CHARACTER_SIZE * d.name.length);
-    var isOffset = false;
-
-    if (label > bar) {
-      isOffset = true;
-      if (offsetAmount < label) {
-        offsetAmount = label;
-      }
-    }
-
-    return {
-      name: d.name,
-      value: d.value,
-      isOffset: isOffset
-    };
-  });
-
 
   /* Drop any existing SVG elements */
   Array.prototype.forEach.call(document.getElementsByClassName("chart"),
@@ -129,25 +192,7 @@ function updateGraph(newData) {
                                  element.innerHTML = "";  // eslint-disable-line no-param-reassign
                                });
 
-  svg = d3.select("div.chart")
-          .append("svg")
-          .attr("class", "svgchart")
-          .attr("width", function computeWidth() {
-            return this.parentNode.clientWidth * 0.80;
-          })
-          .attr("height", function computeHeight() {
-            return this.parentNode.clientHeight * 0.80;
-          })
-          .attr("style", function computeTransform() {
-            var x = this.parentNode.clientWidth * 0.10;
-            var y = this.parentNode.clientHeight * 0.10;
-            return ["transform: translate(", x, "px,", y, "px", ")"].join("");
-          });
-
-  var dataMax = d3.max(dataPoints);
-  postprocessedData.forEach(function forEachDataPoint(dataPoint, index) {
-    drawBarForDataPoint(svg, dataPoint, index, postprocessedData.length, offsetAmount, dataMax);
-  });
+  DrawChartDispatch[name](newData, chartContainer);
 }
 
 /**
@@ -183,7 +228,7 @@ function postGraphUpdateRequest(name, filterString, filterType) {
         filterType: filterType || null
       },
       success: function onXHRSuccess(data) {
-        updateGraph(data.data);
+        updateGraph(data.data, name);
       }
     });
   }

@@ -3,28 +3,36 @@ extends layout
 block content
   include header
   .container
-    .col-lg-6
-      .input-group
-        .input-group-btn
-          button.btn.btn-default.dropdown-toggle(type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="chartSelectionDropdown") Chart to Display #[span.caret]
-          ul.dropdown-menu(id="chartSelectionMenu")
-            li
-              a(href="#" data-selection-id="countryRetraction") Frequency of each Country
-              a(href="#" data-selection-id="authorRetraction") Frequency of each Author
-              a(href="#" data-selection-id="topicRetraction") Frequency of each Topic
-              a(href="#" data-selection-id="topicsInEachYear") Topics in each year
-        input.form-control(aria-label="..." type="text" id="chartFilterInput")
-        .input-group-btn
-          button.btn.btn-default.dropdown-toggle(type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filterSelectionDropdown") No Filter #[span.caret]
-          ul.dropdown-menu(id="filterSelectionMenu")
-            li
-              a(href="#" data-selection-id="none") No Filter
-              a(href="#" data-selection-id="country") Country
-              a(href="#" data-selection-id="topic") Topic
-              a(href="#" data-selection-id="year") Year
-              a(href="#" data-selection-id="author") Author Name
-    div(style="margin-top: 10px")
-      .alert.alert-danger(role="alert" id="incorrectInputAlert" style="visibility: hidden;")
-    .chart-container
-      .chart
+    .row
+      .col-lg-8.col-lg-offset-2
+        div(style="margin-top: 10px")
+        .alert.alert-success
+          p Welcome to the #[b PubMed Retraction Analyser]. To get started, select a chart to display below. For instance, you might try 'Frequency by Topic' with the filter 'United States'
+        .input-group
+          .input-group-btn
+            button.btn.btn-default.dropdown-toggle(type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="chartSelectionDropdown") Chart to Display #[span.caret]
+            ul.dropdown-menu(id="chartSelectionMenu")
+              li
+                a(href="#" data-selection-id="countryRetraction") Frequency of each Country
+                a(href="#" data-selection-id="authorRetraction") Frequency of each Author
+                a(href="#" data-selection-id="topicRetraction") Frequency of each Topic
+                a(href="#" data-selection-id="retractionsOverTime") Retractions over Time
+          input.form-control(aria-label="..." type="text" id="chartFilterInput")
+          .input-group-btn
+            button.btn.btn-default.dropdown-toggle(type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="filterSelectionDropdown") No Filter #[span.caret]
+            ul.dropdown-menu(id="filterSelectionMenu")
+              li
+                a(href="#" data-selection-id="none") No Filter
+                a(href="#" data-selection-id="country") Country
+                a(href="#" data-selection-id="topic") Topic
+                a(href="#" data-selection-id="year") Year
+                a(href="#" data-selection-id="author") Author Name
+    .row
+      div(style="margin-top: 10px")
+        .alert.alert-danger(role="alert" id="incorrectInputAlert" style="visibility: hidden;")
+    .row
+      .chart-container
+        .chart
   script(src='/js/bundle.js')
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.7/d3.min.js')
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/d3plus/1.9.8/d3plus.min.js')

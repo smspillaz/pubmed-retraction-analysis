@@ -17,7 +17,8 @@ router.get("/", function handleIndexRequest(req, res) {
 var names = {
   topicRetraction: "Topic",
   authorRetraction: "Author",
-  countryRetraction: "Country"
+  countryRetraction: "Country",
+  retractionsOverTime: "Year"
 };
 
 var filters = {

@@ -1,39 +1,10 @@
-head
-  meta(charset='UTF-8')
-  meta(name='viewport', content='width=device-width')
-  title
-  link(rel='stylesheet', href='/components/bootstrap/dist/css/bootstrap.min.css')
-  link(rel='stylesheet', href='/css/PMR.css')
-  script(src='/js/bundle.js')
-.navbar.navbar-default
-  .navbar-header
-    .navbar-brand(href='#') Tracking Retractions
-  .collapse.navbar-collapse
-    .nav.navbar-nav.navbar-right
-      li
-        a Retractions
-.container
-  #progressBar
-    #loadingFill
-      #percentage
-  br
-  button(onclick='load()') Run Crawler
+extends layout
 
-	
-	//temp inline script
-	script.
-		function load() {
-			var elem = document.getElementById("loadingFill");   
-			var width = 0;
-			var id = setInterval(increment, 200);
-			
-		function increment() {
-			if (width >= 100) {
-			clearInterval(id);
-			} else {
-			width++; 
-			elem.style.width = width + '%'; 
-			document.getElementById("percentage").innerHTML = width * 1  + '%';
-			}
-		}
-	}
+block content
+  include header
+  .container
+    #progressBar
+      #loadingFill
+        #percentage
+    br
+    button(onclick='load()') Run Crawler

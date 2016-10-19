@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  include header
+  .container
+    h1 Analyse retracted articles
+    p Welcome to the #[b PubMed Retraction Analyser] project. To improve the integrity of publications in medical journals, this project allows you to visualise article retractions, showing you when and where articles  where retracted and what they were about.
+
+    h2 Statistics View
+    p The "statistics" view will show charts containing the frequency of retractions by particular selectors. On the left hand side, you can select a preset for what to count. The search bar allows you to filter those generated statistics to include only those matching a particular country or topic. For instance, you might want to know what topics are the subject of the most retracted articles in Australia, so you would select "Retractions by Topic" and then type "Australia" into the search field with "Australia" selected in the filtering dropdown.
+
+    h2 Visualize View
+    p The "visualize" view allows you to visualize the underlying graph and relationships between retractions, topics and countries. Just type in a term to start from and select something from the dropdown menu on the right to get going.
+
+    h2 Administration View
+    p The #[b PubMed Retraction Analyser] is backed by a web crawler that uses the PubMed Entrez API to find retracted articles. You can refresh the state of the database at any time by pressing the "Start Crawler" button on this page. Downloading articles and seeding the database takes about one hour in total.
