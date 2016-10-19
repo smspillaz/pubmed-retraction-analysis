@@ -57,10 +57,10 @@ function drawBarForDataPoint(svg, dataPoint, index, length, offsetAmount, dataMa
    .attr("x", String(offsetAmount))
    .attr("fill", COLOR_TABLE[index % COLOR_TABLE.length]);
   g.append("text")
-   .attr("fill", dataPoint.isOffset ? "#000000" : "#ffffff")
+   .attr("fill", "#000000")
    .text(dataPoint.name)
    .attr("y", computeTextY)
-   .attr("x", dataPoint.isOffset ? 10 : 10 + offsetAmount);
+   .attr("x", 10);
   g.append("text")
    .attr("fill", "#ffffff")
    .text(dataPoint.value)
@@ -105,19 +105,14 @@ function updateGraph(newData) {
                             .range([0, availableParentWidth]);
     var bar = x(d.value);
     var label = 10 + (INDIVIDUAL_CHARACTER_SIZE * d.name.length);
-    var isOffset = false;
 
-    if (label > bar) {
-      isOffset = true;
-      if (offsetAmount < label) {
-        offsetAmount = label;
-      }
+    if (offsetAmount < label) {
+      offsetAmount = label;
     }
 
     return {
       name: d.name,
-      value: d.value,
-      isOffset: isOffset
+      value: d.value
     };
   });
 
