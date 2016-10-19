@@ -28,7 +28,7 @@ var filters = {
 };
 
 function generateMatchStatement(chartName, filterType, filterString) {
-  if (filterType === "none") {
+  if (!filterType) {
     return "MATCH(a:" + names[chartName] + ")-[r]-()";
   } else {
     return "MATCH(f:" + filters[filterType] + " { name: '" + filterString + "'})-[fr]-(t:Article)-[r]-(a:" + names[chartName] + ")";
