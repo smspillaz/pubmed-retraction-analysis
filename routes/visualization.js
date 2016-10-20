@@ -34,8 +34,8 @@ router.get("/", function handleIndexRequest(req, res) {
  */
 function generateQueryForVisualization(filterString, filterType) {
   var filterTypeDispatch = {
-    country: "MATCH(c:Country { name: '" + filterString + "'" + " })-[ra]-(a:Article)-[rt]-(t:Topic) RETURN c, ra, a, rt, t",
-    topic: "MATCH(t:Topic { name: '" + filterString + "'" + " })-[ra]-(a:Article)-[rt]-(c:Country) RETURN t, ra, a, rt, c"
+    country: "MATCH(c:Country { name: '" + filterString + "' })-[ra]-(a:Article)-[rt]-(t:Topic) RETURN c, ra, a, rt, t",
+    topic: "MATCH(t:Topic { name: '" + filterString + "' })-[ra]-(a:Article)-[rt]-(c:Country) RETURN t, ra, a, rt, c"
   };
   return filterTypeDispatch[filterType] + " LIMIT 75";
 }
