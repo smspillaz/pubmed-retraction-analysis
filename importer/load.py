@@ -113,12 +113,12 @@ def main(argv=None):
 
         driver = GraphDatabase.driver(url, auth=basic_auth(usr, pwd))
         session = driver.session()
-        print ("Loading to database.")
+        print("Loading to database.")
         for command in commands:
             session.run(command)
-        print ("Cleaning up.")
+        print("Cleaning up.")
         session.close()
-        print ("Done.")
+        print("Done.")
 
 if __name__ == "__main__":
     main(sys.argv[1:])
