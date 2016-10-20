@@ -45,6 +45,7 @@ function generateQueryForVisualization(filterString, filterType) {
 function rowsToGraphNodes(rows, specification) {
   var edges = [];
   var nodes = {};
+  var i = 0;
 
   if (specification.length % 2 === 0) {
     throw new Error("Specification must be odd-sized");
@@ -55,7 +56,7 @@ function rowsToGraphNodes(rows, specification) {
       throw new Error("Must provide specification with the same length as rows");
     }
 
-    for (var i = 0; i < row.length; ++i) {  // eslint-disable-line no-plusplus
+    for (i = 0; i < row.length; ++i) {  // eslint-disable-line no-plusplus
       /* Even index -> this is a node */
       if (i % 2 === 0) {
         /* Use a map here to deduplicate rows */
