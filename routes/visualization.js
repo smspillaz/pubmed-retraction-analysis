@@ -41,26 +41,6 @@ function generateQueryForVisualization(filterString, filterType) {
 }
 
 /**
- * normaliseName
- *
- * Normalise a name such that the name is always in title case.
- *
- * @param name {string} - The name to normalise
- * @returns {string} - The normalised name.
- */
-function normaliseName(name) {
-  return name.toLowerCase().split(" ").map(function forEachSection(s) {
-    return Array.prototype.map.call(s, function forEachChar(c, i) {
-      if (i === 0) {
-        return c.toUpperCase();
-      }
-
-      return c;
-    }).join("");
-  }).join(" ");
-}
-
-/**
  * rowsToGraphNodes
  *
  * @param rows {array} - An odd-sized array, even elements representing nodes
