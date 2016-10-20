@@ -62,12 +62,12 @@ function rowsToGraphNodes(rows, specification) {
         nodes[row[i]._id] = {
           type: specification[i],
           label: row[i].name,
-          id: row[i]._id
+          id: row[i]._id  // eslint-disable-line no-underscore-dangle
         };
       } else {
         edges.push({
-          from: row[i - 1]._id,
-          to: row[i + 1]._id
+          from: row[i - 1]._id,  // eslint-disable-line no-underscore-dangle
+          to: row[i + 1]._id  // eslint-disable-line no-underscore-dangle
         });
       }
     }
