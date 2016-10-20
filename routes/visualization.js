@@ -1,7 +1,6 @@
 var express = require("express");
 var Neo4j = require("node-neo4j");
 var dbUtils = require("../db/utils");
-var util = require("util");
 var router = express.Router(); // eslint-disable-line new-cap
 var db = (function validateEnvironmentAndConnect() {
   dbUtils.validateEnvironment("bin/www");
@@ -13,13 +12,6 @@ var db = (function validateEnvironmentAndConnect() {
 router.get("/", function handleIndexRequest(req, res) {
   res.render("visualize");
 });
-
-var filters = {
-  country: "Country",
-  author: "Author",
-  topic: "Topic",
-  year: "Year"
-};
 
 /**
  * generateQueryForVisualization
@@ -35,30 +27,10 @@ var filters = {
  */
 function generateQueryForVisualization(filterString, filterType) {
   var filterTypeDispatch = {
-    country: "MATCH(c:Country { name: '" + filterString + "'" + " })-[ra]-(a:Article)-[rt]-(t:Topic) RETURN c, ra, a, rt, t",
-    topic: "MATCH(t:Topic { name: '" + filterString + "'" + " })-[ra]-(a:Article)-[rt]-(c:Country) RETURN t, ra, a, rt, c"
+    country: "MATCH(c:Country { name: '" + filterString + "' })-[ra]-(a:Article)-[rt]-(t:Topic) RETURN c, ra, a, rt, t",
+    topic: "MATCH(t:Topic { name: '" + filterString + "' })-[ra]-(a:Article)-[rt]-(c:Country) RETURN t, ra, a, rt, c"
   };
   return filterTypeDispatch[filterType] + " LIMIT 75";
-}
-
-/**
- * normaliseName
- *
- * Normalise a name such that the name is always in title case.
- *
- * @param name {string} - The name to normalise
- * @returns {string} - The normalised name.
- */
-function normaliseName(name) {
-  return name.toLowerCase().split(" ").map(function forEachSection(s) {
-    return Array.prototype.map.call(s, function forEachChar(c, i) {
-      if (i === 0) {
-        return c.toUpperCase();
-      }
-
-      return c;
-    }).join("");
-  }).join(" ");
 }
 
 /**
@@ -71,31 +43,34 @@ function normaliseName(name) {
  * @returns {object} - An alchemy-friendly object with a relationship graph
  */
 function rowsToGraphNodes(rows, specification) {
+  var edges = [];
+  var nodes = {};
+  var i = 0;
+  var rowId = 0;
+
   if (specification.length % 2 === 0) {
     throw new Error("Specification must be odd-sized");
   }
 
-  var edges = [];
-  var nodes = {};
-
   rows.forEach(function onEachRow(row) {
-    if (row.length != specification.length) {
+    if (row.length !== specification.length) {
       throw new Error("Must provide specification with the same length as rows");
     }
 
-    for (var i = 0; i < row.length; ++i) {
+    for (i = 0; i < row.length; ++i) {  // eslint-disable-line no-plusplus
       /* Even index -> this is a node */
       if (i % 2 === 0) {
         /* Use a map here to deduplicate rows */
-        nodes[row[i]._id] = {
+        rowId = row[i]._id;  // eslint-disable-line no-underscore-dangle
+        nodes[rowId] = {
           type: specification[i],
           label: row[i].name,
-          id: row[i]._id
+          id: rowId
         };
       } else {
         edges.push({
-          from: row[i - 1]._id,
-          to: row[i + 1]._id
+          from: row[i - 1]._id,  // eslint-disable-line no-underscore-dangle
+          to: row[i + 1]._id  // eslint-disable-line no-underscore-dangle
         });
       }
     }

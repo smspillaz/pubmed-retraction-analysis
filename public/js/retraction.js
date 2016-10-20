@@ -1,4 +1,4 @@
-/* global bundle, $ */
+/* global bundle, $, d3plus */
 
 var d3 = require("d3");
 
@@ -83,10 +83,9 @@ function drawBarForDataPoint(svg, dataPoint, index, length, offsetAmount, dataMa
  * Draws a bar chart using data on the given node.
  *
  * @data {array} - The data to use to draw the chart
- * @chartContainer {object} - The containing element for this chart
  * @returns {object} - The completed node
  */
-function drawBarChart(data, chartContainer) {
+function drawBarChart(data) {
   /* The individual points of data, not including labels */
   var dataPoints = data.map(function onEachDataPoint(w) {
     return w.value;
@@ -112,27 +111,19 @@ function drawBarChart(data, chartContainer) {
    * based on the width of the smallest bar and its corresponding label. If
    * a bar's label size exceeds the size of the bar, we need to make
    * at least enough room on the left hand side for the bar label */
-  var offsetAmount = 0;
-  var postprocessedData = data.map(function onEachDataPoint(d) {
-    var availableParentWidth = chartContainer.clientWidth * 0.80;
-    var x = d3.scaleLinear().domain([0, d3.max(dataPoints)])
-                            .range([0, availableParentWidth]);
-    var bar = x(d.value);
+  var offsetAmount = data.reduce(function onEachDataPoint(amount, d) {
     var label = 10 + (INDIVIDUAL_CHARACTER_SIZE * d.name.length);
 
-    if (offsetAmount < label) {
-      offsetAmount = label;
+    if (amount < label) {
+      return label;
     }
 
-    return {
-      name: d.name,
-      value: d.value
-    };
-  });
+    return amount;
+  }, 0);
 
   var dataMax = d3.max(dataPoints);
-  postprocessedData.forEach(function forEachDataPoint(dataPoint, index) {
-    drawBarForDataPoint(svg, dataPoint, index, postprocessedData.length, offsetAmount, dataMax);
+  data.forEach(function forEachDataPoint(dataPoint, index) {
+    drawBarForDataPoint(svg, dataPoint, index, data.length, offsetAmount, dataMax);
   });
 
   return svg;
@@ -145,10 +136,9 @@ function drawBarChart(data, chartContainer) {
  *
  * @svg {object} - An svg node to draw the bar chart on
  * @data {array} = The data to use to draw the chart
- * @chartContainer {object} - The containing element for this chart
  * @returns {object} - The completed node
  */
-function drawLineChart(data, chartContainer) {
+function drawLineChart(data) {
   var dataset = data.map(function onEachDataPoint(d) {
     return {
       year: Number(d.name),
@@ -157,7 +147,7 @@ function drawLineChart(data, chartContainer) {
     };
   });
 
-  return new d3plus.viz()
+  return new d3plus.viz()  // eslint-disable-line new-cap
                    .container(".chart")
                    .data(dataset)
                    .type("line")
@@ -168,13 +158,6 @@ function drawLineChart(data, chartContainer) {
                    .draw();
 }
 
-var DrawChartDispatch = {
-  countryRetraction: drawBarChart,
-  authorRetraction: drawBarChart,
-  topicRetraction: drawBarChart,
-  retractionsOverTime: drawLineChart
-};
-
 /**
  * updateGraph
  *
@@ -183,7 +166,12 @@ var DrawChartDispatch = {
  * @newData: New tuples of data to update the graph with
  */
 function updateGraph(newData, name) {
-  var chartContainer = document.getElementsByClassName("chart")[0];
+  var drawChartDispatch = {
+    countryRetraction: drawBarChart,
+    authorRetraction: drawBarChart,
+    topicRetraction: drawBarChart,
+    retractionsOverTime: drawLineChart
+  };
 
   /* Drop any existing SVG elements */
   Array.prototype.forEach.call(document.getElementsByClassName("chart"),
@@ -192,7 +180,7 @@ function updateGraph(newData, name) {
                                  element.innerHTML = "";  // eslint-disable-line no-param-reassign
                                });
 
-  DrawChartDispatch[name](newData, chartContainer);
+  drawChartDispatch[name](newData);
 }
 
 /**

@@ -187,9 +187,7 @@ class TestFileToElementTree(TestCase):
                           "</PubmedArticle></PubmedArticleSet>")
         stderr = StringIO()
         self.patch(sys, "stderr", stderr)
-        result = parsexml.parse_element_tree(
-            parsexml.file_to_element_tree(stream)
-        )
+        parsexml.parse_element_tree(parsexml.file_to_element_tree(stream))
         stderr.seek(0)
         stderr_out = stderr.read()
         self.assertThat(stderr_out, Contains("skipping"))

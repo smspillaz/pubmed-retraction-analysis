@@ -16,38 +16,6 @@ var REPRESENTATIVE_BAR_CHART = [
   {
     name: "B Batlogg",
     value: 2
-  },
-  {
-    name: "J Bouma",
-    value: 1
-  },
-  {
-    name: "Steven Roberts",
-    value: 1
-  },
-  {
-    name: "R B Mellins",
-    value: 1
-  },
-  {
-    name: "Gerard Apodaca",
-    value: 1
-  },
-  {
-    name: "P A Berger",
-    value: 1
-  },
-  {
-    name: "C E Rowe",
-    value: 1
-  },
-  {
-    name: "E C Dunkel",
-    value: 1
-  },
-  {
-    name: "L Hood",
-    value: 1
   }
 ];
 
@@ -98,12 +66,12 @@ describe("Web Server Backend", function bootingServer() {
     it("4.5.10.1 allows endpoint request for bar_chart", function getBC(done) {
       request.get(serverUrl(serverBase, "/get_bar_chart"), {
         qs: {
-          name: "authorYear"
+          name: "authorRetraction"
         }
       }, function onData(error, response, body) {
         var result = JSON.parse(body);
         expect(result.result).to.equal("success");
-        expect(result.data).to.deep.equal(REPRESENTATIVE_BAR_CHART);
+        expect(result.data.slice(0, 2)).to.deep.equal(REPRESENTATIVE_BAR_CHART);
         done();
       });
     });
