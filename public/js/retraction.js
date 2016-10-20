@@ -115,8 +115,6 @@ function drawBarChart(data, chartContainer) {
   var offsetAmount = 0;
   var postprocessedData = data.map(function onEachDataPoint(d) {
     var availableParentWidth = chartContainer.clientWidth * 0.80;
-    var x = d3.scaleLinear().domain([0, d3.max(dataPoints)])
-                            .range([0, availableParentWidth]);
     var label = 10 + (INDIVIDUAL_CHARACTER_SIZE * d.name.length);
 
     if (offsetAmount < label) {
