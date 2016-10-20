@@ -44,7 +44,7 @@ function generateMatchStatement(chartName, filterType, filterString) {
   if (!filterType) {
     return "MATCH(a:" + names[chartName] + ")-[r]-()";
   }
-  
+
   return "MATCH(f:" + filters[filterType] + " { name: '" + filterString + "'})-[fr]-(t:Article)-[r]-(a:" + names[chartName] + ")";
 }
 
