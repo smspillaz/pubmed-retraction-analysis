@@ -35,7 +35,7 @@ from testtools.matchers import Equals
 
 ENTRY_VALUES = {
     "pmid": "111111",
-    "Author": "fore_name last_name",
+    "Author": ["fore_name last_name"],
     "pubDate": {
         "date": "2011-11-11",
         "components": {
@@ -65,7 +65,7 @@ def generate_match_query(var, criteria):
 
 ARTICLE_QUERIES = [
     (generate_match_query("a", "Author") + " RETURN a",
-     {"name": ENTRY_VALUES["Author"]}),
+     {"name": ENTRY_VALUES["Author"][0]}),
     (generate_match_query("a", "Month") + " RETURN a", {"name": "November"}),
     (generate_match_query("a", "Year") + " RETURN a", {"name": "2011"}),
     (generate_match_query("a", "Country") + " RETURN a",
