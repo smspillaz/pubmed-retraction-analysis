@@ -43,9 +43,9 @@ router.get("/", function handleIndexRequest(req, res) {
 function generateMatchStatement(chartName, filterType, filterString) {
   if (!filterType) {
     return "MATCH(a:" + names[chartName] + ")-[r]-()";
-  } else {
-    return "MATCH(f:" + filters[filterType] + " { name: '" + filterString + "'})-[fr]-(t:Article)-[r]-(a:" + names[chartName] + ")";
   }
+  
+  return "MATCH(f:" + filters[filterType] + " { name: '" + filterString + "'})-[fr]-(t:Article)-[r]-(a:" + names[chartName] + ")";
 }
 
 /**
