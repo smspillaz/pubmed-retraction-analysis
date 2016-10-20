@@ -96,7 +96,7 @@ CORRESPONDING_ENTRIES = {
 }
 
 EXPECTED_ENTRY_VALUES = {
-    "Author": "fore_name last_name",
+    "Author": ["fore_name last_name"],
     "pubDate": {
         "date": "2011-11-11",
         "components": {
@@ -179,16 +179,20 @@ class TestFileToElementTree(TestCase):
         result = parsexml.parse_element_tree(
             parsexml.file_to_element_tree(stream)
         )
-        self.assertThat(result["Author"], Equals("collective"))
+        self.assertThat(result["Author"], Equals(["collective"]))
 
     def test_parsing_file_with_no_fields_throws(self):
-        """4.5.3.4 Throw error file has no relevant fields."""
+        """4.5.3.4 Print error file has no relevant fields."""
         stream = StringIO("<PubmedArticleSet><PubmedArticle>"
                           "</PubmedArticle></PubmedArticleSet>")
-        with ExpectedException(parsexml.NoFieldsError):
-            parsexml.parse_element_tree(
-                parsexml.file_to_element_tree(stream)
-            )
+        stderr = StringIO()
+        self.patch(sys, "stderr", stderr)
+        result = parsexml.parse_element_tree(
+            parsexml.file_to_element_tree(stream)
+        )
+        stderr.seek(0)
+        stderr_out = stderr.read()
+        self.assertThat(stderr_out, Contains("skipping"))
 
     def test_parsing_only_year_in_date(self):
         """4.5.3.5 Only year in date."""

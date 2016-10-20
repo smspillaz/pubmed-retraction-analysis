@@ -95,14 +95,6 @@ def sections_to_date_entry(sections):
     }
 
 
-class NoFieldsError(Exception):
-    """Error thrown when XML document has no fields."""
-
-    def __str__(self):
-        """Convert to string."""
-        return """XML document has no relevant fields."""
-
-
 def sanitise_string(string):
     """Sanitize a particular string."""
     return re.sub(r"[\\\t\\\n\\\r]", "", string.strip())
@@ -114,6 +106,7 @@ def sanitise_field_values(structure):
         k: sanitise_string(v)
         if isinstance(v, str)
         else (sanitise_field_values(v) if isinstance(v, dict)
+              else [sanitise_string(s) for s in v] if isinstance(v, list)
               else v)
         for k, v in structure.items()
     }
@@ -157,7 +150,9 @@ def parse_element_tree(tree, filename=None):
     authors = list()
     for author in root.iter("Author"):
         authors.append(get_author_name(author))
-    article_data["Author"] = authors
+
+    # Special case - if the authors list is empty, just replace it with none
+    article_data["Author"] = authors if len(authors) else None
 
     for pubDate in root.iter("DateCompleted"):
         expect_valid_date_combinations("DateCompleted", pubDate)
