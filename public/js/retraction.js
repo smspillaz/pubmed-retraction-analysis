@@ -1,4 +1,4 @@
-/* global bundle, $ */
+/* global bundle, $, d3plus */
 
 var d3 = require("d3");
 
