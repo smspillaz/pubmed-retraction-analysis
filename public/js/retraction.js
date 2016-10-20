@@ -158,13 +158,6 @@ function drawLineChart(data) {
                    .draw();
 }
 
-var DrawChartDispatch = {
-  countryRetraction: drawBarChart,
-  authorRetraction: drawBarChart,
-  topicRetraction: drawBarChart,
-  retractionsOverTime: drawLineChart
-};
-
 /**
  * updateGraph
  *
@@ -173,6 +166,13 @@ var DrawChartDispatch = {
  * @newData: New tuples of data to update the graph with
  */
 function updateGraph(newData, name) {
+  var drawChartDispatch = {
+    countryRetraction: drawBarChart,
+    authorRetraction: drawBarChart,
+    topicRetraction: drawBarChart,
+    retractionsOverTime: drawLineChart
+  };
+
   /* Drop any existing SVG elements */
   Array.prototype.forEach.call(document.getElementsByClassName("chart"),
                                function dropInnerHTMLOf(element) {
@@ -180,7 +180,7 @@ function updateGraph(newData, name) {
                                  element.innerHTML = "";  // eslint-disable-line no-param-reassign
                                });
 
-  DrawChartDispatch[name](newData);
+  drawChartDispatch[name](newData);
 }
 
 /**
