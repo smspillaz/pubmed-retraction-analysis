@@ -117,7 +117,6 @@ function drawBarChart(data, chartContainer) {
     var availableParentWidth = chartContainer.clientWidth * 0.80;
     var x = d3.scaleLinear().domain([0, d3.max(dataPoints)])
                             .range([0, availableParentWidth]);
-    var bar = x(d.value);
     var label = 10 + (INDIVIDUAL_CHARACTER_SIZE * d.name.length);
 
     if (offsetAmount < label) {
@@ -145,10 +144,9 @@ function drawBarChart(data, chartContainer) {
  *
  * @svg {object} - An svg node to draw the bar chart on
  * @data {array} = The data to use to draw the chart
- * @chartContainer {object} - The containing element for this chart
  * @returns {object} - The completed node
  */
-function drawLineChart(data, chartContainer) {
+function drawLineChart(data) {
   var dataset = data.map(function onEachDataPoint(d) {
     return {
       year: Number(d.name),
