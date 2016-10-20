@@ -155,7 +155,7 @@ function drawLineChart(data) {
     };
   });
 
-  return new d3plus.viz()
+  return new d3plus.viz()  // eslint-disable-line new-cap
                    .container(".chart")
                    .data(dataset)
                    .type("line")
