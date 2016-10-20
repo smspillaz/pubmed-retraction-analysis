@@ -1,7 +1,6 @@
 var express = require("express");
 var Neo4j = require("node-neo4j");
 var dbUtils = require("../db/utils");
-var util = require("util");
 var router = express.Router(); // eslint-disable-line new-cap
 var db = (function validateEnvironmentAndConnect() {
   dbUtils.validateEnvironment("bin/www");
@@ -13,13 +12,6 @@ var db = (function validateEnvironmentAndConnect() {
 router.get("/", function handleIndexRequest(req, res) {
   res.render("visualize");
 });
-
-var filters = {
-  country: "Country",
-  author: "Author",
-  topic: "Topic",
-  year: "Year"
-};
 
 /**
  * generateQueryForVisualization
