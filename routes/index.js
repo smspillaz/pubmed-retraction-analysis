@@ -27,6 +27,19 @@ router.get("/", function handleIndexRequest(req, res) {
   res.render("pubmedRetraction");
 });
 
+/**
+ * generateMatchStatement
+ *
+ * Generates a neo4j match statement based on some criteria. The match statement
+ * either starts from the chartName node if we want all results, or starts
+ * from the filterType node (and links to the chartName node) if we're filtering
+ * on something
+ *
+ * @chartName {string} - The name of the chart that we are going to display
+ * @filterType {string} - What type of data we might be filtering on
+ * @filterString {string} - The string to filter on for the filtered type
+ * @returns {string} - A match statement to start a neo4j query with
+ */
 function generateMatchStatement(chartName, filterType, filterString) {
   if (!filterType) {
     return "MATCH(a:" + names[chartName] + ")-[r]-()";
