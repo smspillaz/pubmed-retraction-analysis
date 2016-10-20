@@ -95,14 +95,6 @@ def sections_to_date_entry(sections):
     }
 
 
-class NoFieldsError(Exception):
-    """Error thrown when XML document has no fields."""
-
-    def __str__(self):
-        """Convert to string."""
-        return """XML document has no relevant fields."""
-
-
 def sanitise_string(string):
     """Sanitize a particular string."""
     return re.sub(r"[\\\t\\\n\\\r]", "", string.strip())
