@@ -51,7 +51,7 @@ function rowsToGraphNodes(rows, specification) {
   }
 
   rows.forEach(function onEachRow(row) {
-    if (row.length != specification.length) {
+    if (row.length !== specification.length) {
       throw new Error("Must provide specification with the same length as rows");
     }
 
