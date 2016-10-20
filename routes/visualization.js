@@ -55,7 +55,7 @@ function rowsToGraphNodes(rows, specification) {
       throw new Error("Must provide specification with the same length as rows");
     }
 
-    for (var i = 0; i < row.length; ++i) {
+    for (var i = 0; i < row.length; ++i) {  // eslint-disable-line no-plusplus
       /* Even index -> this is a node */
       if (i % 2 === 0) {
         /* Use a map here to deduplicate rows */
