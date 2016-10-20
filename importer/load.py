@@ -96,7 +96,7 @@ def main(argv=None):
 
     with open_or_default(parse_result.file, sys.stdin) as fileobj:
         data = json.load(fileobj)
-        print("Reading data from file.")
+        sys.stderr.write("Reading data from file\n")
         commands = list(commands_from_data(data))
 
     if parse_result.no_execute:
@@ -113,12 +113,12 @@ def main(argv=None):
 
         driver = GraphDatabase.driver(url, auth=basic_auth(usr, pwd))
         session = driver.session()
-        print("Loading to database.")
+        sys.stderr.write("Loading to database.\n")
         for command in commands:
             session.run(command)
-        print("Cleaning up.")
+        sys.stderr.write("Cleaning up.\n")
         session.close()
-        print("Done.")
+        sys.stderr.write("Done.\n")
 
 if __name__ == "__main__":
     main(sys.argv[1:])
