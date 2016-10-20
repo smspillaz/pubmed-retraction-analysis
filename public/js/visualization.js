@@ -10,13 +10,12 @@ var vis = require("vis");
  * @newData: New tuples of data to update the graph with
  */
 function updateVisualization(newData) {
-  var svg;
   var chartContainer = document.getElementsByClassName("chart")[0];
 
   var nodes = new vis.DataSet(newData.nodes);
   var edges = new vis.DataSet(newData.edges);
 
-  var network = new vis.Network(chartContainer, { nodes: nodes, edges: edges }, {});
+  return new vis.Network(chartContainer, { nodes: nodes, edges: edges }, {});
 }
 
 /**
