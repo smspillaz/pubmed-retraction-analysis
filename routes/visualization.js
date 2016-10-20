@@ -43,12 +43,12 @@ function generateQueryForVisualization(filterString, filterType) {
  * @returns {object} - An alchemy-friendly object with a relationship graph
  */
 function rowsToGraphNodes(rows, specification) {
+  var edges = [];
+  var nodes = {};
+
   if (specification.length % 2 === 0) {
     throw new Error("Specification must be odd-sized");
   }
-
-  var edges = [];
-  var nodes = {};
 
   rows.forEach(function onEachRow(row) {
     if (row.length != specification.length) {
