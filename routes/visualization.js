@@ -7,6 +7,13 @@ var db = (function validateEnvironmentAndConnect() {
   return new Neo4j(dbUtils.createConnectionString());
 }());
 
+var filters = {
+  country: "Country",
+  author: "Author",
+  topic: "Topic",
+  year: "Year"
+};
+
 /* GET home page. */
 
 router.get("/", function handleIndexRequest(req, res) {
