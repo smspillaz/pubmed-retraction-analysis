@@ -7,12 +7,6 @@ var db = (function validateEnvironmentAndConnect() {
   return new Neo4j(dbUtils.createConnectionString());
 }());
 
-/* GET home page. */
-
-router.get("/", function handleIndexRequest(req, res) {
-  res.render("pubmedRetraction");
-});
-
 var names = {
   topicRetraction: "Topic",
   authorRetraction: "Author",
@@ -26,6 +20,12 @@ var filters = {
   topic: "Topic",
   year: "Year"
 };
+
+/* GET home page. */
+
+router.get("/", function handleIndexRequest(req, res) {
+  res.render("pubmedRetraction");
+});
 
 function generateMatchStatement(chartName, filterType, filterString) {
   if (!filterType) {
