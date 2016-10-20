@@ -46,6 +46,7 @@ function rowsToGraphNodes(rows, specification) {
   var edges = [];
   var nodes = {};
   var i = 0;
+  var rowId = 0;
 
   if (specification.length % 2 === 0) {
     throw new Error("Specification must be odd-sized");
@@ -60,10 +61,11 @@ function rowsToGraphNodes(rows, specification) {
       /* Even index -> this is a node */
       if (i % 2 === 0) {
         /* Use a map here to deduplicate rows */
-        nodes[row[i]._id] = {  // esline-disable-line no-underscore-dangle
+        rowId = row[i]._id;  // eslint-disable-line no-underscore-dangle
+        nodes[rowId] = {
           type: specification[i],
           label: row[i].name,
-          id: row[i]._id  // eslint-disable-line no-underscore-dangle
+          id: rowId
         };
       } else {
         edges.push({
