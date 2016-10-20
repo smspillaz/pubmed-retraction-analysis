@@ -41,6 +41,10 @@ router.get("/", function handleIndexRequest(req, res) {
  * @returns {string} - A match statement to start a neo4j query with
  */
 function generateMatchStatement(chartName, filterType, filterString) {
+  if (Object.keys(names).indexOf(chartName) === -1) {
+    throw new Error("Don't know how to get chart " + chartName);
+  }
+
   if (!filterType) {
     return "MATCH(a:" + names[chartName] + ")-[r]-()";
   }

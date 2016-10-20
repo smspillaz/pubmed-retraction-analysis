@@ -1,7 +1,7 @@
 [
   {
     "pubDate": { "date": "1994-01-19", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "W Ambroze",
+    "Author": ["W Ambroze"],
     "country": "UNITED STATES",
     "ISSN": "1051-7200",
     "pmid": "1341533",
@@ -9,7 +9,7 @@
   },
   {
     "pubDate": { "date": "1983-06-17", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "P Felig",
+    "Author": ["P Felig"],
     "country": "UNITED STATES",
     "ISSN": "0021-972X",
     "pmid": "400712",
@@ -17,7 +17,7 @@
   },
   {
     "pubDate": { "date": "2005-10-18", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "P Hanjani",
+    "Author": ["P Hanjani"],
     "country": "England",
     "ISSN": "0144-3615",
     "pmid": "12521812",
@@ -25,7 +25,7 @@
   },
   {
     "pubDate": { "date": "1991-08-09", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "E C Dunkel",
+    "Author": ["E C Dunkel"],
     "country": "UNITED STATES",
     "ISSN": "0041-1345",
     "pmid": "1648830",
@@ -33,7 +33,7 @@
   },
   {
     "pubDate": { "date": "1996-01-02", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "A B Dunn",
+    "Author": ["A B Dunn"],
     "country": "NETHERLANDS",
     "ISSN": "0027-5107",
     "pmid": "7491120",
@@ -41,7 +41,7 @@
   },
   {
     "pubDate": { "date": "1998-11-01", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "J MICOU",
+    "Author": ["J MICOU"],
     "country": "Not Available",
     "ISSN": "0095-9901",
     "pmid": "13850774",
@@ -49,7 +49,7 @@
   },
   {
     "pubDate": { "date": "1988-06-14", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "R H Mertelsmann",
+    "Author": ["R H Mertelsmann"],
     "country": "UNITED STATES",
     "ISSN": "0021-9738",
     "pmid": "2452833",
@@ -57,7 +57,7 @@
   },
   {
     "pubDate": { "date": "2012-10-02", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "Masahiro Nakayama",
+    "Author": ["Masahiro Nakayama"],
     "country": "New Zealand",
     "ISSN": "1173-2563",
     "pmid": "17523738",
@@ -65,7 +65,7 @@
   },
   {
     "pubDate": { "date": "1993-01-21", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "L W Terstappen",
+    "Author": ["L W Terstappen"],
     "country": "ENGLAND",
     "ISSN": "0028-0836",
     "pmid": "1281519",
@@ -73,7 +73,7 @@
   },
   {
     "pubDate": { "date": "2013-07-01", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "J Bouma",
+    "Author": ["J Bouma"],
     "country": "United States",
     "ISSN": "1048-891X",
     "pmid": "11576270",
@@ -81,7 +81,7 @@
   },
   {
     "pubDate": { "date": "1977-08-12", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "P Felig",
+    "Author": ["P Felig"],
     "country": "UNITED STATES",
     "ISSN": "0021-9738",
     "pmid": "326810",
@@ -89,7 +89,7 @@
   },
   {
     "pubDate": { "date": "2010-04-06", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "Christoph Klein",
+    "Author": ["Christoph Klein"],
     "country": "United States",
     "ISSN": "1932-6203",
     "pmid": "17375192",
@@ -97,7 +97,7 @@
   },
   {
     "pubDate": { "date": "2007-06-08", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "Wen-ling Zheng",
+    "Author": ["Wen-ling Zheng"],
     "country": "China",
     "ISSN": "1000-2588",
     "pmid": "16174581",
@@ -105,7 +105,7 @@
   },
   {
     "pubDate": { "date": "1980-03-27", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "B E Korba",
+    "Author": ["B E Korba"],
     "country": "UNITED STATES",
     "ISSN": "0027-8424",
     "pmid": "160560",
@@ -113,7 +113,7 @@
   },
   {
     "pubDate": { "date": "1992-02-27", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "D W Kufe",
+    "Author": ["D W Kufe"],
     "country": "UNITED STATES",
     "ISSN": "0006-4971",
     "pmid": "1310062",
@@ -121,7 +121,7 @@
   },
   {
     "pubDate": { "date": "1982-02-12", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "R J Levinsky",
+    "Author": ["R J Levinsky"],
     "country": "ENGLAND",
     "ISSN": "0009-9104",
     "pmid": "6171369",
@@ -129,7 +129,7 @@
   },
   {
     "pubDate": { "date": "2006-02-24", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "Fabienne Rancé",
+    "Author": ["Fabienne Rancé"],
     "country": "England",
     "ISSN": "1744-7623",
     "pmid": "15571483",
@@ -137,7 +137,7 @@
   },
   {
     "pubDate": { "date": "1987-03-09", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "C Baglioni",
+    "Author": ["C Baglioni"],
     "country": "UNITED STATES",
     "ISSN": "0027-8424",
     "pmid": "2433688",
@@ -145,7 +145,7 @@
   },
   {
     "pubDate": { "date": "1986-01-27", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "A A Hakim",
+    "Author": ["A A Hakim"],
     "country": "SWITZERLAND",
     "ISSN": "0014-4754",
     "pmid": "2416588",
@@ -153,7 +153,7 @@
   },
   {
     "pubDate": { "date": "2015-12-02", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "Gerard Apodaca",
+    "Author": ["Gerard Apodaca"],
     "country": "United States",
     "ISSN": "1083-351X",
     "pmid": "15319429",
@@ -161,7 +161,7 @@
   },
   {
     "pubDate": { "date": "2004-06-17", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "Adriana Stoica",
+    "Author": ["Adriana Stoica"],
     "country": "United States",
     "ISSN": "0888-8809",
     "pmid": "12554767",
@@ -169,7 +169,7 @@
   },
   {
     "pubDate": { "date": "2003-04-07", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "B Batlogg",
+    "Author": ["B Batlogg"],
     "country": "England",
     "ISSN": "0028-0836",
     "pmid": "10667788",
@@ -177,7 +177,7 @@
   },
   {
     "pubDate": { "date": "2008-02-26", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "M A Qadeer",
+    "Author": ["M A Qadeer"],
     "country": "Australia",
     "ISSN": "1449-2288",
     "pmid": "15951848",
@@ -185,7 +185,7 @@
   },
   {
     "pubDate": { "date": "2001-02-08", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "T Matsuda",
+    "Author": ["T Matsuda"],
     "country": "UNITED STATES",
     "ISSN": "0021-9258",
     "pmid": "10993888",
@@ -193,7 +193,7 @@
   },
   {
     "pubDate": { "date": "1989-05-15", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "F Herrmann",
+    "Author": ["F Herrmann"],
     "country": "UNITED STATES",
     "ISSN": "0021-9738",
     "pmid": "2467922",
@@ -201,7 +201,7 @@
   },
   {
     "pubDate": { "date": "1990-03-22", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "L Hood",
+    "Author": ["L Hood"],
     "country": "UNITED STATES",
     "ISSN": "0027-8424",
     "pmid": "1689484",
@@ -209,7 +209,7 @@
   },
   {
     "pubDate": { "date": "1999-03-18", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "R Padmanabhan",
+    "Author": ["R Padmanabhan"],
     "country": "UNITED STATES",
     "ISSN": "0021-9258",
     "pmid": "10026173",
@@ -217,7 +217,7 @@
   },
   {
     "pubDate": { "date": "1979-01-15", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "R B Mellins",
+    "Author": ["R B Mellins"],
     "country": "UNITED STATES",
     "ISSN": "0009-7330",
     "pmid": "213200",
@@ -225,7 +225,7 @@
   },
   {
     "pubDate": { "date": "1976-02-09", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "C E Rowe",
+    "Author": ["C E Rowe"],
     "country": "ENGLAND",
     "ISSN": "0264-6021",
     "pmid": "173287",
@@ -233,7 +233,7 @@
   },
   {
     "pubDate": { "date": "1995-11-28", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "L G Goldfarb",
+    "Author": ["L G Goldfarb"],
     "country": "ENGLAND",
     "ISSN": "0140-6736",
     "pmid": "7475576",
@@ -241,7 +241,7 @@
   },
   {
     "pubDate": { "date": "2014-01-21", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "Steven Roberts",
+    "Author": ["Steven Roberts"],
     "country": "United States",
     "ISSN": "1096-9098",
     "pmid": "17230541",
@@ -249,7 +249,7 @@
   },
   {
     "pubDate": { "date": "1985-04-09", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "P A Berger",
+    "Author": ["P A Berger"],
     "country": "UNITED STATES",
     "ISSN": "0003-9942",
     "pmid": "2579626",
@@ -257,7 +257,7 @@
   },
   {
     "pubDate": { "date": "1975-08-29", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "B Hamprecht",
+    "Author": ["B Hamprecht"],
     "country": "ENGLAND",
     "ISSN": "0028-0836",
     "pmid": "166323",
@@ -265,7 +265,7 @@
   },
   {
     "pubDate": { "date": "2002-12-03", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "B Batlogg",
+    "Author": ["B Batlogg"],
     "country": "United States",
     "ISSN": "0036-8075",
     "pmid": "10669410",
@@ -273,7 +273,7 @@
   },
   {
     "pubDate": { "date": "1981-01-26", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "S Perlman",
+    "Author": ["S Perlman"],
     "country": "UNITED STATES",
     "ISSN": "0364-5134",
     "pmid": "6254434",
@@ -281,7 +281,7 @@
   },
   {
     "pubDate": { "date": "2009-12-15", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "Peng Chen",
+    "Author": ["Peng Chen"],
     "country": "China",
     "ISSN": "0253-3758",
     "pmid": "16053786",
@@ -289,7 +289,7 @@
   },
   {
     "pubDate": { "date": "2000-01-11", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "M Ueki",
+    "Author": ["M Ueki"],
     "country": "ENGLAND",
     "ISSN": "0003-2409",
     "pmid": "10540101",
@@ -297,7 +297,7 @@
   },
   {
     "pubDate": { "date": "2011-07-15", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "Jia-Ran Gurr",
+    "Author": ["Jia-Ran Gurr"],
     "country": "United States",
     "ISSN": "1096-0929",
     "pmid": "17135312",
@@ -305,7 +305,7 @@
   },
   {
     "pubDate": { "date": "1984-03-19", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "D J Perrett",
+    "Author": ["D J Perrett"],
     "country": "UNITED STATES",
     "ISSN": "0025-7257",
     "pmid": "10317408",
@@ -313,7 +313,7 @@
   },
   {
     "pubDate": { "date": "1997-03-12", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "T R Geballe",
+    "Author": ["T R Geballe"],
     "country": "UNITED STATES",
     "ISSN": "0036-8075",
     "pmid": "11542874",
@@ -321,7 +321,7 @@
   },
   {
     "pubDate": { "date": "1978-06-12", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "P Felig",
+    "Author": ["P Felig"],
     "country": "UNITED STATES",
     "ISSN": "0021-9738",
     "pmid": "205552",
@@ -329,7 +329,7 @@
   },
   {
     "pubDate": { "date": "2016-04-15", "components": { "Month": true, "Day": true, "Year": true } },
-    "Author": "Vivian Y H Hook",
+    "Author": ["Vivian Y H Hook"],
     "country": "United States",
     "ISSN": "1083-351X",
     "pmid": "15316004",
