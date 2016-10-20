@@ -150,7 +150,9 @@ def parse_element_tree(tree, filename=None):
     authors = list()
     for author in root.iter("Author"):
         authors.append(get_author_name(author))
-    article_data["Author"] = authors
+
+    # Special case - if the authors list is empty, just replace it with none
+    article_data["Author"] = authors if len(authors) else None
 
     for pubDate in root.iter("DateCompleted"):
         expect_valid_date_combinations("DateCompleted", pubDate)
