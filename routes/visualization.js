@@ -60,7 +60,7 @@ function rowsToGraphNodes(rows, specification) {
       /* Even index -> this is a node */
       if (i % 2 === 0) {
         /* Use a map here to deduplicate rows */
-        nodes[row[i]._id] = {
+        nodes[row[i]._id] = {  // esline-disable-line no-underscore-dangle
           type: specification[i],
           label: row[i].name,
           id: row[i]._id  // eslint-disable-line no-underscore-dangle
