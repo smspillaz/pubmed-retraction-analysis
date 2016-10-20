@@ -106,6 +106,7 @@ def sanitise_field_values(structure):
         k: sanitise_string(v)
         if isinstance(v, str)
         else (sanitise_field_values(v) if isinstance(v, dict)
+              else [sanitise_string(s) for s in v] if isinstance(v, list)
               else v)
         for k, v in structure.items()
     }
