@@ -10,7 +10,7 @@ var routes = require("./routes/index");
 var visualization = require("./routes/visualization");
 var administration = require("./routes/administration");
 var help = require("./routes/help");
-var developer = require("./routes/help");
+var developer = require("./routes/developer");
 
 var app = express();
 

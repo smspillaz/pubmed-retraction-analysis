@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  include header
+  .container
+    h1 Developer Details
+    p The #[b PubMed Retraction Analyser] project is separated into a few different components. The chart below indicates how the system fits together.
+
+    img(src="/img/architecture.svg" style="width: 100%") 
+
+    h2 User Facing Views
+    p The user facing views are located in #[a(href="https://github.com/smspillaz/pubmed-retraction-analysis/tree/master/views" style="font-family: monospace") views/] subdirectory of the project. Each view represents a separate rendered page. They are written using the #[a(href="https://pugjs.org/api/getting-started.html") pug] templating language, which compiles down to HTML when rendered by an express server with the appropriate plugin. Views can include other views, so for instance, this view, simply defines a container and extends the #[span(style="font-family: monospace") layout] view, which includes the same header bar and scripts.
+    p Charts in the views are rendered partially using bespoke JavaScript and partially using third party libraries. We use #[a(href="https://d3js.org") d3] to handle chart sizing, animation, domain and range. We are also using #[a(href="https://visjs.org") vis.js] and #[a(href="https://d3plus.org") d3plus] to draw the underlying relationship graph and line chart.
+
+    h2 Content population
+    p Content is populated from PubMed's #[a(href="https://www.ncbi.nlm.nih.gov/home/develop/api.shtml") E-utilities] API. We #[a(href="https://github.com/smspillaz/pubmed-retraction-analysis/blob/master/importer/downloader.py") download] a list of all known retracted articles, then fetch metadata pertaining to each article. Fetched articles are then #[a(href="https://github.com/smspillaz/pubmed-retraction-analysis/blob/master/importer/parsexml.py") parsed] and the resultant data is #[a(href="https://github.com/smspillaz/pubmed-retraction-analysis/blob/master/importer/load.py")] uploaded to a Neo4j database.
+
+    h2 Backend
+    p The backend is a simple #[a(href="http://expressjs.org") express] server running on top of #[a(href="http://nodejs.org") node]. Each route is defined in its own file and includes special logic to detail with certain API requests. The default route on each route just renders the page associated with that route.
+
+    h2 Database
+    p Neo4j is a graph-based database, which appears to be similar to a traditional RDBMS, except that relationships between nodes are encoded in the nodes themselves instead of the database schema. This makes Neo4j more flexible at storing arbitrary relationships between nodes without the need for primary or foreign keys.
+    p Neo4j use its own #[a(href="https://neo4j.com/developer/cypher-query-language/") cypher] query language, which places an emphasis on a starting node, a condition and matching relationships. For instance, a query to obtain a table of all related articles and topics for a country might look like #[span(style="font-family: monospace") MATCH(c:Country { name: 'United States' })-[ra]-(a:Article)-[rt]-(t:Topic) RETURN c, ra, a, rt, t]]
+
+    h2 Administration
+    p The administration connects to a separate #[a(href="https://github.com/smspillaz/pubmed-retraction-analysis/blob/master/service/seeder.js") server] which receives requests to seed the database and supervises the whole process of downloading documents, parsing them and seeding the database. The process currently takes up to one hour due to the latency between servers.
