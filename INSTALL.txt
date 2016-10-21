@@ -25,12 +25,35 @@ Running `install.py` will run the following:
  - Installing project level python dependencies inside that virtual environment.
  - Installing the python project inside that virtual environment
  - Installing nodejs (backend) dependencies inside the current directory.
+ - Download a local copy of Neo4j
 
 As per the script's instructions, you will need to enter the python
 virtual environment if you wish to run any of the python code such as the
 downloaders. You can do that by using the `source` command in `bash`:
 
 $ source python-virtualenv/bin/activate
+
+Running the Application
+=======================
+
+You can run the web server by using `npm run start`. You will need to set the
+following environment variable:
+ - `DATABASE_URL`: A URL (without the protocol scheme) to a server hosting the
+                   Neo4j database, and a port (for example, localhost:7474)
+ - `DATABASE_USER`: The username for the database, handed over in the documentation
+ - `DATABASE_PASS`: The password for the database, handed over in the documentation
+ - `CRAWLER_SERVICE_URL`: A URL (including the protocol scheme) to a server hosting
+                          the scraper service, including the port it runs on
+                          (eg `http://localhost:6001`).
+
+Run Neo4j by using `./neo4j/neo4j-community-2.2.0-M03/bin/neo4j`
+
+Run the scraper service by using `node scraper-service.js`. You will need to set the
+following environment variables:
+ - `DATABASE_URL`: A URL (without the protocol scheme) to a server hosting the
+                   Neo4j database, and a port (for example, localhost:7474)
+ - `DATABASE_USER`: The username for the database, handed over in the documentation
+ - `DATABASE_PASS`: The password for the database, handed over in the documentation
 
 Seeding the Database
 ====================
