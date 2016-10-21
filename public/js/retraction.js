@@ -11,12 +11,15 @@ var COLOR_TABLE = [
  * significant DOM mutation. */
 var INDIVIDUAL_CHARACTER_SIZE = 10;
 
+/* We need to do this since clientHeight is broken on firefox */
+var CHART_HEIGHT = 400;
+
 /**
  * drawBarForDataPoint
  */
 function drawBarForDataPoint(svg, dataPoint, index, length, offsetAmount, dataMax) {
   var computeTextY = function computeTextY() {
-    var chartHeight = this.parentNode.parentNode.clientHeight;
+    var chartHeight = CHART_HEIGHT;
     var barSpacing = 10;
     var textHeight = 15;
     return (((chartHeight - (barSpacing * length)) /
@@ -31,7 +34,7 @@ function drawBarForDataPoint(svg, dataPoint, index, length, offsetAmount, dataMa
   };
   var g = svg.append("g")
              .attr("transform", function computeBarY() {
-               var chartHeight = this.parentNode.clientHeight;
+               var chartHeight = CHART_HEIGHT;
                var barSpacing = 10;
                var barHeight = ((chartHeight - (barSpacing *
                                                 length)) /
@@ -42,7 +45,7 @@ function drawBarForDataPoint(svg, dataPoint, index, length, offsetAmount, dataMa
              });
   g.append("rect")
    .attr("height", function computeBarHeight() {
-     var chartHeight = this.parentNode.parentNode.clientHeight;
+     var chartHeight = CHART_HEIGHT;
      var barSpacing = 10;
      return ((chartHeight - (barSpacing * length)) /
              length);
