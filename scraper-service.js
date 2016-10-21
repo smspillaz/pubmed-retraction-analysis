@@ -91,6 +91,7 @@ app.post("/start_crawling", function startCrawling(req, res) {
         var loadProc = spawn("./python-virtualenv/bin/python", ["./python-virtualenv/bin/parse-pubmed-files", "Retractions"], {
           stdio: ["pipe", "pipe", "pipe"]
         });
+        var stdout = [];
         loadProc.on("exit", function onExit(code, signal) {
           if (code !== 0 || signal) {
             reject("Crawling process failed with " + code + " " + signal);
@@ -99,7 +100,6 @@ app.post("/start_crawling", function startCrawling(req, res) {
             resolve(JSON.parse(stdout.join("")));
           }
         });
-        var stdout = [];
         loadProc.stdout.on("data", function onData(data) {
           stdout.push(String(data));
         });
