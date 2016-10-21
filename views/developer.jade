@@ -21,6 +21,7 @@ block content
     h2 Database
     p Neo4j is a graph-based database, which appears to be similar to a traditional RDBMS, except that relationships between nodes are encoded in the nodes themselves instead of the database schema. This makes Neo4j more flexible at storing arbitrary relationships between nodes without the need for primary or foreign keys.
     p Neo4j use its own #[a(href="https://neo4j.com/developer/cypher-query-language/") cypher] query language, which places an emphasis on a starting node, a condition and matching relationships. For instance, a query to obtain a table of all related articles and topics for a country might look like #[span(style="font-family: monospace") MATCH(c:Country { name: 'United States' })-[ra]-(a:Article)-[rt]-(t:Topic) RETURN c, ra, a, rt, t]]
+    p Neo4j also has an administration GUI, which you can access #[a(href="http://http://188.166.209.201:7474/browser/") here].
 
     h2 Administration
     p The administration connects to a separate #[a(href="https://github.com/smspillaz/pubmed-retraction-analysis/blob/master/service/seeder.js") server] which receives requests to seed the database and supervises the whole process of downloading documents, parsing them and seeding the database. The process currently takes up to one hour due to the latency between servers.
