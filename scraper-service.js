@@ -123,7 +123,8 @@ app.post("/start_crawling", function startCrawling(req, res) {
       });
     }).then(function onDone() {
       done();
-    }).catch(function onError(error) {
+    })
+    .catch(function onError(error) {
       // eslint-disable-next-line no-console
       console.error("Crawing process failed with " + error + " " + error.stack);
       done();
