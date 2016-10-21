@@ -13,6 +13,7 @@ var INDIVIDUAL_CHARACTER_SIZE = 10;
 
 /* We need to do this since clientHeight is broken on firefox */
 var CHART_HEIGHT = 400;
+var CHART_WIDTH = 600;
 
 /**
  * drawBarForDataPoint
@@ -26,7 +27,7 @@ function drawBarForDataPoint(svg, dataPoint, index, length, offsetAmount, dataMa
             length) / 2) + (textHeight / 2);
   };
   var computeBarWidth = function computeBarWidth() {
-    var parentWidth = (this.parentNode.parentNode.clientWidth -
+    var parentWidth = (CHART_WIDTH -
                        offsetAmount);
     var x = d3.scaleLinear().domain([0, dataMax])
                             .range([0, parentWidth]);
@@ -98,14 +99,14 @@ function drawBarChart(data) {
               .append("svg")
               .attr("class", "svgchart")
               .attr("width", function computeWidth() {
-                return this.parentNode.clientWidth * 0.80;
+                return CHART_WIDTH * 0.80;
               })
               .attr("height", function computeHeight() {
-                return this.parentNode.clientHeight * 0.80;
+                return CHART_WIDTH * 0.80;
               })
               .attr("style", function computeTransform() {
-                var x = this.parentNode.clientWidth * 0.10;
-                var y = this.parentNode.clientHeight * 0.10;
+                var x = CHART_WIDTH * 0.10;
+                var y = CHART_HEIGHT * 0.10;
                 return ["transform: translate(", x, "px,", y, "px", ")"].join("");
               });
 
