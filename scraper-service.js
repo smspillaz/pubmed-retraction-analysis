@@ -67,7 +67,7 @@ function withCrawlingLockAsync(crawl, error, done) {
 }
 
 app.post("/start_crawling", function startCrawling(req, res) {
-  withCrawlingLockAsync(function (done) {
+  withCrawlingLockAsync(function onAcquiredLock(done) {
     res.status(200);
     res.json({
       status: "started"
@@ -85,7 +85,7 @@ app.post("/start_crawling", function startCrawling(req, res) {
           resolve();
         }
       });
-    }).then(function () {
+    }).then(function parseDocuments() {
       return new Promise(function parseXML(resolve, reject) {
         // Create child python process
         var loadProc = spawn("./python-virtualenv/bin/python", ["./python-virtualenv/bin/parse-pubmed-files", "Retractions"], {
@@ -104,7 +104,7 @@ app.post("/start_crawling", function startCrawling(req, res) {
           stdout.push(String(data));
         });
       });
-    }).then(function (json) {
+    }).then(function loadDatabase(json) {
       return new Promise(function loadDB(resolve, reject) {
         // Create child python process
         var loadProc = spawn("./python-virtualenv/bin/python", ["./python-virtualenv/bin/load-pubmed-files"], {
