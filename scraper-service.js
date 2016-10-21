@@ -25,13 +25,13 @@ app.get("/is_crawling", function isCrawling(req, res) {
 function withCrawlingLockAsync(crawl, error, done) {
   fs.stat("crawling.lock", function statResult(err, stats) {
     if (err) {
-      fs.writeFile("crawling.lock", function (err) {
+      fs.writeFile("crawling.lock", function onError(err) {
         if (err) {
           return error(err);
         }
 
         crawl(function onDoneCrawling() {
-          fs.unlink("crawling.lock", function (err) {
+          fs.unlink("crawling.lock", function onError(err) {
             if (err) {
               return error(err);
             }
@@ -101,19 +101,19 @@ app.post("/start_crawling", function startCrawling(req, res) {
         loadProc.stdin.write(JSON.stringify(json));
         loadProc.stdin.end();
       });
-    }).then(function () {
+    }).then(function onDone() {
       done();
-    }).catch(function (error) {
+    }).catch(function onError(error) {
       console.error("Crawing process failed with " + error + " " + error.stack);
       done();
     });
-  }, function (error) {
+  }, function onErrorAcquiringLock(error) {
     res.send(500);
     res.json({
       status: "failure",
       message: String(error)
     });
-  }, function onDone() {
+  }, function onDoneWithLock() {
   });
 
   res.json({
@@ -123,6 +123,6 @@ app.post("/start_crawling", function startCrawling(req, res) {
 
 app.set("port", 6001);
 
-var server = app.listen(app.get("port"), function () {
+var server = app.listen(app.get("port"), function onPort() {
   console.log("Scraper service server listening on port " + server.address().port);
 });
