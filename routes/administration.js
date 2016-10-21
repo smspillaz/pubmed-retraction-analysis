@@ -1,5 +1,5 @@
 var express = require("express");
-var fetch = require("fetch");
+var rp = require("request-promise");
 var router = express.Router(); // eslint-disable-line new-cap
 
 /* GET administration page. */
@@ -14,7 +14,7 @@ router.get("/is_crawling", function handleIsCrawingRequest(req, res) {
       "msg": "Need to set CRAWLING_SERVICE_URL to use crawler"
     });
   } else {
-    fetch.get(process.env.CRAWLING_SERVICE_URL + "/is_crawling").then(function(json) {
+    rp.get(process.env.CRAWLING_SERVICE_URL + "/is_crawling").then(function(json) {
       res.json({
         "status": "success",
         "data": json
@@ -35,7 +35,7 @@ router.post("/start_crawling", function handleStartCrawlingRequest(req, res) {
       "msg": "Need to set CRAWLING_SERVICE_URL to use crawler"
     });
   } else {
-    fetch.get(process.env.CRAWLING_SERVICE_URL + "/is_crawling").then(function(json) {
+    rp.post(process.env.CRAWLING_SERVICE_URL + "/start_crawling").then(function(json) {
       res.json({
         "status": "success",
         "data": json

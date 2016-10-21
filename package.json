@@ -36,6 +36,7 @@
     "neo4j-driver": "^1.1.0-M01",
     "node-neo4j": "^2.0.3",
     "npm-run-all": "^3.1.0",
+    "request-promise": "^4.1.1",
     "rollup": "^0.34.13",
     "rollup-plugin-commonjs": "^5.0.4",
     "rollup-plugin-node-resolve": "^2.0.0",
