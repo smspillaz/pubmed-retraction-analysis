@@ -49,6 +49,11 @@ function withCrawlingLockAsync(crawl, error, done) {
 
 app.post("/start_crawling", function startCrawling(req, res) {
     withCrawlingLockAsync(function(done) {
+        res.status(200);
+        res.json({
+            "status": "started"
+        });
+
         var chain = new Promise(function downloadDocuments(resolve, reject) {
             var loadProc = spawn("./python-virtualenv/bin/python", ["./python-virtualenv/bin/download-pubmed-articles"], {
                 stdio: ["pipe", "inherit", "inherit"]
@@ -99,7 +104,13 @@ app.post("/start_crawling", function startCrawling(req, res) {
             console.error("Crawing process failed with " + error + " " + error.stack);
             done();
         });
-    }, console.error, function onDone() {
+    }, function(error) {
+        res.send(500);
+        res.json({
+            "status": "failure",
+            "message": String(error)
+        });
+    }, function onDone() {
     });
 
     res.json({
