@@ -147,5 +147,5 @@ app.set("port", 6001);
 
 app.listen(app.get("port"), function onPort() {
   // eslint-disable-next-line no-console
-  console.log("Scraper service server listening on port " + server.address().port);
+  console.log("Scraper service server listening on port 6001");
 });
