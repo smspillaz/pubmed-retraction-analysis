@@ -12,11 +12,11 @@ app.get("/is_crawling", function isCrawling(req, res) {
   fs.stat("crawling.lock", function statResult(err) {
     if (err) {
       res.json({
-        "crawling": false
+        crawling: false
       });
     } else {
       res.json({
-        "crawling": true
+        crawling: true
       });
     }
   });
@@ -50,7 +50,7 @@ app.post("/start_crawling", function startCrawling(req, res) {
   withCrawlingLockAsync(function (done) {
     res.status(200);
     res.json({
-      "status": "started"
+      status: "started"
     });
 
     var chain = new Promise(function downloadDocuments(resolve, reject) {
@@ -110,14 +110,14 @@ app.post("/start_crawling", function startCrawling(req, res) {
   }, function (error) {
     res.send(500);
     res.json({
-      "status": "failure",
-      "message": String(error)
+      status: "failure",
+      message: String(error)
     });
   }, function onDone() {
   });
 
   res.json({
-    "status": "started"
+    status: "started"
   });
 });
 
