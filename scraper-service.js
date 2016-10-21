@@ -22,6 +22,21 @@ app.get("/is_crawling", function isCrawling(req, res) {
   });
 });
 
+/**
+ * withCrawlingLockAsync
+ *
+ * Execute the function @crawl with a lock, to ensure that @crawl cannot
+ * be executed more than one simultaneously. This functions checks for a
+ * crawling.lock file, then creates it and continues.
+ *
+ * Obviously, this isn't race condition proof, but should be good enough for
+ * now.
+ *
+ * @param crawl {function} - The function to call to start crawling
+ * @param error {function} - An error handler function
+ * @param done {function} - The function to call when we're done with the lock
+ * @returns {undefined}
+ */
 function withCrawlingLockAsync(crawl, error, done) {
   fs.stat("crawling.lock", function statResult(err, stats) {
     if (err) {
