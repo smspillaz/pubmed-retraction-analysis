@@ -1,6 +1,4 @@
-/* global bundle, $, d3plus */
-
-var d3 = require("d3");
+/* global bundle, $, d3plus, d3 */
 
 var COLOR_TABLE = [
   "#C8D2D9", "#97ABB8", "#FFBEB9", "#FFD1CE"
