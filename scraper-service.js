@@ -68,7 +68,6 @@ function withCrawlingLockAsync(crawl, error, done) {
 
 app.post("/start_crawling", function startCrawling(req, res) {
   withCrawlingLockAsync(function onAcquiredLock(done) {
-    res.status(200);
     res.json({
       status: "started"
     });
@@ -130,16 +129,11 @@ app.post("/start_crawling", function startCrawling(req, res) {
       done();
     });
   }, function onErrorAcquiringLock(error) {
-    res.send(500);
     res.json({
       status: "failure",
       message: String(error)
     });
   }, function onDoneWithLock() {
-  });
-
-  res.json({
-    status: "started"
   });
 });
 

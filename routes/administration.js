@@ -21,8 +21,7 @@ router.get("/is_crawling", function handleIsCrawingRequest(req, res) {
       });
     }).catch(function onError(err) {
       res.json({
-        "status": "failure",
-        "data": json
+        "status": "failure"
       });
     });
   }
@@ -37,17 +36,16 @@ router.post("/start_crawling", function handleStartCrawlingRequest(req, res) {
   } else {
     rp.post(process.env.CRAWLING_SERVICE_URL + "/start_crawling").then(function(json) {
       res.json({
-        "status": "success",
-        "data": json
+        status: JSON.parse(json).status === "started" ? "success" : "failure"
       });
     }).catch(function onError(err) {
       res.json({
         "status": "failure",
-        "data": json
+        "data": String(err)
       });
     });
   }
-})
+});
 
 
 module.exports = router;
