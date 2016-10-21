@@ -71,7 +71,7 @@ app.post("/start_crawling", function startCrawling(req, res) {
       status: "started"
     });
 
-    var chain = new Promise(function downloadDocuments(resolve, reject) {
+    new Promise(function downloadDocuments(resolve, reject) {
       // Create child python process
       var loadProc = spawn("./python-virtualenv/bin/python", ["./python-virtualenv/bin/download-pubmed-articles"], {
         stdio: ["pipe", "inherit", "inherit"]
