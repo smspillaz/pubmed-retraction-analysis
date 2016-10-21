@@ -16,7 +16,8 @@ var INDIVIDUAL_CHARACTER_SIZE = 10;
  */
 function drawBarForDataPoint(svg, dataPoint, index, length, offsetAmount, dataMax) {
   var computeTextY = function computeTextY() {
-    var chartHeight = this.parentNode.parentNode.clientHeight;
+    var relevantNode = this.parentNode.parentNode.clientHeight;
+    var chartHeight = relevantNode.clientHeight || relevantNode.offsetHeight;
     var barSpacing = 10;
     var textHeight = 15;
     return (((chartHeight - (barSpacing * length)) /
@@ -31,7 +32,8 @@ function drawBarForDataPoint(svg, dataPoint, index, length, offsetAmount, dataMa
   };
   var g = svg.append("g")
              .attr("transform", function computeBarY() {
-               var chartHeight = this.parentNode.clientHeight;
+               var chartHeight = (this.parentNode.clientHeight ||
+                                  this.parentNode.offsetHeight);
                var barSpacing = 10;
                var barHeight = ((chartHeight - (barSpacing *
                                                 length)) /
@@ -42,7 +44,8 @@ function drawBarForDataPoint(svg, dataPoint, index, length, offsetAmount, dataMa
              });
   g.append("rect")
    .attr("height", function computeBarHeight() {
-     var chartHeight = this.parentNode.parentNode.clientHeight;
+     var relevantNode = this.parentNode.parentNode.clientHeight;
+     var chartHeight = relevantNode.clientHeight || relevantNode.offsetHeight;
      var barSpacing = 10;
      return ((chartHeight - (barSpacing * length)) /
              length);
