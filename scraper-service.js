@@ -43,13 +43,15 @@ function withCrawlingLockAsync(crawl, error, done) {
     if (errStat) {
       fs.writeFile("crawling.lock", function onError(errWrite) {
         if (errWrite) {
-          return error(errWrite);
+          error(errWrite);
+          return;
         }
 
         crawl(function onDoneCrawling() {
           fs.unlink("crawling.lock", function onError(errUnlink) {
             if (errUnlink) {
-              return error(errUnlink);
+              error(errUnlink);
+              return;
             }
 
             done.apply(arguments);
