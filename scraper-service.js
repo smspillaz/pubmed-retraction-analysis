@@ -55,6 +55,7 @@ app.post("/start_crawling", function startCrawling(req, res) {
         });
 
         var chain = new Promise(function downloadDocuments(resolve, reject) {
+            // Create child python process
             var loadProc = spawn("./python-virtualenv/bin/python", ["./python-virtualenv/bin/download-pubmed-articles"], {
                 stdio: ["pipe", "inherit", "inherit"]
             });
@@ -67,6 +68,7 @@ app.post("/start_crawling", function startCrawling(req, res) {
             });
         }).then(function() {
             return new Promise(function parseXML(resolve, reject) {
+                // Create child python process
                 var loadProc = spawn("./python-virtualenv/bin/python", ["./python-virtualenv/bin/parse-pubmed-files", "Retractions"], {
                     stdio: ["pipe", "pipe", "pipe"]
                 });
@@ -85,9 +87,11 @@ app.post("/start_crawling", function startCrawling(req, res) {
             });
         }).then(function(json) {
             return new Promise(function loadDB(resolve, reject) {
+                // Create child python process
                 var loadProc = spawn("./python-virtualenv/bin/python", ["./python-virtualenv/bin/load-pubmed-files"], {
                     stdio: ["pipe", "inherit", "inherit"]
                 });
+                // Crawling is completed now, resolve or reject promise
                 loadProc.on("exit", function onExit(code, signal) {
                     if (code !== 0 || signal) {
                         reject("Crawling process failed with " + code + " " + signal);
