@@ -38,17 +38,18 @@ app.get("/is_crawling", function isCrawling(req, res) {
  * @returns {undefined}
  */
 function withCrawlingLockAsync(crawl, error, done) {
-  fs.stat("crawling.lock", function statResult(err, stats) {
-    if (err) {
-      fs.writeFile("crawling.lock", function onError(err) {
-        if (err) {
-          return error(err);
+  fs.stat("crawling.lock", function statResult(errStat) {
+    /* We want this */
+    if (errStat) {
+      fs.writeFile("crawling.lock", function onError(errWrite) {
+        if (errWrite) {
+          return error(errWrite);
         }
 
         crawl(function onDoneCrawling() {
-          fs.unlink("crawling.lock", function onError(err) {
-            if (err) {
-              return error(err);
+          fs.unlink("crawling.lock", function onError(errUnlink) {
+            if (errUnlink) {
+              return error(errUnlink);
             }
 
             done.apply(arguments);
