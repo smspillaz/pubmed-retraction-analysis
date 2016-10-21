@@ -96,7 +96,7 @@ app.post("/start_crawling", function startCrawling(req, res) {
           if (code !== 0 || signal) {
             reject("Crawling process failed with " + code + " " + signal);
           } else {
-            console.log(stdout.join(""));
+            console.log(stdout.join(""));  // eslint-disable-line no-console
             resolve(JSON.parse(stdout.join("")));
           }
         });
@@ -124,6 +124,7 @@ app.post("/start_crawling", function startCrawling(req, res) {
     }).then(function onDone() {
       done();
     }).catch(function onError(error) {
+      // eslint-disable-next-line no-console
       console.error("Crawing process failed with " + error + " " + error.stack);
       done();
     });
@@ -144,5 +145,6 @@ app.post("/start_crawling", function startCrawling(req, res) {
 app.set("port", 6001);
 
 var server = app.listen(app.get("port"), function onPort() {
+  // eslint-disable-next-line no-console
   console.log("Scraper service server listening on port " + server.address().port);
 });
