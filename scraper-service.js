@@ -145,7 +145,7 @@ app.post("/start_crawling", function startCrawling(req, res) {
 
 app.set("port", 6001);
 
-var server = app.listen(app.get("port"), function onPort() {
+app.listen(app.get("port"), function onPort() {
   // eslint-disable-next-line no-console
   console.log("Scraper service server listening on port " + server.address().port);
 });
