@@ -1,7 +1,6 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var fs = require("fs");
-var exec = require("child_process").exec;
 var spawn = require("child_process").spawn;
 
 var app = express();
@@ -10,7 +9,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.get("/is_crawling", function isCrawling(req, res) {
-  fs.stat("crawling.lock", function statResult(err, stat) {
+  fs.stat("crawling.lock", function statResult(err) {
     if (err) {
       res.json({
         "crawling": false
